@@ -1,6 +1,11 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+<x-guest-layout title="Подтверждение email">
+    <div class="mb-4 text-sm text-gray-600 text-center">
+        Спасибо за регистрацию!
+        <br>
+        Прежде чем начать, пожалуйста, подтвердите свой адрес электронной почты,
+        перейдя по ссылке, которую мы только что отправили вам по электронной почте.
+        <br>
+        Если вы не получили электронное письмо, нажмите на кнопку ниже, что бы отправить новое письмо.
     </div>
 
     @if (session('status') == 'verification-link-sent')
@@ -13,9 +18,9 @@
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
 
-            <div>
+            <div class="mr-2">
                 <x-primary-button>
-                    {{ __('Resend Verification Email') }}
+                    Отправить новое письмо
                 </x-primary-button>
             </div>
         </form>
@@ -24,7 +29,7 @@
             @csrf
 
             <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
+                {{ __('interface.log-out') }}
             </button>
         </form>
     </div>

@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Import libraries
+@import 'boxicons/css/boxicons.min.css';
+
+// Import fonts
+@import '@fontsource/figtree';
+
+// Import variables
+@import 'abstracts/variables';
+
+// Set baseline styles
+@import 'base/baseline';
+
+@import "utilities/utilities";
+
+// Set layout styles
+@import "layout/header";
+@import"layout/sidebar";
+@import "layout/page";
+@import "components/search-form";
+
+.logo {
+    background: url("/resources/images/logo-full.png") no-repeat center center / contain;
+    width: 300px;
+    height: 116px;
+}

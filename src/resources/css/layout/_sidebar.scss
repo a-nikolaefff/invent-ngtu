@@ -1,0 +1,94 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    width: $sidebarWidth;
+    height: 100vh;
+    background-color: $sidebarColor;
+    padding: 0.5rem 1rem 0 0;
+    transition: 0.5s;
+    z-index: $zFixed;
+    @media (min-width: 768px) {
+        left: 0;
+        padding: 1rem 1rem 0 0;
+    }
+
+    &_admin {
+        background-color: $adminSidebarColor;
+    }
+
+    &_displayed {
+        left: 0;
+        @media (min-width: 768px) {
+            width: calc($sidebarWidth + $sidebarExtensionWidth);
+        }
+    }
+
+    &__content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        overflow: hidden;
+    }
+
+    &__logo {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+        margin-bottom: 2rem;
+        color: $sidebarActiveColor;
+    }
+
+    &__logo-icon {
+        background: url("/resources/images/icons/logo.png") no-repeat center center / contain;
+        width: 24px;
+        height: 24px;
+        color: $sidebarActiveColor;
+    }
+
+    &__logo-name {
+        font-weight: 700;
+        color: $sidebarActiveColor;
+    }
+
+    &__link {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        column-gap: 1rem;
+        padding: 0.5rem 0 0.5rem 1.5rem;
+        position: relative;
+        color: $sidebarDisabledColor;
+        margin-bottom: 1.5rem;
+        transition: 0.3s;
+
+        &:hover {
+            color: $sidebarActiveColor;
+        }
+    }
+
+    &__icon {
+        width: 24px;
+        height: 24px;
+        font-size: 1.5rem;
+    }
+
+    &__link_active {
+        color: $sidebarActiveColor;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 32px;
+            background-color: $sidebarActiveColor;
+        }
+    }
+}
+
+
+

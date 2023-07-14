@@ -3,15 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRoleEnum;
+use App\Models\Traits\Filterable;
+use App\Models\Traits\Sortable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Filterable, Sortable;
 
     /**
      * The name of the table in the database
@@ -61,5 +65,36 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(UserRole::class, 'role_id');
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param UserRoleEnum $roleType
+     *
+     * @return bool
+     */
+    public function hasRole(UserRoleEnum $roleType): bool
+    {
+        $userRoleName = $this->role->name;
+        return $userRoleName === $roleType->value;
+    }
+
+    /**
+     * Check if the user has any of the specified roles.
+     *
+     * @param UserRoleEnum ...$roleTypes
+     *
+     * @return bool
+     */
+    public function hasAnyRole(UserRoleEnum ...$roleTypes): bool
+    {
+        $userRoleName = $this->role->name;
+        foreach ($roleTypes as $roleType) {
+            if ($userRoleName === $roleType->value) {
+                return true;
+            }
+        }
+        return false;
     }
 }

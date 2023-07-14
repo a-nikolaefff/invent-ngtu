@@ -12,9 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             UserRoleSeeder::class,
             SuperAdminSeeder::class,
-        ]);
+        ];
+        $appEnv = config('app.env');
+        if($appEnv === 'development') {
+            $seeders[] = UserSeeder::class;
+        }
+        $this->call($seeders);
     }
 }

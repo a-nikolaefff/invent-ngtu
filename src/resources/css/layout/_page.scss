@@ -1,0 +1,26 @@
+.page {
+    position: absolute;
+    top: calc($headerHeight);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0 1rem;
+    transition: 0.5s;
+    @media (min-width: 768px) {
+        top: calc($headerHeight + 1rem);
+        padding-left: calc($sidebarWidth + 2rem);
+    }
+
+    &_menu-displayed {
+        padding-left: calc($sidebarWidth + 1rem);
+        @media (min-width: 768px) {
+            padding-left: calc($sidebarWidth + $sidebarExtensionWidth + $sidebarPageGapWidth);
+        }
+    }
+
+    &__content {
+        height: 100vh;
+    }
+}
+
+

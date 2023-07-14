@@ -4,6 +4,8 @@ import forms from '@tailwindcss/forms';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
+        "./src/**/*.{html,js}",
+        "./node_modules/tw-elements/dist/js/**/*.js",
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
@@ -17,5 +19,11 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, require("tw-elements/dist/plugin.cjs")],
+
+    darkMode: "class",
+
+    safelist: [
+        'bg-pink-600',
+    ]
 };

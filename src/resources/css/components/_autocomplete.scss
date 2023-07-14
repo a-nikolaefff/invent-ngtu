@@ -1,0 +1,23 @@
+.autoComplete_wrapper {
+    width: 100% !important;
+    & input {
+        width: 100% !important;
+    }
+}
+
+.resetAutocomplete {
+    display: none;
+    margin-right: 1px;
+
+    &__displayed {
+        display: inline;
+    }
+}
+
+.autocompleteButton {
+    i {
+        font-size: 1.65rem;
+    }
+    border-radius: 0;
+    line-height: 0;
+}

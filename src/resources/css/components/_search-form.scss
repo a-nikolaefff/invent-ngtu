@@ -1,0 +1,13 @@
+.search-form {
+    font-size: 0.8rem;
+    button {
+        line-height: 0;
+    }
+    &__search-button {
+
+    }
+
+    &__reset-button  {
+        display: none;
+    }
+}

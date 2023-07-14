@@ -1,0 +1,10 @@
+// Responsive captcha
+.g-recaptcha {
+    @media (max-width: 420px) {
+        transform:scale(0.77);
+        transform-origin:0 0;
+    }
+    @media (max-width: 350px) {
+        transform:scale(0.7);
+    }
+}

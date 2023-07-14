@@ -1,0 +1,16 @@
+@use '../abstracts/variables' as *;
+
+.icon {
+    font-size: 1.8rem;
+    color: $iconColor;
+    transition: color 0.3s ease 0s;
+    &:hover {
+        color: $iconHoverColor;
+    }
+}
+
+
+
+
+
+
