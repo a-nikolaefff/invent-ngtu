@@ -101,7 +101,7 @@ class UserController extends Controller
         $user->fill($processedData)->save();
         $user->load('role');
         $user->notify(new UserAccountChanged());
-        return redirect()->route('users.show', $user->id);
+        return redirect()->route('users.show', $user->id)->with('status', 'user-updated');
     }
 
     /**

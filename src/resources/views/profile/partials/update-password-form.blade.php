@@ -32,17 +32,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>Изменить пароль</x-primary-button>
-
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >Пароль изменен</p>
-            @endif
+            <x-button-confirm>Изменить пароль</x-button-confirm>
         </div>
     </form>
 </section>

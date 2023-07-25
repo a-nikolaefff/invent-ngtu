@@ -19,9 +19,9 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+            <x-button-confirm>
                 Отправить ссылку для сброса пароля
-            </x-primary-button>
+            </x-button-confirm>
         </div>
     </form>
 </x-guest-layout>

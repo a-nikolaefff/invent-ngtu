@@ -48,17 +48,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>Изменить персональные данные</x-primary-button>
-
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >Данные изменены</p>
-            @endif
+            <x-button-confirm>Изменить персональные данные</x-button-confirm>
         </div>
     </form>
 </section>

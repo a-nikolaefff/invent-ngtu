@@ -1,27 +1,26 @@
 <div id="optionSelector" data-value="{{$parameterName}}">
 
-    @if($allOptionsSelector)
-        <a href="{{ $url }}" data-value="allOptionsSelection">
-            <x-button-secondary-outline>
+    <select id="role" name="role_id" data-te-select-init>
+
+        @if($allOptionsSelector)
+            <option
+                value="allOptionsSelection">
                 {{ $allOptionsSelector }}
-            </x-button-secondary-outline>
-        </a>
-    @endif
+            </option>
+        @endif
 
-    @foreach($options as $option)
-        <a href="{{ $url }}" data-value="{{ $option->{$passingProperty} }}">
-            <x-button-secondary-outline>
+        @foreach($options as $option)
+            <option
+                value="{{ $option->{$passingProperty} }}">
                 {{ $option->{$displayingProperty} }}
-            </x-button-secondary-outline>
-        </a>
-    @endforeach
+            </option>
+        @endforeach
 
-    @if($notSpecifiedOptionSelector)
-        <a href="{{ $url }}" data-value="none">
-            <x-button-secondary-outline>
+        @if($notSpecifiedOptionSelector)
+            <option
+                value="none">
                 {{ $notSpecifiedOptionSelector }}
-            </x-button-secondary-outline>
-        </a>
-    @endif
-
+            </option>
+        @endif
+    </select>
 </div>

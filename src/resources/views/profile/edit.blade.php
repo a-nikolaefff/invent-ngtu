@@ -7,6 +7,18 @@
                 Профиль
             </h1>
 
+            @if (session('status') === 'profile-updated')
+                <x-alert type="success" class="mb-4">
+                    Персональные данные успешно изменены
+                </x-alert>
+            @endif
+
+            @if (session('status') === 'password-updated')
+                <x-alert type="success" class="mb-4">
+                    Пароль успешно изменен
+                </x-alert>
+            @endif
+
             <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <div class="flex flex-col">
@@ -53,7 +65,9 @@
                                         </tr>
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="px-2 py-4 text-right">Последнее изменение <br> профиля:</th>
+                                            <th scope="row" class="px-2 py-4 text-right">Последнее изменение <br>
+                                                профиля:
+                                            </th>
                                             <td class="whitespace-nowrap px-6 py-4"> {{ $user->updated_at }}</td>
                                         </tr>
                                         </tbody>

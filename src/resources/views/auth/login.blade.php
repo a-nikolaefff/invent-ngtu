@@ -42,9 +42,9 @@
                     </a>
                 @endif
 
-                <x-primary-button class="ml-3">
+                <x-button-confirm class="ml-3">
                     Войти
-                </x-primary-button>
+                </x-button-confirm>
             </div>
         </form>
     </div>

@@ -19,9 +19,9 @@
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button>
+            <x-button-confirm>
                 Подтвердить
-            </x-primary-button>
+            </x-button-confirm>
         </div>
     </form>
 </x-guest-layout>

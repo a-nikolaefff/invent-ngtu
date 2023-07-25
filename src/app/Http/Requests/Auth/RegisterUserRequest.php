@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterUserRequest extends FormRequest
@@ -14,7 +15,7 @@ class RegisterUserRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                'unique:users'
+                'unique:'.User::class
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'g-recaptcha-response' => 'required|captcha'

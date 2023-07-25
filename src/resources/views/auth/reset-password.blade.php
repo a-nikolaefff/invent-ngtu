@@ -31,9 +31,9 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+            <x-button-confirm>
                 Сбросить пароль
-            </x-primary-button>
+            </x-button-confirm>
         </div>
     </form>
 </x-guest-layout>

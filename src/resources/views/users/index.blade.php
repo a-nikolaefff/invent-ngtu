@@ -1,6 +1,6 @@
 <x-admin-layout title="Пользователи">
 
-    <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
         Пользователи
     </h1>
 
@@ -18,15 +18,19 @@
                         <div></div>
                     </div>
 
-                    <div class="mb-2">
-                        <x-option-selector
-                            :url="route('users.index')"
-                            parameter-name="role_id"
-                            :options="$roles"
-                            passing-property='id'
-                            displaying-property='name'
-                            all-options-selector='любая роль'
-                        ></x-option-selector>
+                    <div class="flex mb-2">
+                        <div class="w-full md:w-8/12 lg:w-4/12">
+                            <x-input-label value="Роль" />
+                            <x-option-selector
+                                :url="route('users.index')"
+                                parameter-name="role_id"
+                                :options="$roles"
+                                passing-property='id'
+                                displaying-property='name'
+                                all-options-selector='любая роль'
+                            ></x-option-selector>
+                        </div>
+                        <div></div>
                     </div>
 
 
@@ -56,7 +60,7 @@
                                     Email
                                 </a>
                             </th>
-                            <th scope="col" class="px-6 py-4 hidden sm:block">
+                            <th scope="col" class="px-6 py-4 hidden md:block">
                                 <a class="d-block"
                                    href="{{ route('users.index', ['sort' => 'role_id', 'direction' => 'asc']) }}"
                                 >
@@ -73,7 +77,7 @@
                             class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                             <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->name }}</td>
                             <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->email }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 hidden sm:block">{{ $user->role->name }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 hidden md:block">{{ $user->role->name }}</td>
                         </tr>
                         @endforeach
                         </tbody>

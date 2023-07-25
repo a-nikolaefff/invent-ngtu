@@ -8,7 +8,7 @@
                 </h1>
 
                 @can('update', $user)
-                    <div class="my-3">
+                    <div class="my-4">
                         <span class="mr-2">
                             <a href="{{ route('users.edit', $user->id) }}">
                                 <x-button-edit>
@@ -28,6 +28,12 @@
                     </div>
                 @endcan
             </div>
+
+            @if (session('status') === 'user-updated')
+                <x-alert type="success" class="mb-4">
+                    Данные пользователя успешно изменены
+                </x-alert>
+            @endif
 
             <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">

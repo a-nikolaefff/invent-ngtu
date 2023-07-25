@@ -1,41 +1,38 @@
 import {addUrlParams} from '../utils/util';
 
 const optionSelector = document.getElementById('optionSelector');
-
-const urlParams = new URLSearchParams(window.location.search);
-const options = optionSelector.querySelectorAll('a');
+const select = optionSelector.querySelector('select');
+const options = select.querySelectorAll('option');
 const parameterName = optionSelector.dataset.value;
+const urlParams = new URLSearchParams(window.location.search);
 const allOptionsSelection = 'allOptionsSelection';
 
 /**
  * Add links to options
  * */
-options.forEach(option => {
-    option.addEventListener('click', event => {
-        event.preventDefault();
-        let optionData = option.dataset.value;
-        urlParams.delete(parameterName);
-        if (optionData !== allOptionsSelection) {
-            urlParams.append(parameterName, optionData);
-        }
-        if (urlParams.get('page') !== null) {
-            urlParams.delete('page')
-        }
-        const url = window.location.href;
-        window.location.href = addUrlParams(url, urlParams);
-    });
+select.addEventListener("change", function () {
+    event.preventDefault();
+    let optionData = this.value;
+    urlParams.delete(parameterName);
+    if (optionData !== allOptionsSelection) {
+        urlParams.append(parameterName, optionData);
+    }
+    if (urlParams.get('page') !== null) {
+        urlParams.delete('page')
+    }
+    const url = window.location.href;
+    window.location.href = addUrlParams(url, urlParams);
 });
+
 
 /**
  * Highlight active option
  * */
 options.forEach(option => {
-    const optionData = option.dataset.value;
-    const optionButton = option.querySelector('button');
+    const optionData = option.value;
     if (urlParams.get(parameterName) === optionData ||
         urlParams.get(parameterName) === null && optionData === allOptionsSelection) {
-        optionButton.classList.remove('text-pink-600');
-        optionButton.classList.add('text-white', 'bg-pink-600');
+        option.setAttribute("selected", "");
     }
 });
 
