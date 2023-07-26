@@ -1,5 +1,11 @@
 <x-admin-layout title="Пользователи">
 
+    @if (session('status') === 'user-deleted')
+        <x-alert type="success" class="mb-4">
+            Пользователь удален
+        </x-alert>
+    @endif
+
     <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
         Пользователи
     </h1>
@@ -20,8 +26,9 @@
 
                     <div class="flex mb-2">
                         <div class="w-full md:w-8/12 lg:w-4/12">
-                            <x-input-label value="Роль" />
+                            <x-input-label value="Роль" class="mb-1"/>
                             <x-option-selector
+                                id="optionSelector1"
                                 :url="route('users.index')"
                                 parameter-name="role_id"
                                 :options="$roles"
@@ -41,7 +48,7 @@
                     @else
 
 
-                    <table class="table-fixed min-w-full text-left text-sm text-center font-light
+                    <table class="table-fixed min-w-full text-left text-sm  font-light
                     mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden"
                            id="sortableTable">
                         <thead class="border-b font-medium dark:border-neutral-500">
@@ -60,7 +67,7 @@
                                     Email
                                 </a>
                             </th>
-                            <th scope="col" class="px-6 py-4 hidden md:block">
+                            <th scope="col" class="px-6 py-4 hidden md:table-cell">
                                 <a class="d-block"
                                    href="{{ route('users.index', ['sort' => 'role_id', 'direction' => 'asc']) }}"
                                 >
@@ -77,7 +84,7 @@
                             class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                             <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->name }}</td>
                             <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->email }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 hidden md:block">{{ $user->role->name }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 hidden md:table-cell">{{ $user->role->name }}</td>
                         </tr>
                         @endforeach
                         </tbody>

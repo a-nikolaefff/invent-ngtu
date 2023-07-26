@@ -24,14 +24,14 @@
         :is-admin-sidebar="false"
         :menu="[
                 [
+                    'title' => 'Подразделения',
+                    'route' => 'departments.index',
+                    'boxIconClass' => 'bx-sitemap',
+                ],
+                [
                     'title' => 'Помещения',
                     'route' => 'profile.edit',
                     'boxIconClass' => 'bx-cube',
-                ],
-                [
-                    'title' => 'Подразделения',
-                    'route' => 'profile.edit',
-                    'boxIconClass' => 'bx-sitemap',
                 ],
                 [
                     'title' => 'Здания',

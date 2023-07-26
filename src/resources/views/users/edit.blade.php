@@ -22,8 +22,8 @@
                                         <form method="POST" action="{{ route('users.update', $user->id) }}">
                                             @method('PUT')
                                             @csrf
-                                            <x-input-label for="role" value="Роль в системе"/>
 
+                                            <x-input-label for="role" value="Роль в системе"/>
                                             <select id="role" name="role_id"
                                                     class="mb-3"
                                                     data-te-select-init>
@@ -34,8 +34,8 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-
                                             <x-input-error class="mt-2" :messages="$errors->get('role_id')"/>
+
                                             <x-button-confirm class="mt-3">
                                                 Подтвердить изменения
                                             </x-button-confirm>

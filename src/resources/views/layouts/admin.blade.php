@@ -30,22 +30,22 @@
                 ],
                 [
                     'title' => 'Типы подразделений',
-                    'route' => 'profile.edit',
+                    'route' => 'department-types.index',
                     'boxIconClass' => 'bx-layer',
                 ],
                 [
                     'title' => 'Типы зданий',
-                    'route' => 'profile.edit',
+                    'route' => 'building-types.index',
                     'boxIconClass' => 'bx-building-house',
                 ],
                 [
-                    'title' => 'Типы комнат',
-                    'route' => 'profile.edit',
+                    'title' => 'Типы помещений',
+                    'route' => 'room-types.index',
                     'boxIconClass' => 'bx-spreadsheet',
                 ],
                 [
                     'title' => 'Типы оборудования',
-                    'route' => 'profile.edit',
+                    'route' => 'equipment-types.index',
                     'boxIconClass' => 'bx-collection',
                 ],
             ]"

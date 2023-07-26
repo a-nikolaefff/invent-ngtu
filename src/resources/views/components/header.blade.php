@@ -16,7 +16,7 @@
 
             @can('viewAny', App\Models\User::class)
                 @if($isPageWithAdminSidebar)
-                    <a href="">
+                    <a href="{{ route('departments.index') }}">
                         <x-button-primary>
                             <span class="hidden sm:inline-flex">
                                 Панель пользователя

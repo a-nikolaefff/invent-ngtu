@@ -1,19 +1,4 @@
 <form id="searchForm" method="GET" role="search" autocomplete="off">
-
-{{--    <div class="search-form input-group">--}}
-{{--        <input id="searchInput" name="search" class="form-control" type="search"--}}
-{{--               placeholder="{{ $placeholder }}"--}}
-{{--               aria-label="Search" @if(isset($value)) value="{{ $value }}" @endif>--}}
-
-{{--        <button id="resetButton" class="search-form__reset-button btn btn-outline-danger" type="button">--}}
-{{--            <i class='bx bx-x-circle bx-sm'></i>--}}
-{{--        </button>--}}
-
-{{--        <button class="search-form__search-button btn btn-outline-success" type="submit">--}}
-{{--            <i class='bx bx-search bx-sm'></i>--}}
-{{--        </button>--}}
-{{--    </div>--}}
-
     <div>
         <div class="search-form relative flex w-full flex-wrap items-stretch">
             <input
@@ -28,17 +13,12 @@
             />
 
             <!--Reset button-->
-            <button
+            <x-button-reset
+                class="search-form__reset-button px-6"
                 id="resetButton"
-                class="mr-0.5 search-form__reset-button relative z-[2] border-2 border-red-600 px-6 py-2
-                 font-medium uppercase text-red-600 transition duration-150 ease-in-out
-                 hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
-                type="button"
-                id="button-addon3"
                 data-te-ripple-init>
                 Сброс
-            </button>
-
+            </x-button-reset>
 
             <!--Search button-->
             <button
@@ -52,6 +32,4 @@
             </button>
         </div>
     </div>
-
-
 </form>

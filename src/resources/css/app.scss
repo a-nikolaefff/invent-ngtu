@@ -2,28 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-// Import libraries
-@import 'boxicons/css/boxicons.min.css';
+// Import variables
+@import 'abstracts/variables';
+
+// Normalizing all styles
+@import 'base/normalize';
 
 // Import fonts
 @import '@fontsource/figtree';
 
-// Import variables
-@import 'abstracts/variables';
+// Import libraries
+@import 'boxicons/css/boxicons.min.css';
+@import '@tarekraafat/autocomplete.js/dist/css/autoComplete.02.css';
 
-// Set baseline styles
-@import 'base/baseline';
-
+// Import utilities
 @import "utilities/utilities";
 
-// Set layout styles
-@import "layout/header";
-@import"layout/sidebar";
-@import "layout/page";
-@import "components/search-form";
+// Import baseline styles
+@import 'base/baseline';
 
-.logo {
-    background: url("/resources/images/logo-full.png") no-repeat center center / contain;
-    width: 300px;
-    height: 116px;
-}
+// Import layout styles
+@import "layout/header";
+@import "layout/sidebar";
+@import "layout/page";
+@import "layout/guest";
+
+// Import components
+@import "components/search-form";
+@import "components/g-recaptcha";
+@import "components/autocomplete";
+
+

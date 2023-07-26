@@ -41,7 +41,7 @@
             </div>
 
             <!-- Captcha -->
-            <div class="mt-4 flex justify-center">
+            <div class="mt-4 sm:flex justify-center">
                 <div>
                     {!! NoCaptcha::renderJs() !!}
                     {!! NoCaptcha::display() !!}
