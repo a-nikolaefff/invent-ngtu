@@ -35,7 +35,7 @@
                 ],
                 [
                     'title' => 'Помещения',
-                    'route' => 'profile.edit',
+                    'route' => 'rooms.index',
                     'boxIconClass' => 'bx-cube',
                 ],
                 [

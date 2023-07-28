@@ -67,7 +67,6 @@
                                                           name="parent_department"
                                                           class="grow"
                                                           autocomplete="off"
-                                                          aria-labelledby="customerHelpBlock"
                                                           value="{{ isset($department->parent)
                                                             ? old('parent_department', $department->parent->name)
                                                             : old('parent_department') }}"

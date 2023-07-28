@@ -1,9 +1,9 @@
-<x-app-layout :title="'Здание: ' . $building->name">
+<x-app-layout :title="'Помещение: ' . $room->name">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
 
-            @if (session('status') === 'building-type-updated')
+            @if (session('status') === 'room-type-updated')
                 <x-alert type="success" class="mb-4">
                     Данные успешно изменены
                 </x-alert>
@@ -11,23 +11,23 @@
 
             <div class="sm:px-8">
                 <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ 'Здание: ' . $building->name }}
+                    {{ 'Помещение: ' . $room->name }}
                 </h1>
 
-                @canany(['update', 'delete'], $building)
+                @canany(['update', 'delete'], $room)
                 <div class="my-4">
                         <span class="mr-2">
-                            <a href="{{ route('buildings.edit', $building->id) }}">
+                            <a href="{{ route('rooms.edit', $room->id) }}">
                                 <x-button-edit>
                                     Редактировать
                                 </x-button-edit>
                             </a>
                         </span>
                     <x-button-delete-with-modal
-                        question="Вы уверены, что хотите удалить данное здание?"
-                        warning="Это действие безвозвратно удалит данное подразделения.
-                        Это действие также безвозвратно удалит все помещения относящиеся к данному зданию."
-                        :route="route('buildings.destroy', $building->id)"
+                        question="Вы уверены, что хотите удалить данное помещение?"
+                        warning="Это действие безвозвратно удалит данное помещение.
+                        Это действие также безвозвратно удалит всё оборудование относящееся к данному помещению."
+                        :route="route('rooms.destroy', $room->id)"
                     >
                         Удалить
                     </x-button-delete-with-modal>
@@ -47,35 +47,62 @@
 
                                     <table class="min-w-full text-left text-sm font-light">
                                         <tbody>
-
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Наименование:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $building->name }}</td>
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Номер:</th>
+                                            <td class="whitespace-nowrap px-6 py-4"> {{ $room->number }}</td>
                                         </tr>
-
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Адрес:
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Наименование:
                                             </th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $building->address }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4"> {{ $room->name }}</td>
                                         </tr>
-
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Тип здания:</th>
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Тип помещения:</th>
                                             <td class="whitespace-nowrap px-6 py-4">
-                                                @if($building->type)
-                                                    {{ $building->type->name }}
+                                                @if($room->type)
+                                                    {{ $room->type->name }}
                                                 @else
                                                     не задан
                                                 @endif
                                             </td>
                                         </tr>
 
+                                        <tr
+                                            onclick="window.location='{{ route('buildings.show', $room->building->id) }}';"
+                                            class="clickable border-b transition duration-300 ease-in-out
+                                             hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                                        >
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Здание:
+                                            </th>
+                                            <td class="whitespace-nowrap px-6 py-4"> {{ $room->building->name }}</td>
+                                        </tr>
+
+                                        <tr
+                                            @if($room->department)
+                                                onclick="window.location='{{ route('departments.show', $room->department->id) }}';"
+                                            class="clickable border-b transition duration-300 ease-in-out
+                                             hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                                            @else
+                                                class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
+                                            @endif
+                                        >
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">
+                                                Подразделение:
+                                            </th>
+                                            <td class="whitespace-nowrap px-6 py-4">
+                                                @if($room->department)
+                                                    {{ $room->department->name }}
+                                                @else
+                                                    нет
+                                                @endif
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -100,13 +127,13 @@
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="w-2/12 px-2 py-4 text-right">Создано:</th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $building->created_at }}</td>
+                                        <td class="whitespace-nowrap px-6 py-4"> {{ $room->created_at }}</td>
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
                                         </th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $building->updated_at }}</td>
+                                        <td class="whitespace-nowrap px-6 py-4"> {{ $room->updated_at }}</td>
                                     </tr>
                                     </tbody>
                                 </table>

@@ -1,10 +1,10 @@
-<x-app-layout title="Создание нового подразделения">
+<x-app-layout title="Создание нового помещения">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="sm:px-8">
                 <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
-                    Создание нового подразделения
+                    Создание нового помещения
                 </h1>
             </div>
 
@@ -20,8 +20,17 @@
 
                                     <div>
                                         <form method="POST"
-                                              action="{{ route('departments.store') }}">
+                                              action="{{ route('rooms.store') }}">
                                             @csrf
+
+                                            <div class="max-w-4xl mb-3">
+                                                <x-input-label for="number" value="Номер"/>
+                                                <x-text-input id="number" name="number" type="text"
+                                                              class="mt-1 block w-full" :value="old('number')"
+                                                              required/>
+                                                <x-input-error class="mt-2" :messages="$errors->get('number')"/>
+                                            </div>
+
                                             <div class="max-w-4xl mb-3">
                                                 <x-input-label for="name" value="Наименование"/>
                                                 <x-text-input id="name" name="name" type="text"
@@ -31,39 +40,46 @@
                                             </div>
 
                                             <div class="max-w-xl mb-3">
-                                                <x-input-label for="short_name" value="Краткое наименование"/>
-                                                <x-text-input id="short_name" name="short_name" type="text"
-                                                              class="mt-1 block w-full" :value="old('short_name')"
-                                                              required/>
-                                                <x-input-error class="mt-2" :messages="$errors->get('short_name')"/>
-                                            </div>
-
-                                            <div class="max-w-xl mb-3">
-                                                <x-input-label for="department_type" value="Тип подразделения" class="mb-1"/>
-                                                <select id="department_type" name="department_type_id"
+                                                <x-input-label for="room_type" value="Тип помещения" class="mb-1"/>
+                                                <select id="room_type" name="room_type_id"
                                                         class="mb-3"
                                                         data-te-select-init>
                                                     <option
-                                                        value=" " {{ old('department_type_id') == " " ? 'selected' : '' }}>
+                                                        value=" " {{ old('room_type_id') == " " ? 'selected' : '' }}>
                                                         не задан
                                                     </option>
-                                                    @foreach($departmentTypes as $type)
+                                                    @foreach($roomTypes as $type)
                                                         <option
-                                                            value="{{ $type->id }}" {{ old('department_type_id') == $type->id ? 'selected' : '' }}>
+                                                            value="{{ $type->id }}" {{ old('room_type_id') == $type->id ? 'selected' : '' }}>
                                                             {{ $type->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <x-input-error class="mt-2" :messages="$errors->get('department_type_id')"/>
+                                                <x-input-error class="mt-2" :messages="$errors->get('room_type_id')"/>
+                                            </div>
+
+                                            <div class="max-w-xl mb-3">
+                                                <x-input-label for="building_id" value="Здание" class="mb-1"/>
+                                                <select id="building" name="building_id"
+                                                        class="mb-3"
+                                                        data-te-select-init>
+                                                    @foreach($buildings as $building)
+                                                        <option
+                                                            value="{{ $building->id }}" {{ old('building_id') == $building->id ? 'selected' : '' }}>
+                                                            {{ $building->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <x-input-error class="mt-2" :messages="$errors->get('building_id')"/>
                                             </div>
 
                                             <div class="mb-3">
-                                                <x-input-label for="departmentAutocomplete" value="Родительское подразделение (если имеется)"/>
+                                                <x-input-label for="departmentAutocomplete" value="Подразделение (если имеется)"/>
                                                 <div class="flex">
                                                     <x-text-input id="departmentAutocomplete"
-                                                                  name="parent_department"
+                                                                  name="department"
                                                                   autocomplete="off"
-                                                                  value="{{ old('parent_department') }}"
+                                                                  value="{{ old('department') }}"
                                                                   class="grow"
                                                     />
 
@@ -73,12 +89,11 @@
 
                                                 </div>
 
-                                                <input name="parent_department_id" id="departmentId" hidden="hidden"
-                                                       value="{{ old('parent_department_id') }}">
+                                                <input name="department_id" id="departmentId" hidden="hidden"
+                                                       value="{{ old('department_id') }}">
 
-                                                <x-input-error class="mt-2" :messages="$errors->get('parent_department_id')"/>
+                                                <x-input-error class="mt-2" :messages="$errors->get('department_id')"/>
                                             </div>
-
 
                                             <x-button-confirm>
                                                 Добавить подразделение

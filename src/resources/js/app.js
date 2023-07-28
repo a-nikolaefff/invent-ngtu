@@ -20,6 +20,11 @@ if (optionSelector1) {
     handleOptionSelector(optionSelector1);
 }
 
+const optionSelector2 = document.getElementById('optionSelector2');
+if (optionSelector2) {
+    handleOptionSelector(optionSelector2);
+}
+
 if (document.getElementById('searchForm')) {
     import ('./ui/search-form');
 }
