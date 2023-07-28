@@ -14,13 +14,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $seeders = [
+            DepartmentTypeSeeder::class,
+            DepartmentSeeder::class,
             UserRoleSeeder::class,
             SuperAdminSeeder::class,
-            DepartmentTypeSeeder::class,
             BuildingTypeSeeder::class,
+            BuildingSeeder::class,
             RoomTypeSeeder::class,
             EquipmentTypeSeeder::class,
-            DepartmentSeeder::class,
         ];
         $appEnv = config('app.env');
         if($appEnv === 'development') {

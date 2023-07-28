@@ -6,10 +6,8 @@ use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
 
-class Department extends Model
+class Building extends Model
 {
     use Filterable;
 
@@ -18,7 +16,7 @@ class Department extends Model
      *
      * @var string
      */
-    protected $table = 'departments';
+    protected $table = 'buildings';
 
     /**
      * The attributes that are mass assignable.
@@ -28,24 +26,13 @@ class Department extends Model
     protected $fillable
         = [
             'name',
-            'short_name',
-            'department_type_id',
-            'parent_department_id'
+            'address',
+            'building_type_id',
         ];
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(DepartmentType::class, 'department_type_id');
-    }
-
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(Department::class, 'parent_department_id');
-    }
-
-    public function children(): HasMany
-    {
-        return $this->hasMany(Department::class, 'parent_department_id');
+        return $this->belongsTo(BuildingType::class, 'building_type_id');
     }
 
     public function scopeSort(
@@ -59,8 +46,8 @@ class Department extends Model
         $query->when(
             !empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
-                if ($sortColumn === 'department_type_name') {
-                    return $query->orderBy('department_types.name', $sortDirection);
+                if ($sortColumn === 'building_type_name') {
+                    return $query->orderBy('building_types.name', $sortDirection);
                 }
                 return $query->orderBy($sortColumn, $sortDirection);
             }

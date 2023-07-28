@@ -18,6 +18,7 @@ class RegisterUserRequest extends FormRequest
                 'unique:'.User::class
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'department_id' => ['exists:department_types,id'],
             'g-recaptcha-response' => 'required|captcha'
         ];
 

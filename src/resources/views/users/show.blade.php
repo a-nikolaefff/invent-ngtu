@@ -90,6 +90,24 @@
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Роль в системе:</th>
                                             <td class="whitespace-nowrap px-6 py-4"> {{ $user->role->name }}</td>
                                         </tr>
+                                        <tr
+                                            @if($user->department)
+                                            onclick="window.location='{{ route('departments.show', $user->department->id) }}';"
+                                            class="clickable border-b transition duration-300 ease-in-out
+                                             hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                                            @else
+                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
+                                            @endif
+                                        >
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Подразделение:</th>
+                                            <td class="whitespace-nowrap px-6 py-4">
+                                                @if($user->department)
+                                                {{ $user->department->name }}
+                                                @else
+                                                    нет
+                                                @endif
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

@@ -26,7 +26,8 @@ class UpdateUserRequest extends FormRequest
                 'nullable',
                 'integer',
                 'exists:user_roles,id',
-            ]
+            ],
+            'department_id' => ['nullable', 'exists:department_types,id'],
         ];
     }
 }

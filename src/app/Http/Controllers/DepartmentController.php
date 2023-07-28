@@ -84,7 +84,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        $department->load('parent', 'children');
+        $department->load('type', 'parent', 'children');
         return view('departments.show', compact('department'));
     }
 
@@ -93,7 +93,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        $department->load('parent');
+        $department->load('type', 'parent');
         $departmentTypes = DepartmentType::all();
         return view('departments.edit', compact('department', 'departmentTypes'));
     }

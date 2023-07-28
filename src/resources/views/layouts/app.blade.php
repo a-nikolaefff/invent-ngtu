@@ -28,15 +28,15 @@
                     'route' => 'departments.index',
                     'boxIconClass' => 'bx-sitemap',
                 ],
+                                [
+                    'title' => 'Здания',
+                    'route' => 'buildings.index',
+                    'boxIconClass' => 'bxs-landmark',
+                ],
                 [
                     'title' => 'Помещения',
                     'route' => 'profile.edit',
                     'boxIconClass' => 'bx-cube',
-                ],
-                [
-                    'title' => 'Здания',
-                    'route' => 'profile.edit',
-                    'boxIconClass' => 'bxs-landmark',
                 ],
                 [
                     'title' => 'Оборудование',

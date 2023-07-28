@@ -21,12 +21,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('departments.index');
 });
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
+
+Route::get('departments/autocomplete', [DepartmentController::class, 'autocomplete']);
 
 Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
@@ -48,8 +50,8 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::resource('building-types', BuildingTypeController::class);
     Route::resource('room-types', RoomTypeController::class);
     Route::resource('equipment-types', EquipmentTypeController::class);
-    Route::get('departments/autocomplete', [DepartmentController::class, 'autocomplete']);
     Route::resource('departments', DepartmentController::class);
+    Route::resource('buildings', \App\Http\Controllers\BuildingController::class);
 });
 
 require __DIR__ . '/auth.php';

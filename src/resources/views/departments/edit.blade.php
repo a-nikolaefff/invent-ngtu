@@ -41,7 +41,7 @@
                                     </div>
 
                                     <div class="max-w-xl mb-3">
-                                        <x-input-label for="department_type" value="Тип подразделения" class="mb-1"/>
+                                        <x-input-label for="department_type_id" value="Тип подразделения" class="mb-1"/>
                                         <select id="department_type" name="department_type_id"
                                                 class="mb-3"
                                                 data-te-select-init>
@@ -62,15 +62,21 @@
                                     <div class="mb-3">
                                         <x-input-label for="departmentAutocomplete" value="Родительское подразделение (если имеется)"/>
 
-                                        <x-text-input id="departmentAutocomplete"
-                                                      name="parent_department"
-                                                      autocomplete="off"
-                                                      aria-labelledby="customerHelpBlock"
-                                                      value="{{ isset($department->parent)
+                                        <div class="flex">
+                                            <x-text-input id="departmentAutocomplete"
+                                                          name="parent_department"
+                                                          class="grow"
+                                                          autocomplete="off"
+                                                          aria-labelledby="customerHelpBlock"
+                                                          value="{{ isset($department->parent)
                                                             ? old('parent_department', $department->parent->name)
                                                             : old('parent_department') }}"
-                                        />
+                                            />
 
+                                            <div id="departmentResetAutocomplete" class="resetAutocomplete">
+                                                <x-button-reset-icon/>
+                                            </div>
+                                        </div>
 
                                         <input name="parent_department_id"
                                                id="departmentId"
@@ -79,12 +85,6 @@
                                                 ? old('parent_department_id', $department->parent_department_id)
                                                 : old('parent_department_id') }}"
                                         >
-
-                                        <div id="departmentResetAutocomplete" class="resetAutocomplete">
-                                            <x-button-reset class="text-xl leading-none px-2">
-                                                <i class='bx bx-x-circle'></i>
-                                            </x-button-reset>
-                                        </div>
 
                                         <x-input-error class="mt-2" :messages="$errors->get('parent_department_id')"/>
                                     </div>

@@ -58,7 +58,7 @@ class UserController extends Controller
      */
     public function show(User $user): View
     {
-        $user->load('role');
+        $user->load('role', 'department');
         return view('users.show', compact('user'));
     }
 
@@ -71,6 +71,7 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
+        $user->load('department');
         $roles = UserRole::allRolesExcept(UserRoleEnum::SuperAdmin)->get();
         if (Auth::user()->hasRole(UserRoleEnum::Admin)) {
             $adminRoleName = UserRoleEnum::Admin->value;

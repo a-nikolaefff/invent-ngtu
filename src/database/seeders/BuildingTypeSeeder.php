@@ -9,6 +9,9 @@ class BuildingTypeSeeder extends Seeder
 {
     private static array $baseTypes = [
         'учебный корпус',
+        'общежитие',
+        'столовая',
+        'спортивно-оздоровительный лагерь',
     ];
 
     /**

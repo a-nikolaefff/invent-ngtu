@@ -39,7 +39,9 @@ class RegisteredUserController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
+            'department_id' => $validatedData['department_id'],
             'role_id' => UserRole::getRole(UserRoleEnum::Stranger)->value('id')
+
         ]);
 
         event(new Registered($user));

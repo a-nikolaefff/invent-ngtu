@@ -35,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email',
             'password',
             'role_id',
+            'department_id',
         ];
 
     /**
@@ -65,6 +66,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function role(): BelongsTo
     {
         return $this->belongsTo(UserRole::class, 'role_id');
+    }
+
+    /**
+     * Get the department of the user.
+     *
+     * @return BelongsTo
+     */
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     /**

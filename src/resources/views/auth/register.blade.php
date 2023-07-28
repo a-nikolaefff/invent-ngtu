@@ -1,5 +1,5 @@
 <x-guest-layout title="Регистрация">
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-5xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
@@ -15,6 +15,32 @@
                 <x-input-label for="email" :value="__('interface.email')" />
                 <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+
+            <!-- Department -->
+            <div class="mt-4">
+                <x-input-label for="departmentAutocomplete" value="Ваше подразделение в НГТУ им. Р.Е. Алексеева"/>
+
+                <div class="flex">
+                    <x-text-input id="departmentAutocomplete"
+                                  name="department"
+                                  class="grow"
+                                  autocomplete="off"
+                                  aria-labelledby="customerHelpBlock"
+                                  value="{{ old('department') }}"
+                    />
+
+                    <div id="departmentResetAutocomplete" class="resetAutocomplete">
+                        <x-button-reset-icon/>
+                    </div>
+                </div>
+
+                <input name="department_id"
+                       id="departmentId"
+                       hidden="hidden"
+                       value="{{ old('department_id') }}">
+
+                <x-input-error class="mt-2" :messages="$errors->get('department_id')"/>
             </div>
 
             <!-- Password -->
