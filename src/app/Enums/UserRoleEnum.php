@@ -11,6 +11,7 @@ enum UserRoleEnum: string
 {
     case SuperAdmin = 'главный администратор';
     case Admin = 'администратор';
+    case SupplyAndRepairSpecialist = 'специалист по обеспечению и ремонту';
     case Employee = 'сотрудник';
     case Stranger = 'неизвестный';
 }

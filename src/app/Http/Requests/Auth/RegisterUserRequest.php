@@ -9,7 +9,7 @@ class RegisterUserRequest extends FormRequest
 {
     public static $rules
         = [
-            'name' => ['required', 'string', 'max:50'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -19,6 +19,7 @@ class RegisterUserRequest extends FormRequest
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'department_id' => ['exists:department_types,id'],
+            'post' => ['required', 'string', 'max:255'],
             'g-recaptcha-response' => 'required|captcha'
         ];
 

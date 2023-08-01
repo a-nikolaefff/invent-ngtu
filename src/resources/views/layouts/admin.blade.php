@@ -29,6 +29,17 @@
                     'boxIconClass' => 'bx-user',
                 ],
                 [
+                    'title' => 'Подразделения',
+                    'route' => 'departments.index',
+                    'boxIconClass' => 'bx-sitemap',
+                ],
+                                [
+                    'title' => 'Здания',
+                    'route' => 'buildings.index',
+                    'boxIconClass' => 'bxs-landmark',
+                ],
+
+                [
                     'title' => 'Типы подразделений',
                     'route' => 'department-types.index',
                     'boxIconClass' => 'bx-layer',
@@ -51,7 +62,7 @@
             ]"
     ></x-sidebar>
     <main class="page__content content py-4">
-        <div class="md:container md:mx-auto">
+        <div class="sm:container mx-auto">
             {{ $slot }}
         </div>
     </main>

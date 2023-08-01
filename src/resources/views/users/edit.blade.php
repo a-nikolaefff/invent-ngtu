@@ -37,7 +37,6 @@
                                         <x-input-error class="mt-2" :messages="$errors->get('role_id')"/>
                                     </div>
 
-
                                     <!-- Department -->
                                     <div class="mt-4">
                                         <x-input-label for="departmentAutocomplete" value="Подразделение"/>
@@ -66,6 +65,16 @@
 
 
                                         <x-input-error class="mt-2" :messages="$errors->get('department_id')"/>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <x-input-label for="post" value="Должность"/>
+
+                                        <x-text-input id="post" name="post" type="text"
+                                                      class="mt-1 block w-full" :value="old('post', $user->post)"
+                                                      required autocomplete="off"/>
+
+                                        <x-input-error class="mt-2" :messages="$errors->get('post')"/>
                                     </div>
 
 

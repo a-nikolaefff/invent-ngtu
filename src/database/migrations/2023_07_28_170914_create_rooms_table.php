@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('room_type_id')->nullable();
             $table->unsignedBigInteger('building_id');
             $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedTinyInteger('floor');
             $table->timestamps();
 
             $table->foreign('room_type_id')->references('id')

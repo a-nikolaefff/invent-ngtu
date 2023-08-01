@@ -49,7 +49,7 @@
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Наименование:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $departmentType->name }}</td>
+                                            <td class=" px-6 py-4"> {{ $departmentType->name }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -75,13 +75,13 @@
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="w-2/12 px-2 py-4 text-right">Создан:</th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $departmentType->created_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $departmentType->created_at }}</td>
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
                                         </th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $departmentType->updated_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $departmentType->updated_at }}</td>
                                     </tr>
                                     </tbody>
                                 </table>

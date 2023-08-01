@@ -1,4 +1,4 @@
-import {handleOptionSelector} from "./ui/option-selector.js";
+import {handleOptionSelector} from "./components/option-selector.js";
 
 import './bootstrap';
 import 'tw-elements/dist/js/tw-elements.umd.min';
@@ -9,10 +9,14 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-import './ui/sidebar';
+import './components/sidebar';
 
 if (document.getElementById('sortableTable')) {
-    import ('./ui/sortable-table');
+    import ('./components/sortable-table');
+}
+
+if (document.getElementById('searchForm')) {
+    import ('./components/search-form');
 }
 
 const optionSelector1 = document.getElementById('optionSelector1');
@@ -25,10 +29,30 @@ if (optionSelector2) {
     handleOptionSelector(optionSelector2);
 }
 
-if (document.getElementById('searchForm')) {
-    import ('./ui/search-form');
+const optionSelector3 = document.getElementById('optionSelector3');
+if (optionSelector3) {
+    handleOptionSelector(optionSelector3);
 }
 
 if (document.getElementById('departmentAutocomplete')) {
-    import ('./pages/department-autocomplete');
+    import ('./components/autocompletes/department-autocomplete.js');
+}
+
+if (document.getElementById('roomAutocomplete')) {
+    import ('./components/autocompletes/room-autocomplete.js');
+}
+
+if (document.getElementById('acquisitionDatePicker')) {
+    import ('./components/date-pickers/acquisition-date-picker.js');
+}
+if (document.getElementById('decommissioningDatePicker')) {
+    import ('./components/date-pickers/decommissioning-date-picker.js');
+}
+
+if (document.getElementById('building_id')) {
+    import ('./pages/rooms');
+}
+
+if (document.getElementById('decommissioned')) {
+    import ('./pages/equipment');
 }

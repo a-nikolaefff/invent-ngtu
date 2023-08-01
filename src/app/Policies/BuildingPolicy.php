@@ -14,11 +14,7 @@ class BuildingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(
-            UserRoleEnum::SuperAdmin,
-            UserRoleEnum::Admin,
-            UserRoleEnum::Employee
-        );
+        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
     }
 
     /**
@@ -26,11 +22,7 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building): bool
     {
-        return $user->hasAnyRole(
-            UserRoleEnum::SuperAdmin,
-            UserRoleEnum::Admin,
-            UserRoleEnum::Employee
-        );
+        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
     }
 
     /**

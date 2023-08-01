@@ -1,6 +1,6 @@
 <div {{ $attributes->merge(['data-value' => $parameterName]) }}>
 
-    <select id="role" name="role_id" data-te-select-init>
+    <select data-te-select-init>
 
         @if($allOptionsSelector)
             <option

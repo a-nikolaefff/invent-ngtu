@@ -26,7 +26,7 @@ class BuildingTypeController extends Controller
     {
         $queryParams = $request->validated();
         $buildingTypes = BuildingType::sort($queryParams)
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
         return view('building-types.index', compact('buildingTypes'));
     }

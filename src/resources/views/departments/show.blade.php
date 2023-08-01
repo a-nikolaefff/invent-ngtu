@@ -1,4 +1,4 @@
-<x-app-layout :title="'Подразделение: ' . $department->name">
+<x-admin-layout :title="'Подразделение: ' . $department->name">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -51,20 +51,20 @@
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Наименование:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $department->name }}</td>
+                                            <td class=" px-6 py-4"> {{ $department->name }}</td>
                                         </tr>
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Краткое наименование:
                                             </th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $department->short_name }}</td>
+                                            <td class=" px-6 py-4"> {{ $department->short_name }}</td>
                                         </tr>
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Тип подразделения:</th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 @if($department->type)
                                                     {{ $department->type->name }}
                                                 @else
@@ -84,7 +84,7 @@
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">
                                                 Родительское подразделение:
                                             </th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 @if($department->parent)
                                                     {{ $department->parent->name }}
                                                 @else
@@ -181,13 +181,13 @@
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="w-2/12 px-2 py-4 text-right">Создано:</th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $department->created_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $department->created_at }}</td>
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
                                         </th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $department->updated_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $department->updated_at }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -199,4 +199,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

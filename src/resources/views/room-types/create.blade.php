@@ -1,10 +1,10 @@
-<x-admin-layout title="Создание нового типа помещений">
+<x-admin-layout title="Добавление нового типа помещений">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="sm:px-8">
                 <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
-                    Создание нового типа помещений
+                    Добавление нового типа помещений
                 </h1>
             </div>
 
@@ -32,7 +32,7 @@
                                             <x-input-error class="mt-2" :messages="$errors->get('name')"/>
 
                                             <x-button-confirm class="mt-3">
-                                                Создать тип помещения
+                                                добавить тип помещения
                                             </x-button-confirm>
                                         </form>
                                     </div>

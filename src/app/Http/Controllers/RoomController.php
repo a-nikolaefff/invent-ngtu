@@ -11,6 +11,8 @@ use App\Models\Department;
 use App\Models\DepartmentType;
 use App\Models\Room;
 use App\Models\RoomType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
@@ -61,11 +63,25 @@ class RoomController extends Controller
             )
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(6)
+            ->paginate(5)
             ->withQueryString();
         $roomTypes = RoomType::all();
         $buildings = Building::all();
-        return view('rooms.index', compact('rooms', 'roomTypes', 'buildings'));
+        $floorAmount = -1;
+        if (isset($queryParams['building_id'])) {
+
+            $floorAmount = Building::findOrFail($queryParams['building_id'])
+                ->floor_amount;;
+        }
+        return view(
+            'rooms.index',
+            compact(
+                'rooms',
+                'roomTypes',
+                'buildings',
+                'floorAmount'
+            )
+        );
     }
 
     /**
@@ -131,5 +147,26 @@ class RoomController extends Controller
         $room->delete();
         return redirect()->route('rooms.index')
             ->with('status', 'room-deleted');
+    }
+
+    /**
+     * Returns the result of a search for customers in JSON format.
+     *
+     * @param Request $request The request object.
+     *
+     * @return JsonResponse The JSON response with customer data.
+     */
+    public function autocomplete(Request $request): JsonResponse
+    {
+        $keyword = $request->input('search');
+
+        $rooms = Room::with('building')
+            ->where('number', 'like', "%$keyword%")
+            ->get()->toArray();
+
+        for($i = 0; $i < count($rooms); $i++) {
+            $rooms[$i]['number'] = $rooms[$i]['number'] . ' (' . $rooms[$i]['building']['name'] . ')';
+        }
+        return response()->json($rooms);
     }
 }

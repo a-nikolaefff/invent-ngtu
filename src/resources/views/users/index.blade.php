@@ -18,7 +18,7 @@
                         <div class="w-full md:w-8/12 lg:w-1/2">
                             <x-search-form
                                 :value="request()->search"
-                                placeholder="Поиск по имени или email"
+                                placeholder="Поиск по имени, email или подразделению"
                             ></x-search-form>
                         </div>
                         <div></div>
@@ -40,16 +40,14 @@
                         <div></div>
                     </div>
 
-
                     @if($users->count() === 0)
                         <p class="h5 ">
                             Результаты не найдены
                         </p>
                     @else
 
-
                     <table class="table-fixed min-w-full text-left text-sm  font-light
-                    mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden"
+                    mx-auto max-w-4xl w-full rounded-lg bg-white divide-y divide-gray-300 overflow-hidden"
                            id="sortableTable">
                         <thead class="border-b font-medium dark:border-neutral-500">
                         <tr>
@@ -60,14 +58,24 @@
                                     Имя
                                 </a>
                             </th>
-                            <th scope="col" class="px-6 py-4">
+
+                            <th scope="col" class="px-6 py-4 hidden sm:table-cell">
                                 <a class="d-block"
                                    href="{{ route('users.index', ['sort' => 'email', 'direction' => 'asc']) }}"
                                 >
                                     Email
                                 </a>
                             </th>
-                            <th scope="col" class="px-6 py-4 hidden md:table-cell">
+
+                            <th scope="col" class="px-6 py-4 hidden lg:table-cell">
+                                <a class="d-block"
+                                   href="{{ route('users.index', ['sort' => 'department_name', 'direction' => 'asc']) }}"
+                                >
+                                    Подразделение
+                                </a>
+                            </th>
+
+                            <th scope="col" class="px-6 py-4 hidden lg:table-cell">
                                 <a class="d-block"
                                    href="{{ route('users.index', ['sort' => 'role_id', 'direction' => 'asc']) }}"
                                 >
@@ -81,10 +89,21 @@
                         @foreach($users as $user)
                         <tr
                             onclick="window.location='{{ route('users.show', $user->id) }}';"
-                            class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                            <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->name }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 truncate max-w-250">{{ $user->email }}</td>
-                            <td class="whitespace-nowrap px-6 py-4 hidden md:table-cell">{{ $user->role->name }}</td>
+                            class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100
+                            dark:border-neutral-500 dark:hover:bg-neutral-600">
+
+                            <td class="px-6 py-4">{{ $user->name }}</td>
+
+                            <td class="px-6 py-4 hidden sm:table-cell">{{ $user->email }}</td>
+
+                            <td class="px-6 py-4 hidden lg:table-cell">
+                                @if($user->department)
+                                    {{ $user->department->name }}
+                                @else
+                                    не задано
+                                @endif
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 hidden lg:table-cell">{{ $user->role->name }}</td>
                         </tr>
                         @endforeach
                         </tbody>

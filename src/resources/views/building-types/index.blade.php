@@ -24,7 +24,7 @@
                         <span class="mr-2">
                             <a href="{{ route('building-types.create') }}">
                                 <x-button-create>
-                                    Создать новый тип
+                                    добавить новый тип
                                 </x-button-create>
                             </a>
                         </span>

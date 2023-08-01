@@ -1,22 +1,22 @@
 import autoComplete from "@tarekraafat/autocomplete.js/dist/autoComplete";
 
-const departmentIdElement = document.getElementById('departmentId');
-const departmentResetAutocompleteElement = document.getElementById('departmentResetAutocomplete');
+const roomIdElement = document.getElementById('roomId');
+const roomResetAutocompleteElement = document.getElementById('roomResetAutocomplete');
 
-if (departmentIdElement.value !== "") {
-    departmentResetAutocompleteElement.classList.add('resetAutocomplete__displayed')
+if (roomIdElement.value !== "") {
+    roomResetAutocompleteElement.classList.add('resetAutocomplete__displayed')
 }
 
-const departmentAutoComplete = new autoComplete({
+const roomAutoComplete = new autoComplete({
 
-    selector: "#departmentAutocomplete",
+    selector: "#roomAutocomplete",
 
-    placeHolder: "Начните вводить наименование подразделения",
+    placeHolder: "Начните вводить номер помещения и выберите из списка",
 
     data: {
         src: async (query) => {
             try {
-                const response = await axios.get('/departments/autocomplete', {
+                const response = await axios.get('/rooms/autocomplete', {
                     params: {
                         search: query
                     }
@@ -29,7 +29,7 @@ const departmentAutoComplete = new autoComplete({
         },
 
         // Object keys by which the search will be performed
-        keys: ["name", "short_name"],
+        keys: ["number"],
 
         // Filter duplicates in case of multiple data keys usage
         filter: (list) => {
@@ -51,7 +51,7 @@ const departmentAutoComplete = new autoComplete({
         ${data.match}
       </span>
       <span style="display: flex; align-items: center; font-size: 13px; font-weight: 100; text-transform: uppercase; color: rgba(0,0,0,.9);">
-         ${data.key === 'name' ? 'наим.' : data.key === 'short_name' ? 'к. наим.' : ''}
+         номер
       </span>`;
         },
         highlight: false
@@ -75,22 +75,22 @@ const departmentAutoComplete = new autoComplete({
         input: {
             selection: (event) => {
                 const selection = event.detail.selection.value;
-                departmentAutoComplete.input.value = selection.name;
-                departmentIdElement.value = selection.id;
+                roomAutoComplete.input.value = selection.number;
+                roomIdElement.value = selection.id;
 
-                departmentResetAutocompleteElement.classList.add('resetAutocomplete__displayed')
+                roomResetAutocompleteElement.classList.add('resetAutocomplete__displayed')
             }
         }
     }
 });
 
-departmentResetAutocompleteElement.addEventListener('click', () => {
-    const selectionName = document.getElementById('departmentAutocomplete');
+roomResetAutocompleteElement.addEventListener('click', () => {
+    const selectionName = document.getElementById('roomAutocomplete');
     selectionName.value = null;
-    const selectionId = document.getElementById('departmentId');
+    const selectionId = document.getElementById('roomId');
     selectionId.value = null;
 
-    departmentResetAutocompleteElement.classList.remove('resetAutocomplete__displayed')
+    roomResetAutocompleteElement.classList.remove('resetAutocomplete__displayed')
 });
 
 

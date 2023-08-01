@@ -66,4 +66,26 @@ class Department extends Model
             }
         );
     }
+
+    public function getSelfAndDescendants()
+    {
+        $departmentId = $this->id;
+
+        $descendants = $this->getDescendantsRecursive($departmentId);
+
+        return Department::whereIn('id', $descendants)->get();
+    }
+
+    private function getDescendantsRecursive($departmentId)
+    {
+        $descendants = [$departmentId];
+
+        $childDepartments = Department::where('parent_department_id', $departmentId)->pluck('id');
+
+        foreach ($childDepartments as $childDepartmentId) {
+            $descendants = array_merge($descendants, $this->getDescendantsRecursive($childDepartmentId));
+        }
+
+        return $descendants;
+    }
 }

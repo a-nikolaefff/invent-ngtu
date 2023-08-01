@@ -43,6 +43,13 @@
                 <x-input-error class="mt-2" :messages="$errors->get('department_id')"/>
             </div>
 
+            <!-- Post -->
+            <div class="mt-4">
+                <x-input-label for="post" value="Должность" />
+                <x-text-input id="post" class="block mt-1 w-full" type="text" name="post" :value="old('post')" required autofocus />
+                <x-input-error :messages="$errors->get('post')" class="mt-2" />
+            </div>
+
             <!-- Password -->
             <div class="mt-4">
                 <x-input-label for="password" :value="__('interface.password')" />

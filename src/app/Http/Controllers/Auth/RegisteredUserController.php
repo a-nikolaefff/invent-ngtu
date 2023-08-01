@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'department_id' => $validatedData['department_id'],
+            'post' => $validatedData['post'],
             'role_id' => UserRole::getRole(UserRoleEnum::Stranger)->value('id')
 
         ]);

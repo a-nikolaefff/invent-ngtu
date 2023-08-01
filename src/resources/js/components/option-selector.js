@@ -20,6 +20,9 @@ export function handleOptionSelector(optionSelector) {
         if (urlParams.get('page') !== null) {
             urlParams.delete('page')
         }
+        if (parameterName === 'building_id') {
+            urlParams.delete('floor')
+        }
         const url = window.location.href;
         window.location.href = addUrlParams(url, urlParams);
     });

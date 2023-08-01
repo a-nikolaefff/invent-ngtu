@@ -13,6 +13,7 @@ class RoomFilter extends AbstractFilter
 {
     public const ROOM_TYPE_ID = 'room_type_id';
     public const BUILDING_ID = 'building_id';
+    public const FLOOR = 'floor';
     public const SEARCH = 'search';
 
     protected function getCallbacks(): array
@@ -20,6 +21,7 @@ class RoomFilter extends AbstractFilter
         return [
             self::ROOM_TYPE_ID => [$this, 'roomTypeId'],
             self::BUILDING_ID => [$this, 'buildingId'],
+            self::FLOOR => [$this, 'floor'],
             self::SEARCH => [$this, 'search'],
         ];
     }
@@ -50,6 +52,19 @@ class RoomFilter extends AbstractFilter
     {
         $buildingId = $buildingId === 'none' ? null : $buildingId;
         $builder->where('rooms.building_id', $buildingId);
+    }
+
+    /**
+     * Apply the filter based on floor.
+     *
+     * @param Builder $builder The Builder instance.
+     * @param mixed   $floor   The role ID.
+     *
+     * @return void
+     */
+    public function floor(Builder $builder, $floor)
+    {
+        $builder->where('rooms.floor', $floor);
     }
 
     /**

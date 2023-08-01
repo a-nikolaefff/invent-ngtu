@@ -19,7 +19,7 @@ class RoomFactory extends Factory
      */
     public function definition(): array
     {
-        $buildingId = Building::pluck('id');
+        $building = Building::all()->random();
         $departmentId = Department::pluck('id');
         $roomTypeId = RoomType::pluck('id');
 
@@ -28,7 +28,8 @@ class RoomFactory extends Factory
             'number' => fake()->randomNumber(4, true),
             'department_id' => $departmentId->random(),
             'room_type_id' => $roomTypeId->random(),
-            'building_id' => $buildingId->random(),
+            'building_id' => $building->id,
+            'floor' => fake()->numberBetween(0, $building->floor_amount),
         ];
     }
 }

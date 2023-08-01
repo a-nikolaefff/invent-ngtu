@@ -1,4 +1,4 @@
-<x-app-layout title="Подразделения">
+<x-admin-layout title="Подразделения">
 
     @if (session('status') === 'department-stored')
         <x-alert type="success" class="mb-4">
@@ -52,7 +52,7 @@
                         <span class="mr-2">
                             <a href="{{ route('departments.create') }}">
                                 <x-button-create>
-                                    Создать новое подразделение
+                                    добавить новое подразделение
                                 </x-button-create>
                             </a>
                         </span>
@@ -134,4 +134,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-admin-layout>

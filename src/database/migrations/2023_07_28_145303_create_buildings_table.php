@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->unsignedBigInteger('building_type_id')->nullable();
+            $table->unsignedTinyInteger('floor_amount');
             $table->timestamps();
 
             $table->foreign('building_type_id')->references('id')

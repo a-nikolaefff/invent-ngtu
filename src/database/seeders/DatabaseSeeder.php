@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         if($appEnv === 'development') {
             $seeders[] = UserSeeder::class;
             $seeders[] = RoomSeeder::class;
+            $seeders[] = EquipmentSeeder::class;
         }
         $this->call($seeders);
     }

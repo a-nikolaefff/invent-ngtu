@@ -44,8 +44,10 @@ class UserFilter extends AbstractFilter
     public function search(Builder $builder, $keyword)
     {
         $builder->where(function ($query) use ($keyword) {
-            $query->where('name', 'like', "%$keyword%")
-                ->orWhere('email', 'like', "%$keyword%");
+            $query->where('users.name', 'like', "%$keyword%")
+                ->orWhere('email', 'like', "%$keyword%")
+                ->orWhere('departments.name', 'like', "%$keyword%")
+                ->orWhere('departments.short_name', 'like', "%$keyword%");
         });
     }
 }

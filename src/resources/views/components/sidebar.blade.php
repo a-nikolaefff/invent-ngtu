@@ -2,7 +2,7 @@
     <nav class="sidebar__content">
             <a class="sidebar__logo" href="{{ url('/') }}">
                 <span class="sidebar__logo-icon"></span>
-                <span class="sidebar__logo-name">ГИС НГТУ</span>
+                <span class="sidebar__logo-name">ИНВЕНТ НГТУ</span>
             </a>
             @foreach($menu as $item)
             <a href="{{ route($item['route']) }}"

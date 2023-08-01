@@ -1,10 +1,10 @@
-<x-app-layout title="Создание нового помещения">
+<x-app-layout title="Добавление нового помещения">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="sm:px-8">
                 <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
-                    Создание нового помещения
+                    Добавление нового помещения
                 </h1>
             </div>
 
@@ -60,7 +60,7 @@
 
                                             <div class="max-w-xl mb-3">
                                                 <x-input-label for="building_id" value="Здание" class="mb-1"/>
-                                                <select id="building" name="building_id"
+                                                <select id="building_id" name="building_id"
                                                         class="mb-3"
                                                         data-te-select-init>
                                                     @foreach($buildings as $building)
@@ -71,6 +71,21 @@
                                                     @endforeach
                                                 </select>
                                                 <x-input-error class="mt-2" :messages="$errors->get('building_id')"/>
+                                            </div>
+
+                                            <div class="max-w-xl mb-3">
+                                                <x-input-label for="floor" value="Этаж" class="mb-1"/>
+                                                <select id="floor" name="floor"
+                                                        class="mb-3"
+                                                        data-te-select-init>
+                                                    @for ($i = 0; $i <= $building->floor_amount; $i++)
+                                                        <option
+                                                            value="{{ $i }}" {{ old('floor') == $i ? 'selected' : '' }}>
+                                                            {{ $i === 0 ? 'цокольный' : $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                                <x-input-error class="mt-2" :messages="$errors->get('floor')"/>
                                             </div>
 
                                             <div class="mb-3">

@@ -27,7 +27,7 @@ class DepartmentTypeController extends Controller
     {
         $queryParams = $request->validated();
         $departmentTypes = DepartmentType::sort($queryParams)
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
         return view('department-types.index', compact('departmentTypes'));
     }

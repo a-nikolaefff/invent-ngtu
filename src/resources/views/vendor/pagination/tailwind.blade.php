@@ -22,8 +22,8 @@
             @endif
         </div>
 
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div class="mr-1">
+        <div class="hidden sm:block">
+            <div class=" mb-2 mr-1">
                 <span class="relative z-0 inline-flex shadow-sm rounded-md">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
@@ -86,6 +86,7 @@
                 </span>
             </div>
 
+            {{-- The count of the resuls --}}
             <div>
                 <p class="text-sm text-gray-700 leading-5">
                     Показаны  результаты от

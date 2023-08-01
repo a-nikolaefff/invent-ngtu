@@ -30,6 +30,7 @@ class Room extends Model
             'number',
             'room_type_id',
             'building_id',
+            'floor',
             'department_id',
         ];
 

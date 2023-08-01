@@ -27,6 +27,7 @@ class Building extends Model
         = [
             'name',
             'address',
+            'floor_amount',
             'building_type_id',
         ];
 

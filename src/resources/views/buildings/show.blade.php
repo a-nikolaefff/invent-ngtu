@@ -1,4 +1,4 @@
-<x-app-layout :title="'Здание: ' . $building->name">
+<x-admin-layout :title="'Здание: ' . $building->name">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -52,7 +52,7 @@
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Наименование:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $building->name }}</td>
+                                            <td class=" px-6 py-4"> {{ $building->name }}</td>
                                         </tr>
 
                                         <tr
@@ -60,14 +60,21 @@
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Адрес:
                                             </th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $building->address }}</td>
+                                            <td class=" px-6 py-4"> {{ $building->address }}</td>
+                                        </tr>
+
+                                        <tr
+                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
+                                        >
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Количество этажей:</th>
+                                            <td class=" px-6 py-4"> {{ $building->floor_amount }}</td>
                                         </tr>
 
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Тип здания:</th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 @if($building->type)
                                                     {{ $building->type->name }}
                                                 @else
@@ -100,13 +107,13 @@
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="w-2/12 px-2 py-4 text-right">Создано:</th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $building->created_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $building->created_at }}</td>
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                         <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
                                         </th>
-                                        <td class="whitespace-nowrap px-6 py-4"> {{ $building->updated_at }}</td>
+                                        <td class=" px-6 py-4"> {{ $building->updated_at }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -118,4 +125,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

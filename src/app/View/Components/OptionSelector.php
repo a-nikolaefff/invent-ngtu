@@ -11,7 +11,7 @@ class OptionSelector extends Component
 {
     public string $url;
     public string $parameterName;
-    public Collection $options;
+    public $options;
     public string $displayingProperty;
     public string $passingProperty;
     public string $allOptionsSelector;
@@ -31,7 +31,7 @@ class OptionSelector extends Component
     public function __construct(
         string $url,
         string $parameterName,
-        Collection $options,
+        $options,
         string $displayingProperty,
         string $passingProperty,
         string $allOptionsSelector,

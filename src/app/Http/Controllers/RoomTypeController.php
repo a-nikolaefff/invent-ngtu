@@ -27,7 +27,7 @@ class RoomTypeController extends Controller
     {
         $queryParams = $request->validated();
         $roomTypes = RoomType::sort($queryParams)
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
         return view('room-types.index', compact('roomTypes'));
     }

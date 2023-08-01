@@ -23,6 +23,7 @@ class StoreBuildingRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'floor_amount' => ['required', 'numeric', 'gt:0',],
             'address' => ['required', 'string', 'max:255'],
             'building_type_id' => ['nullable','exists:building_types,id'],
         ];

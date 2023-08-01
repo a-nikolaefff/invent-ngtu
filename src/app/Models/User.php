@@ -5,8 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRoleEnum;
 use App\Models\Traits\Filterable;
-use App\Models\Traits\Sortable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, Filterable, Sortable;
+    use HasApiTokens, HasFactory, Notifiable, Filterable;
 
     /**
      * The name of the table in the database
@@ -36,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password',
             'role_id',
             'department_id',
+            'post',
         ];
 
     /**
@@ -107,5 +108,24 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
         return false;
+    }
+
+    public function scopeSort(
+        Builder $query,
+        array $queryParams,
+        string $defaultSortColumn = '',
+        string $defaultSortDirection = 'asc'
+    ): void {
+        $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
+        $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
+        $query->when(
+            !empty($sortColumn),
+            function ($query) use ($sortColumn, $sortDirection) {
+                if ($sortColumn === 'department_name') {
+                    return $query->orderBy('departments.name', $sortDirection);
+                }
+                return $query->orderBy($sortColumn, $sortDirection);
+            }
+        );
     }
 }

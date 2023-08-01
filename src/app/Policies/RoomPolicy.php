@@ -17,7 +17,8 @@ class RoomPolicy
         return $user->hasAnyRole(
             UserRoleEnum::SuperAdmin,
             UserRoleEnum::Admin,
-            UserRoleEnum::Employee
+            UserRoleEnum::SupplyAndRepairSpecialist,
+            UserRoleEnum::Employee,
         );
     }
 
@@ -29,7 +30,8 @@ class RoomPolicy
         return $user->hasAnyRole(
             UserRoleEnum::SuperAdmin,
             UserRoleEnum::Admin,
-            UserRoleEnum::Employee
+            UserRoleEnum::SupplyAndRepairSpecialist,
+            UserRoleEnum::Employee,
         );
     }
 

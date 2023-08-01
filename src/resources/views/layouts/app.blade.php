@@ -23,24 +23,14 @@
     <x-sidebar
         :is-admin-sidebar="false"
         :menu="[
-                [
-                    'title' => 'Подразделения',
-                    'route' => 'departments.index',
-                    'boxIconClass' => 'bx-sitemap',
-                ],
-                                [
-                    'title' => 'Здания',
-                    'route' => 'buildings.index',
-                    'boxIconClass' => 'bxs-landmark',
-                ],
-                [
+                    [
                     'title' => 'Помещения',
                     'route' => 'rooms.index',
                     'boxIconClass' => 'bx-cube',
                 ],
                 [
                     'title' => 'Оборудование',
-                    'route' => 'profile.edit',
+                    'route' => 'equipment.index',
                     'boxIconClass' => 'bx-hdd',
                 ],
                 [
@@ -51,7 +41,7 @@
             ]"
     ></x-sidebar>
     <main class="page__content content py-4">
-        <div class="md:container mx-auto">
+        <div class="sm:container mx-auto">
             {{ $slot }}
         </div>
     </main>

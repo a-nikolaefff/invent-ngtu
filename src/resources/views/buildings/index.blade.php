@@ -1,4 +1,4 @@
-<x-app-layout title="Здания">
+<x-admin-layout title="Здания">
 
     @if (session('status') === 'building-stored')
         <x-alert type="success" class="mb-4">
@@ -32,7 +32,7 @@
 
                     <div class="flex mb-2">
                         <div class="w-full md:w-8/12 lg:w-4/12">
-                            <x-input-label value="Тип подразделения" class="mb-1" />
+                            <x-input-label value="Тип здания" class="mb-1" />
                             <x-option-selector
                                 id="optionSelector1"
                                 :url="route('buildings.index')"
@@ -52,7 +52,7 @@
                         <span class="mr-2">
                             <a href="{{ route('buildings.create') }}">
                                 <x-button-create>
-                                    Создать новое здание
+                                    добавить новое здание
                                 </x-button-create>
                             </a>
                         </span>
@@ -79,6 +79,14 @@
                                 </a>
                             </th>
 
+                            <th scope="col" class="px-6 py-4">
+                                <a class="d-block"
+                                   href="{{ route('buildings.index', ['sort' => 'floor_amount', 'direction' => 'asc']) }}"
+                                >
+                                    Количество этажей
+                                </a>
+                            </th>
+
                             <th scope="col" class="px-6 py-4 hidden md:table-cell">
                                 <a class="d-block"
                                    href="{{ route('buildings.index', ['sort' => 'building_type_name', 'direction' => 'asc']) }}"
@@ -95,7 +103,10 @@
                             onclick="window.location='{{ route('buildings.show', $building->id) }}';"
                             class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100
                             dark:border-neutral-500 dark:hover:bg-neutral-600">
+
                             <td class="px-6 py-4 max-w-250">{{ $building->name }}</td>
+
+                            <td class="px-6 py-4 max-w-250">{{ $building->floor_amount }}</td>
 
                             <td class="px-6 py-4 max-w-250 hidden md:table-cell">
                                 @if($building->type)
@@ -118,4 +129,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-admin-layout>

@@ -52,13 +52,13 @@
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Имя:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $user->name }}</td>
+                                            <td class=" px-6 py-4"> {{ $user->name }}</td>
                                         </tr>
 
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                             <th scope="row" class="px-2 py-4 text-right">Email:</th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 <a class="text-blue-600 dark:text-blue-500 hover:underline"
                                                    href="mailto:{{$user->email}}">
                                                     {{ $user->email }}
@@ -85,11 +85,19 @@
 
                                     <table class="min-w-full text-left text-sm font-light">
                                         <tbody>
+
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Роль в системе:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $user->role->name }}</td>
+                                            <td class=" px-6 py-4"> {{ $user->role->name }}</td>
                                         </tr>
+
+                                        <tr
+                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Должность:</th>
+                                            <td class=" px-6 py-4"> {{ $user->post }}</td>
+                                        </tr>
+
                                         <tr
                                             @if($user->department)
                                             onclick="window.location='{{ route('departments.show', $user->department->id) }}';"
@@ -100,7 +108,7 @@
                                             @endif
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Подразделение:</th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 @if($user->department)
                                                 {{ $user->department->name }}
                                                 @else
@@ -108,8 +116,10 @@
                                                 @endif
                                             </td>
                                         </tr>
+
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>
@@ -131,12 +141,12 @@
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Регистрация:</th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $user->created_at }}</td>
+                                            <td class=" px-6 py-4"> {{ $user->created_at }}</td>
                                         </tr>
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
                                             <th scope="row" class="px-2 py-4 text-right">Подтверждение email:</th>
-                                            <td class="whitespace-nowrap px-6 py-4">
+                                            <td class=" px-6 py-4">
                                                 @if($user->email_verified_at)
                                                     {{ $user->email_verified_at }}
                                                 @else
@@ -149,7 +159,7 @@
                                             <th scope="row" class="px-2 py-4 text-right">Последнее изменение <br>
                                                 профиля:
                                             </th>
-                                            <td class="whitespace-nowrap px-6 py-4"> {{ $user->updated_at }}</td>
+                                            <td class=" px-6 py-4"> {{ $user->updated_at }}</td>
                                         </tr>
                                         </tbody>
                                     </table>

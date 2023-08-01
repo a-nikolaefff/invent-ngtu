@@ -2,6 +2,7 @@
 
 namespace app\Http\Requests\Room;
 
+use App\Models\Building;
 use App\Models\DepartmentType;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
@@ -41,6 +42,19 @@ class IndexRoomRequest extends FormRequest
                         if ($value !== 'none') {
                             $fail("The {$attribute} is invalid.");
                         }
+                    }
+                },
+            ],
+            'floor' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $building = Building::findOrFail($this->input('building_id'));
+                    $maxFloor = $building->floor_amount;
+
+                    if ($value > $maxFloor) {
+                        $fail("The floor must be less than or equal to $maxFloor.");
                     }
                 },
             ],

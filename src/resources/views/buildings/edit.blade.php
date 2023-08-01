@@ -1,4 +1,4 @@
-<x-app-layout title="Редактирование здания">
+<x-admin-layout title="Редактирование здания">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -41,6 +41,15 @@
                                     </div>
 
                                     <div class="max-w-xl mb-3">
+                                        <x-input-label for="floor_amount" value="Количество этажей"/>
+                                        <x-text-input id="floor_amount" name="floor_amount" type="number"
+                                                      class="mt-1 block w-full"
+                                                      :value="old('floor_amount', $building->floor_amount)"
+                                                      required/>
+                                        <x-input-error class="mt-2" :messages="$errors->get('floor_amount')"/>
+                                    </div>
+
+                                    <div class="max-w-xl mb-3">
                                         <x-input-label for="building_type" value="Тип здания" class="mb-1"/>
                                         <select id="building_type" name="building_type_id"
                                                 class="mb-3"
@@ -71,4 +80,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

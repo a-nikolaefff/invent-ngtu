@@ -4,6 +4,7 @@ use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\BuildingTypeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentTypeController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
@@ -23,14 +24,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('departments.index');
+    return redirect()->route('rooms.index');
 });
 
-/*Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');*/
-
 Route::get('departments/autocomplete', [DepartmentController::class, 'autocomplete']);
+Route::get('buildings/floor-amount', [BuildingController::class, 'floorAmount']);
 
 Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
@@ -43,10 +41,6 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
         'profile.destroy'
     );
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     Route::resource('users', UserController::class);
     Route::resource('department-types', DepartmentTypeController::class);
     Route::resource('building-types', BuildingTypeController::class);
@@ -54,7 +48,9 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::resource('equipment-types', EquipmentTypeController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('buildings', BuildingController::class);
+    Route::get('rooms/autocomplete', [RoomController::class, 'autocomplete']);
     Route::resource('rooms', RoomController::class);
+    Route::resource('equipment', EquipmentController::class);
 });
 
 require __DIR__ . '/auth.php';

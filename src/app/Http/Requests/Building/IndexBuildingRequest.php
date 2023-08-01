@@ -26,6 +26,7 @@ class IndexBuildingRequest extends FormRequest
     {
         $sortableColumns = [
             'name',
+            'floor_amount',
             'building_type_name',
         ];
 

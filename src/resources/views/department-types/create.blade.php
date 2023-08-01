@@ -1,10 +1,10 @@
-<x-admin-layout title="Создание нового типа подразделений">
+<x-admin-layout title="Добавление нового типа подразделений">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="sm:px-8">
                 <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
-                    Создание нового типа подразделений
+                    Добавление нового типа подразделений
                 </h1>
             </div>
 

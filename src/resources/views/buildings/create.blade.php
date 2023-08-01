@@ -1,10 +1,10 @@
-<x-app-layout title="Создание нового подразделения">
+<x-admin-layout title="Добавление нового подразделения">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="sm:px-8">
                 <h1 class="mb-3 font-semibold text-xl text-gray-800 leading-tight">
-                    Создание нового здания
+                    Добавление нового здания
                 </h1>
             </div>
 
@@ -39,8 +39,16 @@
                                                 <x-input-error class="mt-2" :messages="$errors->get('address')"/>
                                             </div>
 
+                                            <div class="max-w-4xl mb-3">
+                                                <x-input-label for="floor_amount" value="Количество этажей"/>
+                                                <x-text-input id="floor_amount" name="floor_amount" type="number"
+                                                              class="mt-1 block w-full" :value="old('floor_amount')"
+                                                              required/>
+                                                <x-input-error class="mt-2" :messages="$errors->get('floor_amount')"/>
+                                            </div>
+
                                             <div class="max-w-xl mb-3">
-                                                <x-input-label for="building_type_id" value="Тип подразделения" class="mb-1"/>
+                                                <x-input-label for="building_type_id" value="Тип здания" class="mb-1"/>
                                                 <select id="building_type" name="building_type_id"
                                                         class="mb-3"
                                                         data-te-select-init>
@@ -70,4 +78,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

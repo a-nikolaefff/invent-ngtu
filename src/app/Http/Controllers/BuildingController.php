@@ -10,6 +10,8 @@ use App\Models\Building;
 use App\Models\BuildingType;
 use App\Models\Department;
 use App\Models\DepartmentType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BuildingController extends Controller
 {
@@ -46,7 +48,7 @@ class BuildingController extends Controller
             )
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(6)
+            ->paginate(10)
             ->withQueryString();
         $buildingTypes = BuildingType::all();
         return view('buildings.index', compact('buildings', 'buildingTypes'));
@@ -110,5 +112,19 @@ class BuildingController extends Controller
         $building->delete();
         return redirect()->route('buildings.index')
             ->with('status', 'building-deleted');
+    }
+
+    /**
+     * Returns the floor amount of the building in JSON format.
+     *
+     * @param Request $request The request object.
+     *
+     * @return JsonResponse The JSON response with customer data.
+     */
+    public function floorAmount(Request $request): JsonResponse
+    {
+        $buildingId= $request->input('id');
+        $floorAmount = Building::findOrFail($buildingId)->floor_amount;
+        return response()->json($floorAmount);
     }
 }

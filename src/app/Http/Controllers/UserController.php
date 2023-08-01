@@ -40,10 +40,17 @@ class UserController extends Controller
             UserFilter::class,
             ['queryParams' => $queryParams]
         );
-        $users = User::with('role')
+        $users = User::select('users.*')
+            ->leftjoin(
+            'departments',
+            'users.department_id',
+            '=',
+            'departments.id'
+        )
+            ->with('role', 'department')
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
         $roles = UserRole::all();
         return view('users.index', compact('users', 'roles'));
@@ -102,7 +109,10 @@ class UserController extends Controller
         $user->fill($processedData)->save();
         $user->load('role');
         $user->notify(new UserAccountChanged());
-        return redirect()->route('users.show', $user->id)->with('status', 'user-updated');
+        return redirect()->route('users.show', $user->id)->with(
+            'status',
+            'user-updated'
+        );
     }
 
     /**

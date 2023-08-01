@@ -1,4 +1,4 @@
-<x-app-layout title="Редактирование подразделения">
+<x-admin-layout title="Редактирование подразделения">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -42,7 +42,7 @@
 
                                     <div class="max-w-xl mb-3">
                                         <x-input-label for="department_type_id" value="Тип подразделения" class="mb-1"/>
-                                        <select id="department_type" name="department_type_id"
+                                        <select id="department_type_id" name="department_type_id"
                                                 class="mb-3"
                                                 data-te-select-init>
                                             <option
@@ -101,4 +101,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

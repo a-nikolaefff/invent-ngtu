@@ -26,7 +26,7 @@ class EquipmentTypeController extends Controller
     {
         $queryParams = $request->validated();
         $equipmentTypes = EquipmentType::sort($queryParams)
-            ->paginate(8)
+            ->paginate(10)
             ->withQueryString();
         return view('equipment-types.index', compact('equipmentTypes'));
     }

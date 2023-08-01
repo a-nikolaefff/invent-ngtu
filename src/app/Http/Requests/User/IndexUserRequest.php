@@ -26,8 +26,7 @@ class IndexUserRequest extends FormRequest
             'name',
             'role_id',
             'email',
-            'email_verified_at',
-            'created_at',
+            'department_name',
         ];
 
         return [
