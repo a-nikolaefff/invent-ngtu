@@ -34,9 +34,14 @@
                     'boxIconClass' => 'bx-hdd',
                 ],
                 [
-                    'title' => 'Заявки на ремонт',
+                    'title' => 'Ремонты',
                     'route' => 'profile.edit',
                     'boxIconClass' => 'bx-wrench',
+                ],
+                [
+                    'title' => 'Заявки на ремонт',
+                    'route' => 'profile.edit',
+                    'boxIconClass' => 'bx-envelope',
                 ],
             ]"
     ></x-sidebar>

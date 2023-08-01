@@ -51,7 +51,7 @@ class Equipment extends Model
             'decommissioning_date' => 'date',
         ];
 
-    public function setInOperationAttribute($value)
+    public function setNotInOperationAttribute($value)
     {
         $this->attributes['not_in_operation'] = (boolean) $value;
     }
@@ -86,7 +86,7 @@ class Equipment extends Model
                     'equipment_type_name' => 'equipment_types.name',
                     'department_name' => 'departments.name',
                     'location' => 'buildings.name',
-                    default => $sortColumn,
+                    default => 'equipment.' . $sortColumn,
                 };
                 if ($sortColumn !== 'buildings.name') {
                     return $query->orderBy($sortColumn, $sortDirection);

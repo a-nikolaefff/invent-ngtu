@@ -87,7 +87,8 @@
                                                     <x-text-input id="roomAutocomplete"
                                                                   name="room"
                                                                   autocomplete="off"
-                                                                  value="{{ old('room') }}"
+                                                                  value="{{ old('room',
+                                                                    isset($room) ? $room->number . ' (' . $room->building->name . ')' : null) }}"
                                                                   class="grow"
                                                     />
 
@@ -98,7 +99,7 @@
                                                 </div>
 
                                                 <input name="room_id" id="roomId" hidden="hidden"
-                                                       value="{{ old('room_id') }}">
+                                                       value="{{ old('room_id', $room?->id) }}">
 
                                                 <x-input-error class="mt-2" :messages="$errors->get('room_id')"/>
                                             </div>

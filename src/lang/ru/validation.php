@@ -187,8 +187,33 @@ return [
     */
 
     'attributes' => [
+        'address' => 'адрес',
+        'acquisition_date' => 'дата приобретения',
+        'building_id' =>'здание',
+        'building_type_id' => 'тип зданий',
+        'direction' => 'направление сортировки',
+        'decommissioned' => 'статус на балансе университета',
+        'decommissioning_date' => 'дата списания',
+        'decommissioning_reason' => 'причина списания',
+        'department_id' => 'подразделение',
+        'department_type_id' => 'тип подразделений',
+        'description' => 'описание',
+        'floor' => 'этаж',
+        'floor_amount' => 'количество этажей',
+        'email' => 'адрес электронной почты',
+        'equipment_type_id' => 'тип оборудования',
+        'parent_department_id' => 'родительское подразделение',
+        'password' => 'пароль',
+        'post' => 'должность',
         'name' => 'наименование',
-        'parent_department_id' => 'родительское подразделение'
+        'number' => 'номер',
+        'not_in_operation' => 'статус текущей эксплуатации',
+        'search' => 'ключ поиска',
+        'sort' => 'колонка сортировки',
+        'short_name' => 'краткое наименование',
+        'role_id' => 'роль',
+        'room_id' => 'помещение',
+        'room_type_id' => 'тип помещений',
     ],
 
 ];

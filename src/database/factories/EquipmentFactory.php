@@ -26,7 +26,7 @@ class EquipmentFactory extends Factory
 
         return [
             'name' => fake()->words(2, true),
-            'number' => fake()->randomNumber(6, true),
+            'number' => fake()->unique()->randomNumber(6, true),
             'description' => fake()->words(2, true),
             'acquisition_date' => Carbon::now(),
             'not_in_operation' => $isInOperation,

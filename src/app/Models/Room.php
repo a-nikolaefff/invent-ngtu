@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
@@ -47,6 +48,16 @@ class Room extends Model
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id');
+    }
+
+    /**
+     * Get the equipment located in the room.
+     *
+     * @return HasMany
+     */
+    public function equipment(): HasMany
+    {
+        return $this->hasMany(Equipment::class, 'room_id');
     }
 
     public function scopeSort(

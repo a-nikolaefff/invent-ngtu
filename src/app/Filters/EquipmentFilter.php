@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 class EquipmentFilter extends AbstractFilter
 {
     public const EQUIPMENT_TYPE = 'equipment_type_id';
-    public const not_in_operation = 'not_in_operation';
+    public const NOT_IN_OPERATION = 'not_in_operation';
     public const DECOMMISSIONED = 'decommissioned';
     public const SEARCH = 'search';
 
@@ -20,7 +20,7 @@ class EquipmentFilter extends AbstractFilter
     {
         return [
             self::EQUIPMENT_TYPE => [$this, 'equipmentTypeId'],
-            self::not_in_operation => [$this, 'inOperation'],
+            self::NOT_IN_OPERATION => [$this, 'notInOperation'],
             self::DECOMMISSIONED => [$this, 'decommissioned'],
             self::SEARCH => [$this, 'search'],
         ];
@@ -30,7 +30,7 @@ class EquipmentFilter extends AbstractFilter
      * Apply the filter based on room type ID.
      *
      * @param Builder $builder         The Builder instance.
-     * @param mixed   $inOperationKey The role ID.
+     * @param mixed   $equipmentTypeId The role ID.
      *
      * @return void
      */
@@ -45,21 +45,21 @@ class EquipmentFilter extends AbstractFilter
      * Apply the filter based on room type ID.
      *
      * @param Builder $builder         The Builder instance.
-     * @param mixed   $equipmentTypeId The role ID.
+     * @param mixed   $notInOperationKey The role ID.
      *
      * @return void
      */
-    public function inOperation(Builder $builder, $inOperationKey)
+    public function notInOperation(Builder $builder, $notInOperationKey)
     {
-        $inOperation = $inOperationKey == 'true';
-        $builder->where('equipment.not_in_operation', $inOperation);
+        $notInOperation = $notInOperationKey == 'true';
+        $builder->where('equipment.not_in_operation', $notInOperation);
     }
 
     /**
      * Apply the filter based on room type ID.
      *
      * @param Builder $builder         The Builder instance.
-     * @param mixed   $equipmentTypeId The role ID.
+     * @param mixed   $decommissionedKey The role ID.
      *
      * @return void
      */

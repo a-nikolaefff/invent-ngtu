@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
-            $table->string('number');
+            $table->string('number')->unique();
             $table->string('name');
             $table->string('description')->nullable();
             $table->date('acquisition_date')->nullable();

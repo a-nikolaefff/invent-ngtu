@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRoleEnum;
 use App\Filters\RoomFilter;
+use App\Http\Requests\Equipment\IndexEquipmentRequest;
 use App\Http\Requests\Room\IndexRoomRequest;
 use App\Http\Requests\Room\StoreRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Models\Building;
 use App\Models\Department;
 use App\Models\DepartmentType;
+use App\Models\Equipment;
 use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -69,7 +73,6 @@ class RoomController extends Controller
         $buildings = Building::all();
         $floorAmount = -1;
         if (isset($queryParams['building_id'])) {
-
             $floorAmount = Building::findOrFail($queryParams['building_id'])
                 ->floor_amount;;
         }
@@ -108,10 +111,56 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(IndexEquipmentRequest $request, Room $room)
     {
-        $room->load('type', 'building', 'department');
-        return view('rooms.show', compact('room'));
+        $queryParams = $request->validated();
+
+        $room->load('type', 'building', 'department', 'equipment');
+        $a = $room->equipment->count();
+
+
+        $equipment = null;
+        if ($room->equipment->count() === 0) {
+            $equipment = $room->equipment;
+        } else if ($request->user()->can('view', $room->equipment->first())) {
+            $equipment = Equipment::where('room_id', $room->id)
+                ->select('equipment.*')
+                ->leftjoin(
+                    'equipment_types',
+                    'equipment.equipment_type_id',
+                    '=',
+                    'equipment_types.id'
+                )
+                ->leftjoin(
+                    'rooms',
+                    'equipment.room_id',
+                    '=',
+                    'rooms.id'
+                )
+                ->leftjoin(
+                    'buildings',
+                    'rooms.building_id',
+                    '=',
+                    'buildings.id'
+                )
+                ->leftjoin(
+                    'departments',
+                    'rooms.department_id',
+                    '=',
+                    'departments.id'
+                )
+                ->with(
+                    'type',
+                    'room',
+                    'room.building',
+                    'room.department',
+                )
+                ->sort($queryParams)
+                ->paginate(5)
+                ->withQueryString();
+        }
+
+        return view('rooms.show', compact('room', 'equipment'));
     }
 
     /**
@@ -164,8 +213,9 @@ class RoomController extends Controller
             ->where('number', 'like', "%$keyword%")
             ->get()->toArray();
 
-        for($i = 0; $i < count($rooms); $i++) {
-            $rooms[$i]['number'] = $rooms[$i]['number'] . ' (' . $rooms[$i]['building']['name'] . ')';
+        for ($i = 0; $i < count($rooms); $i++) {
+            $rooms[$i]['number'] = $rooms[$i]['number'] . ' ('
+                . $rooms[$i]['building']['name'] . ')';
         }
         return response()->json($rooms);
     }

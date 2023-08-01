@@ -23,7 +23,7 @@ class StoreEquipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['required', 'string', 'max:20'],
+            'number' => ['required', 'string', 'max:20', 'unique:equipment,number'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'acquisition_date' => ['nullable', 'date'],

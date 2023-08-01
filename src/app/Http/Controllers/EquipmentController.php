@@ -13,6 +13,7 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
 use App\Models\RoomType;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EquipmentController extends Controller
@@ -83,6 +84,7 @@ class EquipmentController extends Controller
             ->sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         $equipmentTypes = EquipmentType::all();
         return view(
             'equipment.index',
@@ -96,10 +98,11 @@ class EquipmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $room = Room::with('building')->find($request->get('room_id'));
         $equipmentTypes = EquipmentType::all();
-        return view('equipment.create', compact('equipmentTypes'));
+        return view('equipment.create', compact('equipmentTypes', 'room'));
     }
 
     /**
