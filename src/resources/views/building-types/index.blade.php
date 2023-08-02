@@ -1,4 +1,4 @@
-<x-admin-layout title="Типы зданий">
+<x-app-layout title="Типы зданий">
 
     @if (session('status') === 'building-type-stored')
         <x-alert type="success" class="mb-4">
@@ -73,4 +73,4 @@
         </div>
     </div>
 
-</x-admin-layout>
+</x-app-layout>

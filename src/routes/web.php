@@ -24,11 +24,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('rooms.index');
+    return redirect()->route('buildings.index');
 });
 
-Route::get('departments/autocomplete', [DepartmentController::class, 'autocomplete']);
-Route::get('buildings/floor-amount', [BuildingController::class, 'floorAmount']);
+Route::get(
+    'departments/autocomplete',
+    [DepartmentController::class, 'autocomplete']
+);
+Route::get('buildings/floor-amount', [BuildingController::class, 'floorAmount']
+);
 
 Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
@@ -46,10 +50,22 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::resource('building-types', BuildingTypeController::class);
     Route::resource('room-types', RoomTypeController::class);
     Route::resource('equipment-types', EquipmentTypeController::class);
+
     Route::resource('departments', DepartmentController::class);
     Route::resource('buildings', BuildingController::class);
+
     Route::get('rooms/autocomplete', [RoomController::class, 'autocomplete']);
     Route::resource('rooms', RoomController::class);
+
+    Route::post(
+        'equipment/{equipment}/store-images',
+        [EquipmentController::class, 'storeImages']
+    )->name('equipment.store-images');
+    Route::delete(
+        'equipment/{equipment}/destroy-image',
+        [EquipmentController::class, 'destroyImage']
+    )->name('equipment.destroy-image');
+
     Route::resource('equipment', EquipmentController::class);
 });
 

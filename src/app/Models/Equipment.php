@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Equipment extends Model
+class Equipment extends Model implements HasMedia
 {
-    use HasFactory, Filterable;
+    use HasFactory, Filterable, InteractsWithMedia;
 
     /**
      * The name of the table in the database
@@ -96,5 +100,13 @@ class Equipment extends Model
                 }
             }
         );
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 200)
+            ->nonQueued();
     }
 }

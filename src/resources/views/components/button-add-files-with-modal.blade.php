@@ -1,18 +1,18 @@
-@props(['question', 'warning', 'route'])
+@props(['description', 'route', 'innerButtonText'])
 
 <!-- Button trigger modal -->
 <button
     {{ $attributes->merge([
     'type' => 'button',
     'data-te-toggle' => 'modal',
-    'data-te-target' => '#modal',
-    'class' => 'inline-block rounded bg-red-600 md:px-6 px-2 pb-2 pt-2.5 text-sm font-medium
+    'data-te-target' => '#uploadPicturesModal',
+    'class' => 'inline-block rounded bg-emerald-600 md:px-6 px-2 pb-2 pt-2.5 text-sm font-medium
     leading-normal text-white text-xs uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
-    ease-in-out hover:bg-red-500
+    ease-in-out hover:bg-emerald-500
     hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
-    focus:bg-red-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
-    focus:outline-none focus:ring-0 active:bg-red-700
-     active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]']) }}>
+    focus:bg-emerald-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
+    focus:outline-none focus:ring-0 active:bg-emerald-700
+    active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]']) }}>
     {{ $slot }}
 </button>
 
@@ -20,7 +20,7 @@
 <div
     data-te-modal-init
     class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-    id="modal"
+    id="uploadPicturesModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -31,17 +31,19 @@
             class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
             <div
                 class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-                <form method="post" action="{{ $route }}" class="p-6">
+                <form method="post" action="{{ $route }}" enctype="multipart/form-data" class="p-6">
                     @csrf
-                    @method('delete')
 
                     <h2 class="text-lg font-medium text-gray-900">
-                        {{ $question }}
+                        Добавление фотографий оборудования
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600 mb-4">
-                        {{ $warning }}
+                        {{ $description }}
                     </p>
+
+                    <x-file-input multiple id="images" name="images[]"
+                                  class="mt-1 block w-full"/>
 
                     <div class="mt-6 flex justify-end">
 
@@ -51,17 +53,10 @@
                             Отмена
                         </x-button-cancel>
 
-                        <button
-                            type="submit"
-                            class="inline-block rounded bg-red-600 md:px-6 px-2 pb-2 pt-2.5 text-sm font-medium
-    leading-normal text-white text-xs uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
-    ease-in-out hover:bg-red-500
-    hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
-    focus:bg-red-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
-    focus:outline-none focus:ring-0 active:bg-red-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
-                            data-te-ripple-init>
-                            Удалить
-                        </button>
+                        <x-button-confirm>
+                            {{ $innerButtonText }}
+                        </x-button-confirm>
+
                     </div>
                 </form>
             </div>

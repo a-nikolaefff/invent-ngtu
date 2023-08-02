@@ -20,16 +20,21 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         $building = Building::all()->random();
+        $floor = fake()->numberBetween(0, $building->floor_amount);
+        $roomNumberFirstDigit = $building->id < 7 ? $building->id : '';
+
         $departmentId = Department::pluck('id');
         $roomTypeId = RoomType::pluck('id');
 
         return [
             'name' => fake()->words(2, true),
-            'number' => fake()->randomNumber(4, true),
+            'number' => $roomNumberFirstDigit
+                . $floor
+                . fake()->randomNumber(2, true),
             'department_id' => $departmentId->random(),
             'room_type_id' => $roomTypeId->random(),
             'building_id' => $building->id,
-            'floor' => fake()->numberBetween(0, $building->floor_amount),
+            'floor' => $floor,
         ];
     }
 }

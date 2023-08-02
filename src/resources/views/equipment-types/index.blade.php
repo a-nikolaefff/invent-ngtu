@@ -1,4 +1,4 @@
-<x-admin-layout title="Типы оборудования">
+<x-app-layout title="Типы оборудования">
 
     @if (session('status') === 'equipment-type-stored')
         <x-alert type="success" class="mb-4">
@@ -73,4 +73,4 @@
         </div>
     </div>
 
-</x-admin-layout>
+</x-app-layout>

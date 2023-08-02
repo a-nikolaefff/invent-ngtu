@@ -14,7 +14,17 @@ RUN apt-get update && apt-get install -y \
     git \
     zip \
     libpq-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install the GD extension
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
+
+# Install the exif extension
+RUN docker-php-ext-install exif
 
 # Set the working directory to run the following commands
 RUN mkdir -p /var/www/html

@@ -1,5 +1,63 @@
 @props(['title'])
 
+@php
+    $user = Auth::user();
+    $isSpecialist = $user && $user->hasAnyRole(
+            App\Enums\UserRoleEnum::SuperAdmin,
+            App\Enums\UserRoleEnum::Admin,
+            App\Enums\UserRoleEnum::SupplyAndRepairSpecialist,
+        );
+
+     $menu = [
+         [
+             'title' => 'Здания',
+             'route' => 'buildings.index',
+             'boxIconClass' => 'bxs-landmark',
+        ],
+        [
+            'title' => 'Помещения',
+            'route' => 'rooms.index',
+            'boxIconClass' => 'bx-cube',
+        ],
+        [
+            'title' => 'Оборудование',
+             'route' => 'equipment.index',
+             'boxIconClass' => 'bx-hdd',
+        ],
+        [
+            'title' => 'Ремонты',
+             'route' => 'profile.edit',
+             'boxIconClass' => 'bx-wrench',
+        ],
+        [
+            'title' => 'Заявки на ремонт',
+             'route' => 'profile.edit',
+             'boxIconClass' => 'bx-envelope',
+        ]
+    ];
+
+     if ($isSpecialist) {
+             $menu = array_merge($menu,
+        [
+            [
+                'title' => 'Типы зданий',
+                 'route' => 'building-types.index',
+                 'boxIconClass' => 'bx-building-house',
+            ],
+            [
+                'title' => 'Типы помещений',
+                 'route' => 'room-types.index',
+                 'boxIconClass' => 'bx-spreadsheet',
+            ],
+            [
+                'title' => 'Типы оборудования',
+                'route' => 'equipment-types.index',
+                'boxIconClass' => 'bx-collection',
+            ],
+        ]);
+    }
+@endphp
+
     <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -22,28 +80,7 @@
     ></x-header>
     <x-sidebar
         :is-admin-sidebar="false"
-        :menu="[
-                    [
-                    'title' => 'Помещения',
-                    'route' => 'rooms.index',
-                    'boxIconClass' => 'bx-cube',
-                ],
-                [
-                    'title' => 'Оборудование',
-                    'route' => 'equipment.index',
-                    'boxIconClass' => 'bx-hdd',
-                ],
-                [
-                    'title' => 'Ремонты',
-                    'route' => 'profile.edit',
-                    'boxIconClass' => 'bx-wrench',
-                ],
-                [
-                    'title' => 'Заявки на ремонт',
-                    'route' => 'profile.edit',
-                    'boxIconClass' => 'bx-envelope',
-                ],
-            ]"
+        :menu="$menu"
     ></x-sidebar>
     <main class="page__content content py-4">
         <div class="sm:container mx-auto">

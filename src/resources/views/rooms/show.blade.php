@@ -93,7 +93,9 @@
                                         >
                                             <th scope="row" class="w-2/12 px-2 py-4 text-right">Этаж:
                                             </th>
-                                            <td class=" px-6 py-4">{{ $room->floor }}</td>
+                                            <td class=" px-6 py-4">
+                                                {{ $room->floor == 0 ? 'цокольный' : $room->floor }}
+                                            </td>
                                         </tr>
 
                                         <tr
@@ -251,7 +253,7 @@
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
+                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение основных данных:
                                         </th>
                                         <td class=" px-6 py-4"> {{ $room->updated_at }}</td>
                                     </tr>

@@ -33,31 +33,10 @@
                     'route' => 'departments.index',
                     'boxIconClass' => 'bx-sitemap',
                 ],
-                                [
-                    'title' => 'Здания',
-                    'route' => 'buildings.index',
-                    'boxIconClass' => 'bxs-landmark',
-                ],
-
                 [
                     'title' => 'Типы подразделений',
                     'route' => 'department-types.index',
                     'boxIconClass' => 'bx-layer',
-                ],
-                [
-                    'title' => 'Типы зданий',
-                    'route' => 'building-types.index',
-                    'boxIconClass' => 'bx-building-house',
-                ],
-                [
-                    'title' => 'Типы помещений',
-                    'route' => 'room-types.index',
-                    'boxIconClass' => 'bx-spreadsheet',
-                ],
-                [
-                    'title' => 'Типы оборудования',
-                    'route' => 'equipment-types.index',
-                    'boxIconClass' => 'bx-collection',
                 ],
             ]"
     ></x-sidebar>

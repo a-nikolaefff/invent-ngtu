@@ -1,4 +1,4 @@
-<x-admin-layout title="Добавление нового типа оборудования">
+<x-app-layout title="Добавление нового типа оборудования">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -45,4 +45,4 @@
 
         </div>
     </div>
-</x-admin-layout>
+</x-app-layout>

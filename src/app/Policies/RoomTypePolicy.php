@@ -14,7 +14,11 @@ class RoomTypePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -22,7 +26,11 @@ class RoomTypePolicy
      */
     public function view(User $user, RoomType $roomType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -30,7 +38,11 @@ class RoomTypePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -38,7 +50,11 @@ class RoomTypePolicy
      */
     public function update(User $user, RoomType $roomType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -46,6 +62,10 @@ class RoomTypePolicy
      */
     public function delete(User $user, RoomType $roomType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 }

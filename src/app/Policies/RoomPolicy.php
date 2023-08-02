@@ -40,7 +40,11 @@ class RoomPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -48,7 +52,11 @@ class RoomPolicy
      */
     public function update(User $user, Room $room): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -56,7 +64,11 @@ class RoomPolicy
      */
     public function delete(User $user, Room $room): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
 }

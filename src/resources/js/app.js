@@ -3,6 +3,8 @@ import {handleOptionSelector} from "./components/option-selector.js";
 import './bootstrap';
 import 'tw-elements/dist/js/tw-elements.umd.min';
 
+
+
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;

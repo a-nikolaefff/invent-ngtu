@@ -48,7 +48,7 @@ class BuildingController extends Controller
             )
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(10)
+            ->paginate(5)
             ->withQueryString();
         $buildingTypes = BuildingType::all();
         return view('buildings.index', compact('buildings', 'buildingTypes'));

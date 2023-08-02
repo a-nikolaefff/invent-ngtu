@@ -1,26 +1,26 @@
-@props(['question', 'warning', 'route'])
+@props(['route', 'imageIndex'])
 
 <!-- Button trigger modal -->
 <button
     {{ $attributes->merge([
     'type' => 'button',
     'data-te-toggle' => 'modal',
-    'data-te-target' => '#modal',
-    'class' => 'inline-block rounded bg-red-600 md:px-6 px-2 pb-2 pt-2.5 text-sm font-medium
-    leading-normal text-white text-xs uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
+    'data-te-target' => '#modalDeletePicture' . $imageIndex,
+    'class' => 'inline-block rounded-full bg-red-600 px-4 px-2 pb-2 pt-2 md:px-2.5 md:pb-1 md:pt-1
+    text-sm font-medium leading-normal text-white uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
     ease-in-out hover:bg-red-500
     hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
     focus:bg-red-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]
     focus:outline-none focus:ring-0 active:bg-red-700
      active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]']) }}>
-    {{ $slot }}
+    X
 </button>
 
 <!-- Modal -->
 <div
     data-te-modal-init
     class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-    id="modal"
+    id="{{ 'modalDeletePicture' . $imageIndex }}"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -36,15 +36,10 @@
                     @method('delete')
 
                     <h2 class="text-lg font-medium text-gray-900">
-                        {{ $question }}
+                        Вы уверены, что хотите удалить данное изображение?
                     </h2>
 
-                    <p class="mt-1 text-sm text-gray-600 mb-4">
-                        {{ $warning }}
-                    </p>
-
                     <div class="mt-6 flex justify-end">
-
                         <x-button-cancel
                             class="mr-2"
                             data-te-modal-dismiss>

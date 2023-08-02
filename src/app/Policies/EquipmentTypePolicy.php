@@ -14,7 +14,11 @@ class EquipmentTypePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -22,7 +26,11 @@ class EquipmentTypePolicy
      */
     public function view(User $user, EquipmentType $equipmentType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -30,7 +38,11 @@ class EquipmentTypePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -38,7 +50,11 @@ class EquipmentTypePolicy
      */
     public function update(User $user, EquipmentType $equipmentType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -46,22 +62,10 @@ class EquipmentTypePolicy
      */
     public function delete(User $user, EquipmentType $equipmentType): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, EquipmentType $equipmentType): bool
-    {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, EquipmentType $equipmentType): bool
-    {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 }

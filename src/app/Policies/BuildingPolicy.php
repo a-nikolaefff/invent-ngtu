@@ -14,7 +14,12 @@ class BuildingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+            UserRoleEnum::Employee,
+        );
     }
 
     /**
@@ -22,7 +27,12 @@ class BuildingPolicy
      */
     public function view(User $user, Building $building): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+            UserRoleEnum::Employee,
+        );
     }
 
     /**
@@ -30,7 +40,11 @@ class BuildingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -38,7 +52,11 @@ class BuildingPolicy
      */
     public function update(User $user, Building $building): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 
     /**
@@ -46,6 +64,10 @@ class BuildingPolicy
      */
     public function delete(User $user, Building $building): bool
     {
-        return $user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin);
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
     }
 }

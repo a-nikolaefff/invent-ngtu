@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRoleEnum;
 use App\Filters\EquipmentFilter;
-use App\Filters\RoomFilter;
 use App\Http\Requests\Equipment\IndexEquipmentRequest;
 use App\Http\Requests\Equipment\StoreEquipmentRequest;
 use App\Http\Requests\Equipment\UpdateEquipmentRequest;
-use App\Models\Building;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
-use App\Models\RoomType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Images\StoreImageRequest;
 
 class EquipmentController extends Controller
 {
@@ -180,5 +179,42 @@ class EquipmentController extends Controller
         $equipment->delete();
         return redirect()->route('equipment.index')
             ->with('status', 'equipment-deleted');
+    }
+
+    /**
+     * Store a new image.
+     */
+    public function storeImages(
+        StoreImageRequest $request,
+        Equipment $equipment
+    ) {
+        $this->authorize('view', $equipment);
+        $files = $request->file('images');
+
+        foreach ($files as $file) {
+            $equipment->addMedia($file)
+                ->withCustomProperties([
+                    'user_name' => Auth::user()->name,
+                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
+                ])
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->route('equipment.show', $equipment->id)
+            ->with('status', 'images-stored');
+    }
+
+    /**
+     * Remove the image
+     */
+    public function destroyImage(Request $request, Equipment $equipment)
+    {
+        $this->authorize('view', $equipment);
+
+        $images = $equipment->getMedia('images');
+        $imageIndex = $request->get('image_index');
+        $images[$imageIndex]->delete();
+        return redirect()->route('equipment.show', $equipment->id)
+            ->with('status', 'image-deleted');
     }
 }
