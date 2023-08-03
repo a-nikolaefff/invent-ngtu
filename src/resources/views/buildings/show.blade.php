@@ -239,6 +239,52 @@
                 </div>
             </div>
 
+                <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                                <div class="">
+                                    <h2 class="mb-2 text-lg font-medium text-gray-900">
+                                        Фотографии здания
+                                    </h2>
+
+                                    <x-button-add-files-with-modal
+                                        description="Выберите одну или несколько фотографий. Допустимые форматы jpeg, png, gif. Размер файла не более 10Мб."
+                                        innerButtonText="Добавить"
+                                        :route="route('buildings.store-images', $building->id)"
+                                        class=""
+                                    >
+                                        Добавить фотографии
+                                    </x-button-add-files-with-modal>
+
+                                    <div data-te-lightbox-init>
+                                        <div class="-m-1 flex flex-wrap  justify-start">
+                                            @foreach($building->getMedia('images') as $image)
+                                                <div class="flex md:w-1/3 flex-wrap w-full">
+                                                    <div class="w-full p-1 md:p-2 flex flex-col items-center ">
+                                                        <x-button-delete-picture-with-modal
+                                                            class="self-end relative top-4"
+                                                            :imageIndex="$loop->index"
+                                                            :route="route('buildings.destroy-image', ['building' => $building->id, 'image_index' => $loop->index])"
+                                                        />
+                                                        <img
+                                                            src="{{ $image->getUrl('preview') }}"
+                                                            data-te-img="{{ $image->getUrl() }}"
+                                                            alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
+                                                            class="w-full clickable rounded shadow-sm data-[te-lightbox-disabled]:cursor-auto"/>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -258,7 +304,7 @@
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение:
+                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение основных данных:
                                         </th>
                                         <td class=" px-6 py-4"> {{ $building->updated_at }}</td>
                                     </tr>

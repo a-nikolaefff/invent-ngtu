@@ -8,12 +8,16 @@ use App\Http\Requests\Building\IndexBuildingRequest;
 use App\Http\Requests\Building\ShowBuildingRequest;
 use App\Http\Requests\Building\StoreBuildingRequest;
 use App\Http\Requests\Building\UpdateBuildingRequest;
+use App\Http\Requests\Images\StoreImageRequest;
 use App\Models\Building;
 use App\Models\BuildingType;
+use App\Models\Equipment;
 use App\Models\Room;
 use App\Models\RoomType;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuildingController extends Controller
 {
@@ -172,5 +176,43 @@ class BuildingController extends Controller
         $buildingId = $request->input('id');
         $floorAmount = Building::findOrFail($buildingId)->floor_amount;
         return response()->json($floorAmount);
+    }
+
+    /**
+     * Store a new image.
+     */
+    public function storeImages(
+        StoreImageRequest $request,
+        Building $building
+    ) {
+        $this->authorize('view', $building);
+        $files = $request->file('images');
+
+        foreach ($files as $file) {
+            $building->addMedia($file)
+                ->withCustomProperties([
+                    'user_id' => Auth::user()->id,
+                    'user_name' => Auth::user()->name,
+                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
+                ])
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->route('buildings.show', $building->id)
+            ->with('status', 'images-stored');
+    }
+
+    /**
+     * Remove the image
+     */
+    public function destroyImage(Request $request, Building $building)
+    {
+        $this->authorize('view', $building);
+
+        $images = $building->getMedia('images');
+        $imageIndex = $request->get('image_index');
+        $images[$imageIndex]->delete();
+        return redirect()->route('buildings.show', $building->id)
+            ->with('status', 'image-deleted');
     }
 }

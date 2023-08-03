@@ -197,6 +197,7 @@ class EquipmentController extends Controller
         foreach ($files as $file) {
             $equipment->addMedia($file)
                 ->withCustomProperties([
+                    'user_id' => Auth::user()->id,
                     'user_name' => Auth::user()->name,
                     'datetime' => Carbon::now()->format('d.m.Y H:i:s')
                 ])

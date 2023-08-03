@@ -213,7 +213,7 @@
                                     Добавить фотографии
                                 </x-button-add-files-with-modal>
 
-                                <div data-te-lightbox-init class="">
+                                <div data-te-lightbox-init>
                                     <div class="-m-1 flex flex-wrap md:-m-2 justify-start">
                                         @foreach($equipment->getMedia('images') as $image)
                                             <div class="flex md:w-1/3 flex-wrap w-full">
@@ -246,7 +246,7 @@
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                            <div class="overflow-hidden">
+                            <div class="">
                                 <h2 class="mb-2 text-lg font-medium text-gray-900">
                                     Хронологические данные
                                 </h2>
