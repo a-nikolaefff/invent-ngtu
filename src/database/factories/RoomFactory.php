@@ -4,7 +4,10 @@ namespace Database\Factories;
 
 use App\Models\Building;
 use App\Models\Department;
+use App\Models\Equipment;
+use App\Models\Room;
 use App\Models\RoomType;
+use Database\Helpers\FileLoader;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -36,5 +39,17 @@ class RoomFactory extends Factory
             'building_id' => $building->id,
             'floor' => $floor,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Room $room) {
+            FileLoader::load(
+                $room,
+                'app/examples/rooms',
+                'images'
+            );
+        }
+        );
     }
 }

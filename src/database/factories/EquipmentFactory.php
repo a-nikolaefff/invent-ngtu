@@ -48,7 +48,7 @@ class EquipmentFactory extends Factory
         return $this->afterCreating(function (Equipment $equipment) {
             FileLoader::load(
                 $equipment,
-                'app/public/examples/equipment',
+                'app/examples/equipment',
                 'images'
             );
         }

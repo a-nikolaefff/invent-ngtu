@@ -12,7 +12,7 @@
             @endif
 
             @switch(session('status'))
-                @case('equipment-type-updated')
+                @case('equipment-updated')
                     <x-alert type="success" class="mb-4">
                         Данные успешно изменены
                     </x-alert>

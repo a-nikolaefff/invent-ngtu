@@ -121,7 +121,7 @@ class BuildingSeeder extends Seeder
 
             FileLoader::load(
                 $building,
-                'app/public/examples/buildings/' . $baseBuilding['images'],
+                'app/examples/buildings/' . $baseBuilding['images'],
                 'images'
             );
         }

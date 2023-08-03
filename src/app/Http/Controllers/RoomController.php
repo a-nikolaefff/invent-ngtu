@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\EquipmentFilter;
 use App\Filters\RoomFilter;
+use App\Http\Requests\Images\StoreImageRequest;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\IndexRoomRequest;
 use App\Http\Requests\Room\ShowRoomRequest;
@@ -14,8 +15,10 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
 use App\Models\RoomType;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -235,5 +238,43 @@ class RoomController extends Controller
                 . $rooms[$i]['building']['name'] . ')';
         }
         return response()->json($rooms);
+    }
+
+    /**
+     * Store a new image.
+     */
+    public function storeImages(
+        StoreImageRequest $request,
+        Room $room
+    ) {
+        $this->authorize('view', $room);
+        $files = $request->file('images');
+
+        foreach ($files as $file) {
+            $room->addMedia($file)
+                ->withCustomProperties([
+                    'user_id' => Auth::user()->id,
+                    'user_name' => Auth::user()->name,
+                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
+                ])
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->route('rooms.show', $room->id)
+            ->with('status', 'images-stored');
+    }
+
+    /**
+     * Remove the image
+     */
+    public function destroyImage(Request $request, Room $room)
+    {
+        $this->authorize('view', $room);
+
+        $images = $room->getMedia('images');
+        $imageIndex = $request->get('image_index');
+        $images[$imageIndex]->delete();
+        return redirect()->route('rooms.show', $room->id)
+            ->with('status', 'image-deleted');
     }
 }

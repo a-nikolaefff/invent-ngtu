@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     );
 
     Route::resource('users', UserController::class);
+
     Route::resource('department-types', DepartmentTypeController::class);
     Route::resource('building-types', BuildingTypeController::class);
     Route::resource('room-types', RoomTypeController::class);
@@ -63,6 +64,14 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     )->name('buildings.destroy-image');
     Route::resource('buildings', BuildingController::class);
 
+    Route::post(
+        'rooms/{room}/store-images',
+        [RoomController::class, 'storeImages']
+    )->name('rooms.store-images');
+    Route::delete(
+        'rooms/{room}/destroy-image',
+        [RoomController::class, 'destroyImage']
+    )->name('rooms.destroy-image');
     Route::get('rooms/autocomplete', [RoomController::class, 'autocomplete']);
     Route::resource('rooms', RoomController::class);
 
