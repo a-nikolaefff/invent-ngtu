@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Filters\BuildingFilter;
+use App\Filters\RoomFilter;
 use App\Http\Requests\Building\IndexBuildingRequest;
+use App\Http\Requests\Building\ShowBuildingRequest;
 use App\Http\Requests\Building\StoreBuildingRequest;
 use App\Http\Requests\Building\UpdateBuildingRequest;
 use App\Models\Building;
 use App\Models\BuildingType;
-use App\Models\Department;
-use App\Models\DepartmentType;
+use App\Models\Room;
+use App\Models\RoomType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -77,10 +79,54 @@ class BuildingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Building $building)
+    public function show(ShowBuildingRequest $request, Building $building)
     {
         $building->load('type');
-        return view('buildings.show', compact('building'));
+
+        $queryParams = $request->validated();
+
+        $filter = app()->make(
+            RoomFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $rooms = null;
+        if ($building->rooms->count() === 0) {
+            $rooms = $building->rooms;
+        } else {
+            $rooms = Room::where('building_id', $building->id)
+                ->select('rooms.*')
+                ->leftjoin(
+                    'room_types',
+                    'rooms.room_type_id',
+                    '=',
+                    'room_types.id'
+                )
+                ->leftjoin(
+                    'departments',
+                    'rooms.department_id',
+                    '=',
+                    'departments.id'
+                )
+                ->with('type', 'department')
+                ->filter($filter)
+                ->sort($queryParams)
+                ->paginate(5)
+                ->withQueryString();
+        }
+
+        $roomTypes = RoomType::all();
+        $floorAmount = $building->floor_amount;
+
+        return view(
+            'buildings.show',
+            compact(
+                'building',
+                'rooms',
+                'roomTypes',
+                'floorAmount'
+            )
+        );
     }
 
     /**
@@ -123,7 +169,7 @@ class BuildingController extends Controller
      */
     public function floorAmount(Request $request): JsonResponse
     {
-        $buildingId= $request->input('id');
+        $buildingId = $request->input('id');
         $floorAmount = Building::findOrFail($buildingId)->floor_amount;
         return response()->json($floorAmount);
     }

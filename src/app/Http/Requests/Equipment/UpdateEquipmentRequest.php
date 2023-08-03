@@ -3,6 +3,7 @@
 namespace app\Http\Requests\Equipment;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateEquipmentRequest extends FormRequest
 {
@@ -22,7 +23,14 @@ class UpdateEquipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['required', 'string', 'max:20', 'unique:equipment,number'],
+            'number' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('equipment', 'number')->ignore(
+                    $this->equipment->id
+                )
+            ],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'acquisition_date' => ['nullable', 'date'],
@@ -30,8 +38,11 @@ class UpdateEquipmentRequest extends FormRequest
             'decommissioning_reason' => ['nullable', 'string', 'max:255'],
             'not_in_operation' => ['nullable'],
             'decommissioned' => ['nullable'],
-            'equipment_type_id' => ['nullable','exists:equipment_types,id'],
-            'room_id' => ['required','exists:rooms,id'],
+            'equipment_type_id' => [
+                'nullable',
+                'exists:equipment_types,id'
+            ],
+            'room_id' => ['required', 'exists:rooms,id'],
         ];
     }
 }

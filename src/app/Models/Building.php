@@ -6,6 +6,7 @@ use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Building extends Model
 {
@@ -34,6 +35,16 @@ class Building extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(BuildingType::class, 'building_type_id');
+    }
+
+    /**
+     * Get the rooms located in the building.
+     *
+     * @return HasMany
+     */
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class, 'building_id');
     }
 
     public function scopeSort(

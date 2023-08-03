@@ -141,91 +141,176 @@
                                         Оборудование в помещении
                                     </h2>
 
-                                    @can('create', App\Models\Equipment::class)
-                                        <div class="my-3">
-                        <span class="mr-2">
-                            <a href="{{ route('equipment.create', ['room_id' => $room->id]) }}">
-                                <x-button-create>
-                                    добавить новое оборудование
-                                </x-button-create>
-                            </a>
-                        </span>
+                                        <div class="flex mb-2">
+                                            <div class="w-full md:w-8/12 lg:w-4/12">
+                                                <x-input-label value="Тип оборудования" class="mb-1"/>
+                                                <x-option-selector
+                                                    id="optionSelector1"
+                                                    :url="route('equipment.index')"
+                                                    parameter-name="equipment_type_id"
+                                                    :options="$equipmentTypes"
+                                                    passing-property='id'
+                                                    displaying-property='name'
+                                                    all-options-selector='любой тип'
+                                                    not-specified-option-selector='не задан'
+                                                ></x-option-selector>
+                                            </div>
+                                            <div></div>
                                         </div>
-                                    @endcan
 
-                                    @if(!isset($equipment))
-                                        <p class="mt-5">
-                                            У вас нет прав для просмотра информации об оборудовании в данном помещении.
-                                        </p>
-                                    @else
-                                        @if($equipment->count() === 0)
+                                        <div class="md:flex mb-2">
+
+                                            <div class="mb-3 w-full md:w-8/12 lg:w-4/12">
+                                                <x-input-label value="Статус текущей эксплуатации" class="mb-1"/>
+                                                <div id="optionSelector2" data-value="not_in_operation">
+                                                    <select data-te-select-init>
+                                                        <option
+                                                            value="allOptionsSelection">
+                                                            любой
+                                                        </option>
+                                                        <option
+                                                            value="false">
+                                                            в эксплуатации
+                                                        </option>
+                                                        <option
+                                                            value="true">
+                                                            не в эксплуатации
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="md:ml-3 w-full md:w-8/12 lg:w-4/12">
+                                                <x-input-label value="Статус на балансе университета" class="mb-1"/>
+                                                <div id="optionSelector3" data-value="decommissioned">
+                                                    <select data-te-select-init>
+                                                        <option
+                                                            value="allOptionsSelection">
+                                                            любой
+                                                        </option>
+                                                        <option
+                                                            value="false">
+                                                            на балансе
+                                                        </option>
+                                                        <option
+                                                            value="true">
+                                                            списанное
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @can('create', App\Models\Equipment::class)
+                                            <div class="my-3">
+                                            <span class="mr-2">
+                                                 <a href="{{ route('equipment.create', ['room_id' => $room->id]) }}">
+                                                     <x-button-create>
+                                                        добавить новое оборудование
+                                                     </x-button-create>
+                                                 </a>
+                                            </span>
+                                            </div>
+                                        @endcan
+
+                                        @if(!isset($equipment))
                                             <p class="mt-5">
-                                                Оборудования в данном помещении не найдено
+                                                У вас нет прав для просмотра информации об оборудовании в данном
+                                                помещении.
                                             </p>
                                         @else
+                                            @if($equipment->count() === 0)
+                                                <p class="mt-5">
+                                                    Оборудования в данном помещении не найдено
+                                                </p>
+                                            @else
 
-                                            <table class=" min-w-full text-left text-sm font-light
+                                                <table class=" min-w-full text-left text-sm font-light
                     mx-auto max-w-4xl w-full rounded-lg bg-white divide-y divide-gray-300
                    "
-                                                   id="sortableTable">
-                                                <thead class="border-b font-medium dark:border-neutral-500">
-                                                <tr>
-                                                    <th scope="col" class="w-1/12 px-6 py-4">
-                                                        <a class="d-block"
-                                                           href="{{ route('equipment.index', ['sort' => 'number', 'direction' => 'asc']) }}"
-                                                        >
-                                                            Инвентарный номер
-                                                        </a>
-                                                    </th>
+                                                       id="sortableTable">
+                                                    <thead class="border-b font-medium dark:border-neutral-500">
+                                                    <tr>
+                                                        <th scope="col" class="w-1/12 px-6 py-4">
+                                                            <a class="d-block"
+                                                               href="{{ route('equipment.index', ['sort' => 'number', 'direction' => 'asc']) }}"
+                                                            >
+                                                                Инвентарный номер
+                                                            </a>
+                                                        </th>
 
-                                                    <th scope="col" class="w-4/12 px-6 py-4">
-                                                        <a class="d-block"
-                                                           href="{{ route('equipment.index', ['sort' => 'name', 'direction' => 'asc']) }}"
-                                                        >
-                                                            Наименование
-                                                        </a>
-                                                    </th>
+                                                        <th scope="col" class="w-4/12 px-6 py-4">
+                                                            <a class="d-block"
+                                                               href="{{ route('equipment.index', ['sort' => 'name', 'direction' => 'asc']) }}"
+                                                            >
+                                                                Наименование
+                                                            </a>
+                                                        </th>
 
-                                                    <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
-                                                        <a class="d-block"
-                                                           href="{{ route('equipment.index', ['sort' => 'equipment_type_name', 'direction' => 'asc']) }}"
-                                                        >
-                                                            Тип оборудования
-                                                        </a>
-                                                    </th>
+                                                        <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                            <a class="d-block"
+                                                               href="{{ route('equipment.index', ['sort' => 'equipment_type_name', 'direction' => 'asc']) }}"
+                                                            >
+                                                                Тип оборудования
+                                                            </a>
+                                                        </th>
 
-                                                </tr>
+                                                        <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                            <a class="d-block"
+                                                               href="{{ route('equipment.index', ['sort' => 'not_in_operation', 'direction' => 'asc']) }}"
+                                                            >
+                                                                Статус текущей эксплуатации
+                                                            </a>
+                                                        </th>
 
-                                                </thead>
-
-                                                <tbody>
-                                                @foreach($equipment as $equipment_item)
-                                                    <tr
-                                                        onclick="window.location='{{ route('equipment.show', $equipment_item->id) }}';"
-                                                        class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100
-                            dark:border-neutral-500 dark:hover:bg-neutral-600">
-
-                                                        <td class="px-6 py-4 max-w-250">{{ $equipment_item->number }}</td>
-
-                                                        <td class="px-6 py-4 max-w-250">{{ $equipment_item->name }}</td>
-
-                                                        <td class="px-6 py-4 max-w-250 hidden md:table-cell">
-                                                            @if($equipment_item->type)
-                                                                {{ $equipment_item->type->name }}
-                                                            @else
-                                                                не задан
-                                                            @endif
-                                                        </td>
+                                                        <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                            <a class="d-block"
+                                                               href="{{ route('equipment.index', ['sort' => 'decommissioned', 'direction' => 'asc']) }}"
+                                                            >
+                                                                Статус на балансе университета
+                                                            </a>
+                                                        </th>
 
                                                     </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
 
-                                            <div class="mt-3">
-                                                {{ $equipment->links() }}
-                                            </div>
-                                        @endif
+                                                    </thead>
+
+                                                    <tbody>
+                                                    @foreach($equipment as $equipment_item)
+                                                        <tr
+                                                            onclick="window.location='{{ route('equipment.show', $equipment_item->id) }}';"
+                                                            class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100
+                            dark:border-neutral-500 dark:hover:bg-neutral-600">
+
+                                                            <td class="px-6 py-4 max-w-250">{{ $equipment_item->number }}</td>
+
+                                                            <td class="px-6 py-4 max-w-250">{{ $equipment_item->name }}</td>
+
+                                                            <td class="px-6 py-4 max-w-250 hidden md:table-cell">
+                                                                @if($equipment_item->type)
+                                                                    {{ $equipment_item->type->name }}
+                                                                @else
+                                                                    не задан
+                                                                @endif
+                                                            </td>
+
+                                                            <td class="px-6 py-4 max-w-250">
+                                                                {{ $equipment_item->not_in_operation ? 'не в эксплуатации' : 'в эксплуатации' }}
+                                                            </td>
+
+                                                            <td class="px-6 py-4 max-w-250">
+                                                                {{ $equipment_item->decommissioned ? 'списано' : 'на балансе' }}
+                                                            </td>
+
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="mt-3">
+                                                    {{ $equipment->links() }}
+                                                </div>
+                                    @endif
                                     @endif
                                 </div>
                             </div>
@@ -253,7 +338,8 @@
                                     </tr>
                                     <tr
                                         class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение основных данных:
+                                        <th scope="row" class="px-2 py-4 text-right">Последнее изменение основных
+                                            данных:
                                         </th>
                                         <td class=" px-6 py-4"> {{ $room->updated_at }}</td>
                                     </tr>

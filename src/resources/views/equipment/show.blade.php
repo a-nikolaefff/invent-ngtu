@@ -226,7 +226,7 @@
                                                     <img
                                                         src="{{ $image->getUrl('preview') }}"
                                                         data-te-img="{{ $image->getUrl() }}"
-                                                        alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name')}} "
+                                                        alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
                                                         class="w-full clickable rounded shadow-sm data-[te-lightbox-disabled]:cursor-auto"/>
                                                 </div>
                                             </div>

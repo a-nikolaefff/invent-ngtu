@@ -172,7 +172,7 @@
                                 <td class="px-6 py-4 max-w-250 hidden md:table-cell">{{ $room->building->name }}</td>
 
                                 <td class="px-6 py-4 max-w-250 hidden md:table-cell">
-                                    @if($room->department->type)
+                                    @if($room->department)
                                         {{ $room->department->name }}
                                     @else
                                         не задан

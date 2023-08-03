@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRoleEnum;
 use App\Filters\EquipmentFilter;
+use App\Http\Requests\Equipment\CreateEquipmentRequest;
 use App\Http\Requests\Equipment\IndexEquipmentRequest;
 use App\Http\Requests\Equipment\StoreEquipmentRequest;
 use App\Http\Requests\Equipment\UpdateEquipmentRequest;
+use App\Http\Requests\Images\StoreImageRequest;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Images\StoreImageRequest;
+
 
 class EquipmentController extends Controller
 {
@@ -97,11 +99,12 @@ class EquipmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(CreateEquipmentRequest $request)
     {
-        $room = Room::with('building')->find($request->get('room_id'));
+        $validatedData = $request->validated();
+        $chosenRoom = Room::with('building')->find($validatedData['room_id'] ?? null);
         $equipmentTypes = EquipmentType::all();
-        return view('equipment.create', compact('equipmentTypes', 'room'));
+        return view('equipment.create', compact('equipmentTypes', 'chosenRoom'));
     }
 
     /**

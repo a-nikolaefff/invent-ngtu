@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRoleEnum;
+use App\Filters\EquipmentFilter;
 use App\Filters\RoomFilter;
-use App\Http\Requests\Equipment\IndexEquipmentRequest;
+use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\IndexRoomRequest;
+use App\Http\Requests\Room\ShowRoomRequest;
 use App\Http\Requests\Room\StoreRoomRequest;
 use App\Http\Requests\Room\UpdateRoomRequest;
 use App\Models\Building;
-use App\Models\Department;
-use App\Models\DepartmentType;
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -69,13 +68,16 @@ class RoomController extends Controller
             ->sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         $roomTypes = RoomType::all();
         $buildings = Building::all();
+
         $floorAmount = -1;
         if (isset($queryParams['building_id'])) {
             $floorAmount = Building::findOrFail($queryParams['building_id'])
                 ->floor_amount;;
         }
+
         return view(
             'rooms.index',
             compact(
@@ -90,11 +92,16 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(CreateRoomRequest $request)
     {
+        $validatedData = $request->validated();
+        $chosenBuilding = Building::find($validatedData['building_id'] ?? null);
         $roomTypes = RoomType::all();
         $buildings = Building::all();
-        return view('rooms.create', compact('roomTypes', 'buildings'));
+        return view(
+            'rooms.create',
+            compact('roomTypes', 'buildings', 'chosenBuilding')
+        );
     }
 
     /**
@@ -111,56 +118,66 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(IndexEquipmentRequest $request, Room $room)
+    public function show(ShowRoomRequest $request, Room $room)
     {
-        $queryParams = $request->validated();
-
         $room->load('type', 'building', 'department', 'equipment');
-        $a = $room->equipment->count();
 
+        $queryParams = $request->validated();
+        $filter = app()->make(
+            EquipmentFilter::class,
+            ['queryParams' => $queryParams]
+        );
 
         $equipment = null;
         if ($room->equipment->count() === 0) {
             $equipment = $room->equipment;
-        } else if ($request->user()->can('view', $room->equipment->first())) {
-            $equipment = Equipment::where('room_id', $room->id)
-                ->select('equipment.*')
-                ->leftjoin(
-                    'equipment_types',
-                    'equipment.equipment_type_id',
-                    '=',
-                    'equipment_types.id'
-                )
-                ->leftjoin(
-                    'rooms',
-                    'equipment.room_id',
-                    '=',
-                    'rooms.id'
-                )
-                ->leftjoin(
-                    'buildings',
-                    'rooms.building_id',
-                    '=',
-                    'buildings.id'
-                )
-                ->leftjoin(
-                    'departments',
-                    'rooms.department_id',
-                    '=',
-                    'departments.id'
-                )
-                ->with(
-                    'type',
-                    'room',
-                    'room.building',
-                    'room.department',
-                )
-                ->sort($queryParams)
-                ->paginate(5)
-                ->withQueryString();
+        } else {
+            if ($request->user()->can('view', $room->equipment->first())) {
+                $equipment = Equipment::where('room_id', $room->id)
+                    ->select('equipment.*')
+                    ->leftjoin(
+                        'equipment_types',
+                        'equipment.equipment_type_id',
+                        '=',
+                        'equipment_types.id'
+                    )
+                    ->leftjoin(
+                        'rooms',
+                        'equipment.room_id',
+                        '=',
+                        'rooms.id'
+                    )
+                    ->leftjoin(
+                        'buildings',
+                        'rooms.building_id',
+                        '=',
+                        'buildings.id'
+                    )
+                    ->leftjoin(
+                        'departments',
+                        'rooms.department_id',
+                        '=',
+                        'departments.id'
+                    )
+                    ->with(
+                        'type',
+                        'room',
+                        'room.building',
+                        'room.department',
+                    )
+                    ->filter($filter)
+                    ->sort($queryParams)
+                    ->paginate(5)
+                    ->withQueryString();
+            }
         }
 
-        return view('rooms.show', compact('room', 'equipment'));
+        $equipmentTypes = EquipmentType::all();
+
+        return view(
+            'rooms.show',
+            compact('room', 'equipment', 'equipmentTypes')
+        );
     }
 
     /**

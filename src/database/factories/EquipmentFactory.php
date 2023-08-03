@@ -47,8 +47,8 @@ class EquipmentFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Equipment $equipment) {
-            $exampleFilesPath = storage_path('app/public/examples');
-            $copiedFilesPath = storage_path('app/public/copied_examples');
+            $exampleFilesPath = storage_path('app/public/examples/equipment');
+            $copiedFilesPath = storage_path('app/public/examples/temp');
 
             // Create the 'copied_examples' directory if it doesn't exist
             if (!File::exists($copiedFilesPath)) {
@@ -64,10 +64,14 @@ class EquipmentFactory extends Factory
                 $copiedFilePath = $copiedFilesPath . '/' . $file->getFilename();
                 File::copy($file->getRealPath(), $copiedFilePath);
 
+                // Get random user
+                $user = User::all()->random();
+
                 // Add the copied file to the media collection for the model
                 $equipment->addMedia($copiedFilePath)
                     ->withCustomProperties([
-                        'user_name' => User::all()->random()->name,
+                        'user_id' => $user->id,
+                        'user_name' => $user->name,
                         'datetime' => Carbon::now()->format('d.m.Y H:i:s')
                     ])
                     ->toMediaCollection('images');

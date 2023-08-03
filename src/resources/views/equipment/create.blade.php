@@ -88,7 +88,7 @@
                                                                   name="room"
                                                                   autocomplete="off"
                                                                   value="{{ old('room',
-                                                                    isset($room) ? $room->number . ' (' . $room->building->name . ')' : null) }}"
+                                                                    isset($chosenRoom) ? $chosenRoom->number . ' (' . $chosenRoom->building->name . ')' : null) }}"
                                                                   class="grow"
                                                     />
 
@@ -99,7 +99,7 @@
                                                 </div>
 
                                                 <input name="room_id" id="roomId" hidden="hidden"
-                                                       value="{{ old('room_id', $room?->id) }}">
+                                                       value="{{ old('room_id', $chosenRoom?->id) }}">
 
                                                 <x-input-error class="mt-2" :messages="$errors->get('room_id')"/>
                                             </div>

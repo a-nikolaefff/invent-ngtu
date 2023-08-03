@@ -65,7 +65,7 @@
                                                         data-te-select-init>
                                                     @foreach($buildings as $building)
                                                         <option
-                                                            value="{{ $building->id }}" {{ old('building_id') == $building->id ? 'selected' : '' }}>
+                                                            value="{{ $building->id }}" {{ old('building_id', $chosenBuilding?->id) == $building->id ? 'selected' : '' }}>
                                                             {{ $building->name }}
                                                         </option>
                                                     @endforeach

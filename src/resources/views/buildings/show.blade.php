@@ -15,7 +15,7 @@
                 </h1>
 
                 @canany(['update', 'delete'], $building)
-                <div class="my-4">
+                    <div class="my-4">
                         <span class="mr-2">
                             <a href="{{ route('buildings.edit', $building->id) }}">
                                 <x-button-edit>
@@ -23,15 +23,15 @@
                                 </x-button-edit>
                             </a>
                         </span>
-                    <x-button-delete-with-modal
-                        question="Вы уверены, что хотите удалить данное здание?"
-                        warning="Это действие безвозвратно удалит данное подразделения.
+                        <x-button-delete-with-modal
+                            question="Вы уверены, что хотите удалить данное здание?"
+                            warning="Это действие безвозвратно удалит данное подразделения.
                         Это действие также безвозвратно удалит все помещения относящиеся к данному зданию."
-                        :route="route('buildings.destroy', $building->id)"
-                    >
-                        Удалить
-                    </x-button-delete-with-modal>
-                </div>
+                            :route="route('buildings.destroy', $building->id)"
+                        >
+                            Удалить
+                        </x-button-delete-with-modal>
+                    </div>
                 @endcanany
             </div>
 
@@ -85,6 +85,153 @@
 
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
+                <div class="">
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                                <div class="overflow-hidden">
+
+                                    <h2 class="mb-2 text-lg font-medium text-gray-900">
+                                        Помещения
+                                    </h2>
+
+                                        <div class="w-full md:w-8/12 lg:w-4/12">
+                                            <x-input-label value="Тип помещения" class="mb-1"/>
+                                            <x-option-selector
+                                                id="optionSelector1"
+                                                :url="route('rooms.index')"
+                                                parameter-name="room_type_id"
+                                                :options="$roomTypes"
+                                                passing-property='id'
+                                                displaying-property='name'
+                                                all-options-selector='любой тип'
+                                                not-specified-option-selector='не задан'
+                                            ></x-option-selector>
+                                        </div>
+
+                                    <div class="w-full md:w-8/12 lg:w-4/12">
+                                        <x-input-label value="Этаж" class="mb-1"/>
+                                        <div id="optionSelector3" data-value="floor">
+                                            <select data-te-select-init>
+                                                <option
+                                                    value="allOptionsSelection">
+                                                    любой
+                                                </option>
+                                                @for ($i = 0; $i <= $floorAmount; $i++)
+                                                    <option
+                                                        value="{{ $i }}">
+                                                        {{ $i === 0 ? 'цокольный' : $i }}
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    @can('create', App\Models\Room::class)
+                                        <div class="my-3">
+                                            <span class="mr-2">
+                                                 <a href="{{ route('rooms.create', ['building_id' => $building->id]) }}">
+                                                     <x-button-create>
+                                                        добавить новое помещение
+                                                     </x-button-create>
+                                                 </a>
+                                            </span>
+                                        </div>
+                                    @endcan
+
+                                    @if($rooms->count() === 0)
+                                        <p class="mt-5">
+                                            Помещений в данном здании не найдено
+                                        </p>
+                                    @else
+
+                                        <table class=" min-w-full text-left text-sm font-light
+                    mx-auto max-w-4xl w-full rounded-lg bg-white divide-y divide-gray-300
+                   "
+                                               id="sortableTable">
+                                            <thead class="border-b font-medium dark:border-neutral-500">
+                                            <tr>
+                                                <th scope="col" class="w-1/12 px-6 py-4">
+                                                    <a class="d-block"
+                                                       href="{{ route('rooms.index', ['sort' => 'number', 'direction' => 'asc']) }}"
+                                                    >
+                                                        Номер
+                                                    </a>
+                                                </th>
+
+                                                <th scope="col" class="w-4/12 px-6 py-4">
+                                                    <a class="d-block"
+                                                       href="{{ route('rooms.index', ['sort' => 'name', 'direction' => 'asc']) }}"
+                                                    >
+                                                        Наименование
+                                                    </a>
+                                                </th>
+
+                                                <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                    <a class="d-block"
+                                                       href="{{ route('rooms.index', ['sort' => 'room_type_name', 'direction' => 'asc']) }}"
+                                                    >
+                                                        Тип помещения
+                                                    </a>
+                                                </th>
+
+                                                <th scope="col" class="w-3/12 px-6 py-4 hidden md:table-cell">
+                                                    <a class="d-block"
+                                                       href="{{ route('rooms.index', ['sort' => 'department_name', 'direction' => 'asc']) }}"
+                                                    >
+                                                        Подразделение
+                                                    </a>
+                                                </th>
+                                            </tr>
+
+                                            </thead>
+
+                                            <tbody>
+                                            @foreach($rooms as $room)
+                                                <tr
+                                                    onclick="window.location='{{ route('rooms.show', $room->id) }}';"
+                                                    class="clickable border-b transition duration-300 ease-in-out hover:bg-neutral-100
+                            dark:border-neutral-500 dark:hover:bg-neutral-600">
+
+                                                    <td class="px-6 py-4 max-w-250">{{ $room->number }}</td>
+
+                                                    <td class="px-6 py-4 max-w-250">{{ $room->name }}</td>
+
+                                                    <td class="px-6 py-4 max-w-250 hidden md:table-cell">
+                                                        @if($room->type)
+                                                            {{ $room->type->name }}
+                                                        @else
+                                                            не задан
+                                                        @endif
+                                                    </td>
+
+                                                    <td class="px-6 py-4 max-w-250 hidden md:table-cell">
+                                                        @if($room->department)
+                                                            {{ $room->department->name }}
+                                                        @else
+                                                            не задан
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+
+                                        <div class="mt-3">
+                                            {{ $rooms->links() }}
+                                        </div>
+                                    @endif
+
+
                                 </div>
                             </div>
                         </div>
