@@ -53,7 +53,7 @@ class DepartmentController extends Controller
             )
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(10)
+            ->paginate(5)
             ->withQueryString();
         $departmentTypes = DepartmentType::all();
         return view('departments.index', compact('departments', 'departmentTypes'));

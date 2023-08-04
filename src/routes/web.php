@@ -7,6 +7,7 @@ use App\Http\Controllers\DepartmentTypeController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
     Route::resource('building-types', BuildingTypeController::class);
     Route::resource('room-types', RoomTypeController::class);
     Route::resource('equipment-types', EquipmentTypeController::class);
+    Route::resource('repair-types', RepairTypeController::class);
 
     Route::resource('departments', DepartmentController::class);
 

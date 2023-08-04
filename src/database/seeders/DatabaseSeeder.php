@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Department;
+use App\Models\RepairType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             BuildingSeeder::class,
             RoomTypeSeeder::class,
             EquipmentTypeSeeder::class,
+            RepairTypeSeeder::class,
         ];
         $appEnv = config('app.env');
         if($appEnv === 'development') {

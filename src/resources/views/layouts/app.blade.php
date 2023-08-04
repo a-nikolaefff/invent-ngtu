@@ -12,7 +12,7 @@
          [
              'title' => 'Здания',
              'route' => 'buildings.index',
-             'boxIconClass' => 'bxs-landmark',
+             'boxIconClass' => 'bx-building-house',
         ],
         [
             'title' => 'Помещения',
@@ -32,7 +32,7 @@
         [
             'title' => 'Заявки на ремонт',
              'route' => 'profile.edit',
-             'boxIconClass' => 'bx-envelope',
+             'boxIconClass' => 'bxs-paper-plane',
         ]
     ];
 
@@ -42,18 +42,23 @@
             [
                 'title' => 'Типы зданий',
                  'route' => 'building-types.index',
-                 'boxIconClass' => 'bx-building-house',
+                 'boxIconClass' => 'bx-home',
             ],
             [
                 'title' => 'Типы помещений',
                  'route' => 'room-types.index',
-                 'boxIconClass' => 'bx-spreadsheet',
+                 'boxIconClass' => 'bx-category',
             ],
             [
                 'title' => 'Типы оборудования',
                 'route' => 'equipment-types.index',
-                'boxIconClass' => 'bx-collection',
+                'boxIconClass' => 'bx-list-ul',
             ],
+            [
+            'title' => 'Типы ремонтов',
+             'route' => 'repair-types.index',
+             'boxIconClass' => 'bx-cog',
+        ]
         ]);
     }
 @endphp

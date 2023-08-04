@@ -33,8 +33,7 @@
                                             <div class="max-w-xl mb-3">
                                                 <x-input-label for="short_name" value="Краткое наименование"/>
                                                 <x-text-input id="short_name" name="short_name" type="text"
-                                                              class="mt-1 block w-full" :value="old('short_name')"
-                                                              required/>
+                                                              class="mt-1 block w-full" :value="old('short_name')"/>
                                                 <x-input-error class="mt-2" :messages="$errors->get('short_name')"/>
                                             </div>
 

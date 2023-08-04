@@ -27,8 +27,20 @@ class UpdateDepartmentRequest extends FormRequest
         $departmentId = $this->route('department')->id;
 
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'short_name' => ['required', 'string', 'max:50'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('departments', 'name')
+                    ->ignore($this->department->id)
+            ],
+            'short_name' => [
+                'nullable',
+                'string',
+                'max:50',
+                Rule::unique('departments', 'short_name')
+                    ->ignore($this->department->id)
+            ],
             'department_type_id' => ['nullable', 'exists:department_types,id'],
             'parent_department_id' => [
                 'nullable',

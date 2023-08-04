@@ -277,7 +277,7 @@
                                                         </a>
                                                     </th>
 
-                                                    <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                    <th scope="col" class="w-2/12 px-6 py-4 hidden lg:table-cell">
                                                         <a class="d-block"
                                                            href="{{ route('equipment.index', ['sort' => 'not_in_operation', 'direction' => 'asc']) }}"
                                                         >
@@ -285,7 +285,7 @@
                                                         </a>
                                                     </th>
 
-                                                    <th scope="col" class="w-2/12 px-6 py-4 hidden md:table-cell">
+                                                    <th scope="col" class="w-2/12 px-6 py-4 hidden lg:table-cell">
                                                         <a class="d-block"
                                                            href="{{ route('equipment.index', ['sort' => 'decommissioned', 'direction' => 'asc']) }}"
                                                         >
@@ -316,11 +316,11 @@
                                                             @endif
                                                         </td>
 
-                                                        <td class="px-6 py-4 max-w-250">
+                                                        <td class="px-6 py-4 max-w-250 hidden lg:table-cell">
                                                             {{ $equipment_item->not_in_operation ? 'не в эксплуатации' : 'в эксплуатации' }}
                                                         </td>
 
-                                                        <td class="px-6 py-4 max-w-250">
+                                                        <td class="px-6 py-4 max-w-250 hidden lg:table-cell">
                                                             {{ $equipment_item->decommissioned ? 'списано' : 'на балансе' }}
                                                         </td>
 

@@ -50,7 +50,7 @@ class UserController extends Controller
             ->with('role', 'department')
             ->filter($filter)
             ->sort($queryParams)
-            ->paginate(10)
+            ->paginate(5)
             ->withQueryString();
         $roles = UserRole::all();
         return view('users.index', compact('users', 'roles'));

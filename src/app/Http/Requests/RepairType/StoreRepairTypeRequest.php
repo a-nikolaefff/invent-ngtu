@@ -1,10 +1,10 @@
 <?php
 
-namespace app\Http\Requests\Department;
+namespace app\Http\Requests\RepairType;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDepartmentRequest extends FormRequest
+class StoreRepairTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,7 @@ class StoreDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:departments,name'],
-            'short_name' => ['nullable', 'string', 'max:50', 'unique:departments,short_name'],
-            'department_type_id' => ['nullable','exists:department_types,id'],
-            'parent_department_id' => ['nullable','exists:departments,id'],
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }

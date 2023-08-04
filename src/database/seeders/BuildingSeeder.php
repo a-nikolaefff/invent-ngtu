@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 
 class BuildingSeeder extends Seeder
 {
-    private static array $baseBuildings
+    private static array $buildings
         = [
             [
                 'name' => 'Учебный корпус №1',
@@ -108,20 +108,20 @@ class BuildingSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (self::$baseBuildings as $baseBuilding) {
-            $building = Building::create([
-                'name' => $baseBuilding['name'],
-                'address' => $baseBuilding['address'],
-                'floor_amount' => $baseBuilding['floor_amount'],
+        foreach (self::$buildings as $building) {
+            $createdBuilding = Building::create([
+                'name' => $building['name'],
+                'address' => $building['address'],
+                'floor_amount' => $building['floor_amount'],
                 'building_type_id' => BuildingType::where(
                     'name',
-                    $baseBuilding['building_type']
+                    $building['building_type']
                 )->value('id'),
             ]);
 
             FileLoader::load(
-                $building,
-                'app/examples/buildings/' . $baseBuilding['images'],
+                $createdBuilding,
+                'app/examples/buildings/' . $building['images'],
                 'images'
             );
         }
