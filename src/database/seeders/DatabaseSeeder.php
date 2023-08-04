@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RoomTypeSeeder::class,
             EquipmentTypeSeeder::class,
             RepairTypeSeeder::class,
+            RepairStatusSeeder::class,
         ];
         $appEnv = config('app.env');
         if($appEnv === 'development') {
