@@ -1,11 +1,11 @@
 <?php
 
-namespace app\Http\Requests\Images;
+namespace app\Http\Requests\Repair;
 
 use App\Models\Building;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreImageRequest extends FormRequest
+class CreateRepairtRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,7 @@ class StoreImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images' => 'required|array|max:3',
-            'images.*' => 'image|mimes:jpeg,png,gif|max:10240|dimensions:max_width=4000,max_height=4000',
+            'equipment_id' => ['nullable','exists:equipment,id'],
         ];
     }
 }

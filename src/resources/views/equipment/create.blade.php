@@ -70,8 +70,8 @@
                                             </div>
 
                                             <div class="max-w-xl mb-3">
-                                                <x-input-label for="acquisitionDatePicker" value="Дата приобретения"/>
-                                                <x-text-input id="acquisitionDatePicker"
+                                                <x-input-label for="datePicker1" value="Дата приобретения"/>
+                                                <x-text-input id="datePicker1"
                                                               name="acquisition_date"
                                                               type="text"
                                                               placeholder="Выберите дату приобретения"
@@ -129,8 +129,8 @@
                                             </div>
 
                                             <div class="max-w-xl mb-3 @if(!old('decommissioned')) hidden @endif" id="decommissioningDatePickerWrapper">
-                                                <x-input-label for="decommissioningDatePicker" value="Дата списания"/>
-                                                <x-text-input id="decommissioningDatePicker"
+                                                <x-input-label for="datePicker2" value="Дата списания"/>
+                                                <x-text-input id="datePicker2"
                                                               name="decommissioning_date"
                                                               type="text"
                                                               placeholder="Выберите дату списания"

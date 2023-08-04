@@ -163,6 +163,7 @@
                                         Оборудование в помещении
                                     </h2>
 
+                                    @if(isset($equipment))
                                     <div class="flex mb-2">
                                         <div class="w-full md:w-8/12 lg:w-4/12">
                                             <x-input-label value="Тип оборудования" class="mb-1"/>
@@ -222,6 +223,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
 
                                     @can('create', App\Models\Equipment::class)
                                         <div class="my-3">
@@ -237,8 +239,12 @@
 
                                     @if(!isset($equipment))
                                         <p class="mt-5">
-                                            У вас нет прав для просмотра информации об оборудовании в данном
+                                            У вас недостаточно прав для просмотра информации об оборудовании в данном
                                             помещении.
+                                        </p>
+                                        <p class="mt-2">
+                                            Вы можете просматривать оборудование только вашего подразделения
+                                            и его дочерних подразделений если такие имеются.
                                         </p>
                                     @else
                                         @if($equipment->count() === 0)
@@ -360,12 +366,12 @@
                                 </x-button-add-files-with-modal>
 
                                 <div data-te-lightbox-init>
-                                    <div class="-m-1 flex flex-wrap  justify-start">
+                                    <div class="-m-1 flex flex-wrap justify-start mt-2">
                                         @foreach($room->getMedia('images') as $image)
-                                            <div class="flex md:w-1/3 flex-wrap w-full">
-                                                <div class="w-full p-1 md:p-2 flex flex-col items-center ">
+                                            <div class="flex md:w-1/3 mb-3 md:mb-0 flex-wrap w-full">
+                                                <div class="w-full p-1 md:p-2 flex flex-col items-center relative">
                                                     <x-button-delete-picture-with-modal
-                                                        class="self-end relative top-4"
+                                                        class="self-end absolute -top-1"
                                                         :imageIndex="$loop->index"
                                                         :route="route('rooms.destroy-image', ['room' => $room->id, 'image_index' => $loop->index])"
                                                     />

@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
                 'integer',
                 'exists:user_roles,id',
             ],
-            'department_id' => ['nullable', 'exists:department_types,id'],
+            'department_id' => ['nullable', 'exists:departments,id'],
             'post' => ['required', 'string', 'max:255'],
         ];
     }

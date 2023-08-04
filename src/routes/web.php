@@ -7,6 +7,7 @@ use App\Http\Controllers\DepartmentTypeController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RepairController;
 use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
@@ -85,7 +86,28 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
         'equipment/{equipment}/destroy-image',
         [EquipmentController::class, 'destroyImage']
     )->name('equipment.destroy-image');
+    Route::get(
+        'equipment/autocomplete',
+        [EquipmentController::class, 'autocomplete']);
     Route::resource('equipment', EquipmentController::class);
+
+    Route::post(
+        'repairs/{repair}/store-before-images',
+        [RepairController::class, 'storeBeforeImages']
+    )->name('repairs.store-before-images');
+    Route::delete(
+        'repairs/{repair}/destroy-before-image',
+        [RepairController::class, 'destroyBeforeImage']
+    )->name('repairs.destroy-before-image');
+    Route::post(
+        'repairs/{repair}/store-after-images',
+        [RepairController::class, 'storeAfterImages']
+    )->name('repairs.store-after-images');
+    Route::delete(
+        'repairs/{repair}/destroy-after-image',
+        [RepairController::class, 'destroyAfterImage']
+    )->name('repairs.destroy-after-image');
+    Route::resource('repairs', RepairController::class);
 });
 
 require __DIR__ . '/auth.php';

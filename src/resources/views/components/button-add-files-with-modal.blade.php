@@ -1,11 +1,11 @@
-@props(['description', 'route', 'innerButtonText'])
+@props(['description', 'route', 'innerButtonText', 'modalId' => 'uploadАFilesModal'])
 
 <!-- Button trigger modal -->
 <button
     {{ $attributes->merge([
     'type' => 'button',
     'data-te-toggle' => 'modal',
-    'data-te-target' => '#uploadPicturesModal',
+    'data-te-target' => "#$modalId",
     'class' => 'inline-block rounded bg-emerald-600 md:px-6 px-2 pb-2 pt-2.5 text-sm font-medium
     leading-normal text-white text-xs uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
     ease-in-out hover:bg-emerald-500
@@ -20,7 +20,7 @@
 <div
     data-te-modal-init
     class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-    id="uploadPicturesModal"
+    id="{{ $modalId }}"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true">

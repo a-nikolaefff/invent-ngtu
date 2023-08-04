@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Room;
+use App\Models\Repair;
 use Illuminate\Database\Seeder;
 
-class RoomSeeder extends Seeder
+class RepairSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Room::factory()->count(10)->create();
+        Repair::factory()->count(10)->create();
     }
 }

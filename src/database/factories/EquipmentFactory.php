@@ -21,9 +21,6 @@ class EquipmentFactory extends Factory
      */
     public function definition(): array
     {
-        $roomId = Room::pluck('id');
-        $equipmentId = EquipmentType::pluck('id');
-        $isInOperation = fake()->boolean;
         $isDecommissioned = fake()->boolean;
 
         return [
@@ -31,15 +28,15 @@ class EquipmentFactory extends Factory
             'number' => fake()->unique()->randomNumber(6, true),
             'description' => fake()->words(2, true),
             'acquisition_date' => Carbon::now(),
-            'not_in_operation' => $isInOperation,
+            'not_in_operation' => fake()->boolean,
             'decommissioned' => $isDecommissioned,
             'decommissioning_date' => $isDecommissioned ? Carbon::now() : null,
             'decommissioning_reason' => $isDecommissioned ? fake()->words(
                 2,
                 true
             ) : null,
-            'room_id' => $roomId->random(),
-            'equipment_type_id' => $equipmentId->random(),
+            'room_id' => Room::pluck('id')->random(),
+            'equipment_type_id' => EquipmentType::pluck('id')->random(),
         ];
     }
 

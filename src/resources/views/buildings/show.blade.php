@@ -125,37 +125,38 @@
                                         Помещения
                                     </h2>
 
-                                    <div class="w-full md:w-8/12 lg:w-4/12">
-                                        <x-input-label value="Тип помещения" class="mb-1"/>
-                                        <x-option-selector
-                                            id="optionSelector1"
-                                            :url="route('rooms.index')"
-                                            parameter-name="room_type_id"
-                                            :options="$roomTypes"
-                                            passing-property='id'
-                                            displaying-property='name'
-                                            all-options-selector='любой тип'
-                                            not-specified-option-selector='не задан'
-                                        ></x-option-selector>
-                                    </div>
 
-                                    <div class="w-full md:w-8/12 lg:w-4/12">
-                                        <x-input-label value="Этаж" class="mb-1"/>
-                                        <div id="optionSelector3" data-value="floor">
-                                            <select data-te-select-init>
-                                                <option
-                                                    value="allOptionsSelection">
-                                                    любой
-                                                </option>
-                                                @for ($i = 0; $i <= $floorAmount; $i++)
-                                                    <option
-                                                        value="{{ $i }}">
-                                                        {{ $i === 0 ? 'цокольный' : $i }}
-                                                    </option>
-                                                @endfor
-                                            </select>
+                                        <div class="w-full md:w-8/12 lg:w-4/12">
+                                            <x-input-label value="Тип помещения" class="mb-1"/>
+                                            <x-option-selector
+                                                id="optionSelector1"
+                                                :url="route('rooms.index')"
+                                                parameter-name="room_type_id"
+                                                :options="$roomTypes"
+                                                passing-property='id'
+                                                displaying-property='name'
+                                                all-options-selector='любой тип'
+                                                not-specified-option-selector='не задан'
+                                            ></x-option-selector>
                                         </div>
-                                    </div>
+
+                                        <div class="w-full md:w-8/12 lg:w-4/12">
+                                            <x-input-label value="Этаж" class="mb-1"/>
+                                            <div id="optionSelector3" data-value="floor">
+                                                <select data-te-select-init>
+                                                    <option
+                                                        value="allOptionsSelection">
+                                                        любой
+                                                    </option>
+                                                    @for ($i = 0; $i <= $floorAmount; $i++)
+                                                        <option
+                                                            value="{{ $i }}">
+                                                            {{ $i === 0 ? 'цокольный' : $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
 
 
                                     @can('create', App\Models\Room::class)
@@ -280,12 +281,12 @@
                                 </x-button-add-files-with-modal>
 
                                 <div data-te-lightbox-init>
-                                    <div class="-m-1 flex flex-wrap  justify-start">
+                                    <div class="-m-1 flex flex-wrap  justify-start mt-2">
                                         @foreach($building->getMedia('images') as $image)
                                             <div class="flex md:w-1/3 flex-wrap w-full">
-                                                <div class="w-full p-1 md:p-2 flex flex-col items-center ">
+                                                <div class="w-full p-1 md:p-2 flex flex-col items-center relative">
                                                     <x-button-delete-picture-with-modal
-                                                        class="self-end relative top-4"
+                                                        class="self-end absolute -top-1"
                                                         :imageIndex="$loop->index"
                                                         :route="route('buildings.destroy-image', ['building' => $building->id, 'image_index' => $loop->index])"
                                                     />

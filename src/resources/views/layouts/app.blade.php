@@ -26,7 +26,7 @@
         ],
         [
             'title' => 'Ремонты',
-             'route' => 'profile.edit',
+             'route' => 'repairs.index',
              'boxIconClass' => 'bx-wrench',
         ],
         [

@@ -1,11 +1,11 @@
-@props(['route', 'imageIndex'])
+@props(['route', 'imageIndex', 'modalId' => 'modalDeletePicture'])
 
 <!-- Button trigger modal -->
 <button
     {{ $attributes->merge([
     'type' => 'button',
     'data-te-toggle' => 'modal',
-    'data-te-target' => '#modalDeletePicture' . $imageIndex,
+    'data-te-target' => "#$modalId" . $imageIndex,
     'class' => 'inline-block rounded-full bg-red-600 px-4 px-2 pb-2 pt-2 md:px-2.5 md:pb-1 md:pt-1
     text-sm font-medium leading-normal text-white uppercase shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150
     ease-in-out hover:bg-red-500
@@ -20,7 +20,7 @@
 <div
     data-te-modal-init
     class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-    id="{{ 'modalDeletePicture' . $imageIndex }}"
+    id="{{ $modalId . $imageIndex }}"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true">
