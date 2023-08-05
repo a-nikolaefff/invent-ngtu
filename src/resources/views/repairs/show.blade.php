@@ -83,7 +83,7 @@
                                                 Ремонтируемое оборудование:
                                             </th>
                                             <td class="px-6 py-4">
-                                                {{ $repair->equipment->name . ', инвентарный номер № ' . $repair->equipment->number }}
+                                                {{ 'инв. № ' . $repair->equipment->number . ', ' . $repair->equipment->name }}
                                             </td>
                                         </tr>
 

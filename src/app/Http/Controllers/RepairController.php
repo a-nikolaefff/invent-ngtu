@@ -149,7 +149,6 @@ class RepairController extends Controller
     public function update(UpdateRepairRequest $request, Repair $repair)
     {
         $validatedData = $request->validated();
-
         $repair->fill($validatedData)->save();
         return redirect()->route('repairs.show', $repair->id)
             ->with('status', 'repair-updated');

@@ -1,4 +1,4 @@
-<x-app-layout :title="'Оборудование: ' . $equipment->name">
+<x-app-layout :title="'Оборудование:  инв. № ' . $equipment->number . ', ' . $equipment->name">
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
@@ -33,7 +33,7 @@
 
             <div class="sm:px-8">
                 <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ 'Оборудование: ' . $equipment->name }}
+                    {{ 'Оборудование:  инв. № ' . $equipment->number . ', ' . $equipment->name }}
                 </h1>
 
                 @canany(['update', 'delete'], $equipment)
@@ -74,7 +74,7 @@
                                         <tr
                                             class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
                                         >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Номер:</th>
+                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Инвентарный номер:</th>
                                             <td class="px-6 py-4"> {{ $equipment->number }}</td>
                                         </tr>
 
@@ -206,51 +206,56 @@
                                         Ремонты данного оборудования
                                     </h2>
 
-                                        <div class="flex mb-2">
-                                            <div class="w-full md:w-8/12 lg:w-4/12">
-                                                <x-input-label value="Тип ремонта" class="mb-1"/>
-                                                <x-option-selector
-                                                    id="optionSelector1"
-                                                    :url="route('equipment.index')"
-                                                    parameter-name="repair_type_id"
-                                                    :options="$repairTypes"
-                                                    passing-property='id'
-                                                    displaying-property='name'
-                                                    all-options-selector='любой тип'
-                                                    not-specified-option-selector='не задан'
-                                                ></x-option-selector>
-                                            </div>
-                                            <div class="ml-3 w-full md:w-8/12 lg:w-4/12">
-                                                <x-input-label value="Тип ремонта" class="mb-1"/>
-                                                <x-option-selector
-                                                    id="optionSelector2"
-                                                    :url="route('equipment.index')"
-                                                    parameter-name="repair_status_id"
-                                                    :options="$repairStatuses"
-                                                    passing-property='id'
-                                                    displaying-property='name'
-                                                    all-options-selector='любой статус'
-                                                ></x-option-selector>
-                                            </div>
+                                    <div class="flex mb-2">
+                                        <div class="w-full md:w-8/12 lg:w-4/12">
+                                            <x-input-label value="Тип ремонта" class="mb-1"/>
+                                            <x-option-selector
+                                                id="optionSelector1"
+                                                :url="route('equipment.index')"
+                                                parameter-name="repair_type_id"
+                                                :options="$repairTypes"
+                                                passing-property='id'
+                                                displaying-property='name'
+                                                all-options-selector='любой'
+                                                not-specified-option-selector='не задан'
+                                            ></x-option-selector>
                                         </div>
+                                        <div class="ml-3 w-full md:w-8/12 lg:w-4/12">
+                                            <x-input-label value="Статус ремонта" class="mb-1"/>
+                                            <x-option-selector
+                                                id="optionSelector2"
+                                                :url="route('equipment.index')"
+                                                parameter-name="repair_status_id"
+                                                :options="$repairStatuses"
+                                                passing-property='id'
+                                                displaying-property='name'
+                                                all-options-selector='любой'
+                                            ></x-option-selector>
+                                        </div>
+                                    </div>
 
-                                    @can('create', App\Models\Repair::class)
                                         <div class="my-3">
-                                            <span class="mr-2">
-                                                 <a href="{{ route('repairs.create', ['equipment_id' => $equipment->id]) }}">
-                                                     <x-button-create>
-                                                        добавить новый ремонт
-                                                     </x-button-create>
-                                                 </a>
-                                            </span>
+                                            @can('create', App\Models\Repair::class)
+                                            <a href="{{ route('repairs.create', ['equipment_id' => $equipment->id]) }}">
+                                                <x-button-create class="mr-2 mb-3">
+                                                    добавить новый ремонт
+                                                </x-button-create>
+                                            </a>
+                                            @endcan
+                                            @can('create', App\Models\RepairApplication::class)
+                                                <a href="{{ route('repair-applications.create', ['equipment_id' => $equipment->id]) }}">
+                                                    <x-button-create>
+                                                        Создать заявку на ремонт
+                                                    </x-button-create>
+                                                </a>
+                                            @endcan
                                         </div>
-                                    @endcan
 
-                                        @if($repairs->count() === 0)
-                                            <p class="mt-5">
-                                                Ремонтов данного оборудования не найдено
-                                            </p>
-                                        @else
+                                    @if($repairs->count() === 0)
+                                        <p class="mt-5">
+                                            Ремонтов данного оборудования не найдено
+                                        </p>
+                                    @else
 
                                         <table class=" min-w-full text-left text-sm font-light
                     mx-auto max-w-4xl w-full rounded-lg bg-white divide-y divide-gray-300

@@ -31,7 +31,7 @@
         ],
         [
             'title' => 'Заявки на ремонт',
-             'route' => 'profile.edit',
+             'route' => 'repair-applications.index',
              'boxIconClass' => 'bxs-paper-plane',
         ]
     ];

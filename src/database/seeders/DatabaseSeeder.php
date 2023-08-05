@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             $seeders[] = RoomSeeder::class;
             $seeders[] = EquipmentSeeder::class;
             $seeders[] = RepairSeeder::class;
+            $seeders[] = RepairApplicationSeeder::class;
         }
         $this->call($seeders);
     }

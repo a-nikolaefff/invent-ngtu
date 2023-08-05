@@ -146,7 +146,7 @@
                                 <td class="px-6 py-4 max-w-250">{{ $repair->short_description }}</td>
 
                                 <td class="px-6 py-4 max-w-250">
-                                    {{ $repair->equipment->name . ', инв. № ' . $repair->equipment->number }}
+                                    {{ 'инв. № ' . $repair->equipment->number . ', ' . $repair->equipment->name }}
                                 </td>
 
                                 <td class="px-6 py-4 max-w-250 hidden lg:table-cell">

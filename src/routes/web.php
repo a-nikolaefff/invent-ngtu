@@ -7,6 +7,7 @@ use App\Http\Controllers\DepartmentTypeController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RepairApplicationController;
 use App\Http\Controllers\RepairController;
 use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RoomController;
@@ -108,6 +109,16 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
         [RepairController::class, 'destroyAfterImage']
     )->name('repairs.destroy-after-image');
     Route::resource('repairs', RepairController::class);
+
+    Route::post(
+        'repair-applications/{repairApplication}/store-images',
+        [RepairApplicationController::class, 'storeImages']
+    )->name('repair-applications.store-images');
+    Route::delete(
+        'repair-applications/{repairApplication}/destroy-image',
+        [RepairApplicationController::class, 'destroyImage']
+    )->name('repair-applications.destroy-image');
+    Route::resource('repair-applications', RepairApplicationController::class);
 });
 
 require __DIR__ . '/auth.php';

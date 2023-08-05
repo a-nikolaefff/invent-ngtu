@@ -25,7 +25,7 @@
                                             @csrf
 
                                             <div class="mb-3">
-                                                <x-input-label for="equipmentAutocomplete" value="Ремонтируемое оборудование"/>
+                                                <x-input-label for="equipmentAutocomplete" value="Ремонтируемое оборудование (инвентарный номер)"/>
                                                 <div class="flex">
                                                     <x-text-input id="equipmentAutocomplete"
                                                                   name="equipment"

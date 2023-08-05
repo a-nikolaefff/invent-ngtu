@@ -9,6 +9,8 @@ use App\Models\Department;
 use App\Models\DepartmentType;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
+use App\Models\Repair;
+use App\Models\RepairApplication;
 use App\Models\RepairType;
 use App\Models\Room;
 use App\Models\RoomType;
@@ -19,6 +21,8 @@ use App\Policies\DepartmentPolicy;
 use App\Policies\DepartmentTypePolicy;
 use App\Policies\EquipmentPolicy;
 use App\Policies\EquipmentTypePolicy;
+use App\Policies\RepairApplicationPolicy;
+use App\Policies\RepairPolicy;
 use App\Policies\RepairTypePolicy;
 use App\Policies\RoomPolicy;
 use App\Policies\RoomTypePolicy;
@@ -44,6 +48,8 @@ class AuthServiceProvider extends ServiceProvider
             Building::class => BuildingPolicy::class,
             Room::class => RoomPolicy::class,
             Equipment::class => EquipmentPolicy::class,
+            Repair::class => RepairPolicy::class,
+            RepairApplication::class => RepairApplicationPolicy::class,
         ];
 
     /**
