@@ -1,20 +1,24 @@
-<div {{ $attributes->merge(['data-value' => $parameterName]) }}>
+@props(['label', 'parameter', 'options', 'displayingProperty', 'passingProperty',
+ 'allOptionsSelection', 'notSpecifiedOptionSelection'])
+
+<div {{ $attributes->merge(['data-value' => $parameter]) }}>
+    <x-forms.input-label value="{{ $label }}" class="mb-1"/>
 
     <select data-te-select-init>
 
-        @if($allOptionsSelector)
+        @isset($allOptionsSelection)
             <option
                 value="allOptionsSelection">
-                {{ $allOptionsSelector }}
+                {{ $allOptionsSelection }}
             </option>
-        @endif
+        @endisset
 
-        @if($notSpecifiedOptionSelector)
-            <option
-                value="none">
-                {{ $notSpecifiedOptionSelector }}
-            </option>
-        @endif
+        @isset($notSpecifiedOptionSelection)
+                <option
+                    value="none">
+                    {{ $notSpecifiedOptionSelection }}
+                </option>
+        @endisset
 
         @foreach($options as $option)
             <option

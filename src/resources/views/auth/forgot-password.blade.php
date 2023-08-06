@@ -12,16 +12,16 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('interface.email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+            <x-forms.input-label for="email" :value="__('interface.email')" />
+            <x-forms.text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
                           required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-forms.input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-button-confirm>
+            <x-buttons.confirm>
                 Отправить ссылку для сброса пароля
-            </x-button-confirm>
+            </x-buttons.confirm>
         </div>
     </form>
 </x-guest-layout>

@@ -17,7 +17,7 @@ class DepartmentFilter extends AbstractFilter
     protected function getCallbacks(): array
     {
         return [
-            self::DEPARTMENT_TYPE_ID => [$this, 'departmentTypeId'],
+            self::DEPARTMENT_TYPE_ID => [$this, 'departmentType'],
             self::SEARCH => [$this, 'search'],
         ];
     }
@@ -30,7 +30,7 @@ class DepartmentFilter extends AbstractFilter
      *
      * @return void
      */
-    public function departmentTypeId(Builder $builder, $departmentTypeId)
+    public function departmentType(Builder $builder, $departmentTypeId)
     {
         $departmentTypeId = $departmentTypeId === 'none' ? null : $departmentTypeId;
         $builder->where('departments.department_type_id', $departmentTypeId);

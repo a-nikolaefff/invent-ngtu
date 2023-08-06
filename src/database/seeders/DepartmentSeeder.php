@@ -142,7 +142,6 @@ class DepartmentSeeder extends Seeder
             // Испытательная лаборатория «ЦБДДТЭ» и её подразделения
             [
                 'name' => 'Испытательная лаборатория "ЦБДДТЭ"',
-                'short_name' => 'ЦБДДТЭ',
                 'department_type' => 'лаборатория',
                 'parent_department' => 'Образовательно-научный институт транспортных систем',
             ],
@@ -608,10 +607,6 @@ class DepartmentSeeder extends Seeder
                 'department_type' => 'управление',
             ],
             [
-                'name' => 'Правовое управление',
-                'department_type' => 'управление',
-            ],
-            [
                 'name' => 'Отдел правовой экспертизы и договорной работы',
                 'department_type' => 'отдел',
                 'parent_department' => 'Правовое управление',
@@ -837,10 +832,6 @@ class DepartmentSeeder extends Seeder
             ],
             [
                 'name' => 'Отдел по воспитательной работе',
-                'department_type' => 'отдел',
-            ],
-            [
-                'name' => 'Редакционно-издательский отдел',
                 'department_type' => 'отдел',
             ],
             [

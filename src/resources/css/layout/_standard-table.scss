@@ -1,0 +1,32 @@
+.standard-table {
+    @apply min-w-full max-w-4xl text-sm text-left;
+
+    thead, tr {
+        @apply border-b;
+    }
+
+    th, td {
+        @apply px-6 py-4;
+    }
+
+    // standard-table_clickable
+    &_clickable {
+        tbody tr {
+            cursor: pointer;
+            @apply hover:bg-neutral-100 transition duration-300 ease-in-out;
+        }
+    }
+
+    // standard-table_left-header
+    &_left-header {
+        th {
+            @apply px-2 text-right;
+        }
+    }
+
+    // standard-table__clickable-row
+    &__clickable-row {
+        cursor: pointer;
+        @apply hover:bg-neutral-100 transition duration-300 ease-in-out;
+    }
+}

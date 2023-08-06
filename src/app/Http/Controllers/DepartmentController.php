@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\DepartmentFilter;
 use App\Http\Requests\Department\IndexDepartmentRequest;
 use App\Http\Requests\Department\StoreDepartmentRequest;
 use App\Http\Requests\Department\UpdateDepartmentRequest;
 use App\Models\Department;
 use App\Models\DepartmentType;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request ;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
@@ -29,34 +28,12 @@ class DepartmentController extends Controller
     public function index(IndexDepartmentRequest $request)
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            DepartmentFilter::class,
-            ['queryParams' => $queryParams]
-        );
-
-        $departments = Department::select('departments.*')
-            ->leftjoin(
-                'departments as parent_departments',
-                'departments.parent_department_id',
-                '=',
-                'parent_departments.id'
-            )
-            ->leftjoin(
-                'department_types',
-                'departments.department_type_id',
-                '=',
-                'department_types.id'
-            )
-            ->with(
-                'parent',
-                'type',
-            )
-            ->filter($filter)
-            ->sort($queryParams)
-            ->paginate(5)
-            ->withQueryString();
+        $departments = Department::getDepartments($queryParams);
         $departmentTypes = DepartmentType::all();
-        return view('departments.index', compact('departments', 'departmentTypes'));
+        return view(
+            'departments.index',
+            compact('departments', 'departmentTypes')
+        );
     }
 
     /**
@@ -95,14 +72,19 @@ class DepartmentController extends Controller
     {
         $department->load('type', 'parent');
         $departmentTypes = DepartmentType::all();
-        return view('departments.edit', compact('department', 'departmentTypes'));
+        return view(
+            'departments.edit',
+            compact('department', 'departmentTypes')
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartmentRequest $request, Department $department)
-    {
+    public function update(
+        UpdateDepartmentRequest $request,
+        Department $department
+    ) {
         $validatedData = $request->validated();
         $department->fill($validatedData)->save();
         return redirect()->route('departments.show', $department->id)
@@ -130,11 +112,9 @@ class DepartmentController extends Controller
     public function autocomplete(Request $request): JsonResponse
     {
         $keyword = $request->input('search');
-
         $departments = Department::where('name', 'like', "%$keyword%")
-                    ->orWhere('short_name', 'like', "%$keyword%")
+            ->orWhere('short_name', 'like', "%$keyword%")
             ->get();
-
         return response()->json($departments);
     }
 }

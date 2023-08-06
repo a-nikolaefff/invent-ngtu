@@ -19,9 +19,9 @@
             @csrf
 
             <div class="mr-2">
-                <x-button-confirm>
+                <x-buttons.confirm>
                     Отправить новое письмо
-                </x-button-confirm>
+                </x-buttons.confirm>
             </div>
         </form>
 

@@ -1,0 +1,18 @@
+.content-block {
+    @apply p-4 sm:p-6 space-y-3 bg-white shadow sm:rounded-lg;
+}
+
+.form-wrapper {
+    @apply space-y-3;
+
+    // form fields
+    & > * {
+        @apply space-y-1;
+
+        // form inputs, labels, errors
+        & > * {
+            @apply w-full;
+        }
+    }
+}
+

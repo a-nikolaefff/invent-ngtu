@@ -17,25 +17,25 @@
             @can('viewAny', App\Models\User::class)
                 @if($isPageWithAdminSidebar)
                     <a href="{{ route('buildings.index') }}">
-                        <x-button-primary>
+                        <x-buttons.primary>
                             <span class="hidden sm:inline-flex">
                                 Панель пользователя
                             </span>
                             <span class="sm:hidden">
                                 Пол. панель
                             </span>
-                        </x-button-primary>
+                        </x-buttons.primary>
                     </a>
                 @else
                     <a href="{{ route('users.index') }}">
-                        <x-button-secondary>
+                        <x-buttons.secondary>
                             <span class="hidden sm:inline-flex">
                                 Панель администратора
                             </span>
                             <span class="sm:hidden">
                                 Админ. панель
                             </span>
-                        </x-button-secondary>
+                        </x-buttons.secondary>
                     </a>
                 @endif
             @endcan

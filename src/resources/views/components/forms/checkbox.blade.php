@@ -20,10 +20,7 @@
            checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem]
            checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem]
            checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid
-           checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600
-           dark:checked:border-primary dark:checked:bg-primary
-           dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)]
-           dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
+           checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600"
         {{ $disabled ? 'disabled' : '' }}
         type="checkbox"
         id="{{ $id }}"

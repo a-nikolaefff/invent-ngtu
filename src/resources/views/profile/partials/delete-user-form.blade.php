@@ -1,6 +1,6 @@
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="h2">
             Удалить аккаунт
         </h2>
 
@@ -9,11 +9,11 @@
         </p>
     </header>
 
-    <x-button-delete
+    <x-buttons.delete
         type="button"
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >Удалить аккаунт</x-button-delete>
+    >Удалить аккаунт</x-buttons.delete>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -31,9 +31,9 @@
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                <x-forms.input-label for="password" value="{{ __('Password') }}" class="sr-only" />
 
-                <x-text-input
+                <x-forms.text-input
                     id="password"
                     name="password"
                     type="password"
@@ -41,17 +41,17 @@
                     placeholder="{{ __('interface.password') }}"
                 />
 
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                <x-forms.input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
             </div>
 
             <div class="mt-6 flex justify-end">
-                <x-button-cancel x-on:click="$dispatch('close')">
+                <x-buttons.cancel x-on:click="$dispatch('close')">
                     Отмена
-                </x-button-cancel>
+                </x-buttons.cancel>
 
-                <x-button-delete class="ml-3">
+                <x-buttons.delete class="ml-3">
                     Удалить аккаунт
-                </x-button-delete>
+                </x-buttons.delete>
             </div>
         </form>
     </x-modal>

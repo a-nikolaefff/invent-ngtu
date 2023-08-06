@@ -1,12 +1,7 @@
-@props(['title'])
+@props(['title', 'centered' => false, 'overflowXAuto' => true])
 
 @php
     $user = Auth::user();
-    $isSpecialist = $user && $user->hasAnyRole(
-            App\Enums\UserRoleEnum::SuperAdmin,
-            App\Enums\UserRoleEnum::Admin,
-            App\Enums\UserRoleEnum::SupplyAndRepairSpecialist,
-        );
 
      $menu = [
          [
@@ -36,31 +31,37 @@
         ]
     ];
 
-     if ($isSpecialist) {
-             $menu = array_merge($menu,
-        [
-            [
+     if($user->can('viewAny', App\Models\BuildingType::class)) {
+         $menu[] = [
                 'title' => 'Типы зданий',
                  'route' => 'building-types.index',
                  'boxIconClass' => 'bx-home',
-            ],
-            [
+            ];
+     }
+
+     if($user->can('viewAny', App\Models\RoomType::class)) {
+         $menu[] =  [
                 'title' => 'Типы помещений',
                  'route' => 'room-types.index',
                  'boxIconClass' => 'bx-category',
-            ],
-            [
+            ];
+     }
+
+     if($user->can('viewAny', App\Models\EquipmentType::class)) {
+         $menu[] = [
                 'title' => 'Типы оборудования',
                 'route' => 'equipment-types.index',
                 'boxIconClass' => 'bx-list-ul',
-            ],
-            [
-            'title' => 'Типы ремонтов',
-             'route' => 'repair-types.index',
-             'boxIconClass' => 'bx-cog',
-        ]
-        ]);
-    }
+            ];
+     }
+
+     if($user->can('viewAny', App\Models\RepairType::class)) {
+         $menu[] = [
+                'title' => 'Типы ремонтов',
+                'route' => 'repair-types.index',
+                 'boxIconClass' => 'bx-cog',
+            ];
+     }
 @endphp
 
     <!DOCTYPE html>
@@ -80,18 +81,19 @@
 <body class="font-sans antialiased">
 
 <div class="page" id="page">
-    <x-header
+
+    <x-common.header
         :is-page-with-admin-sidebar="false"
-    ></x-header>
-    <x-sidebar
+    ></x-common.header>
+
+    <x-common.sidebar
         :is-admin-sidebar="false"
         :menu="$menu"
-    ></x-sidebar>
-    <main class="page__content content py-4">
-        <div class="sm:container mx-auto">
-            {{ $slot }}
-        </div>
-    </main>
+    ></x-common.sidebar>
+
+    <x-common.page-content :centered="$centered" :overflowXAuto="$overflowXAuto">
+        {{ $slot }}
+    </x-common.page-content>
 </div>
 </body>
 </html>

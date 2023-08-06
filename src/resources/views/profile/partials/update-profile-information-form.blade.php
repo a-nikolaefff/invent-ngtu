@@ -1,6 +1,6 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="h2">
             Персональные данные
         </h2>
 
@@ -18,17 +18,17 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" value="Имя" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-forms.input-label for="name" value="Имя" />
+            <x-forms.text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-forms.input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('interface.email')" />
-            <x-text-input id="email" name="email" type="email"
+            <x-forms.input-label for="email" :value="__('interface.email')" />
+            <x-forms.text-input id="email" name="email" type="email"
                           class="mt-1 block w-full" :value="old('email', $user->email)"
                           required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <x-forms.input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-button-confirm>Изменить персональные данные</x-button-confirm>
+            <x-buttons.confirm>Изменить персональные данные</x-buttons.confirm>
         </div>
     </form>
 </section>

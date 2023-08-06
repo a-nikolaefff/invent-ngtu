@@ -1,0 +1,21 @@
+.gallery {
+    @apply -m-1 flex flex-wrap justify-start mt-2;
+
+    // gallery__item
+    &__item {
+        @apply flex md:w-1/3 flex-wrap w-full;
+    }
+
+    // gallery__picture
+    &__picture {
+        @apply w-full p-1 md:p-2 flex flex-col items-center relative;
+
+        & > .gallery__delete-picture-button {
+            @apply self-end absolute -top-1;
+        }
+
+        & > img {
+            @apply w-full clickable rounded shadow-sm data-[te-lightbox-disabled]:cursor-auto;
+        }
+    }
+}

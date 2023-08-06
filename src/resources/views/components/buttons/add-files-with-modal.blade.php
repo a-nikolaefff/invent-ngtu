@@ -42,20 +42,20 @@
                         {{ $description }}
                     </p>
 
-                    <x-file-input multiple id="images" name="images[]"
+                    <x-forms.file-input multiple id="images" name="images[]"
                                   class="mt-1 block w-full"/>
 
                     <div class="mt-6 flex justify-end">
 
-                        <x-button-cancel
+                        <x-buttons.cancel
                             class="mr-2"
                             data-te-modal-dismiss>
                             Отмена
-                        </x-button-cancel>
+                        </x-buttons.cancel>
 
-                        <x-button-confirm>
+                        <x-buttons.confirm>
                             {{ $innerButtonText }}
-                        </x-button-confirm>
+                        </x-buttons.confirm>
 
                     </div>
                 </form>

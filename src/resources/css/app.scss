@@ -23,14 +23,19 @@
 @import 'base/baseline';
 
 // Import layout styles
+@import "layout/guest";
 @import "layout/header";
 @import "layout/sidebar";
 @import "layout/page";
-@import "layout/guest";
+@import "layout/page-header";
+@import "layout/content-block";
+@import "layout/standard-table";
+@import "layout/gallery";
 
 // Import components
 @import "components/search-form";
 @import "components/g-recaptcha";
 @import "components/autocomplete";
+
 
 // Import pages

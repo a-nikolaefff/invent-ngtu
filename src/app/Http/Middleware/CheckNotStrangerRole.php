@@ -19,7 +19,7 @@ class CheckNotStrangerRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user() && $request->user()->role->name === UserRoleEnum::Stranger->value) {
+        if ($request->user() && $request->user()->hasRole(UserRoleEnum::Stranger)) {
             return redirect(route('authorization.notice'));
         }
         return $next($request);

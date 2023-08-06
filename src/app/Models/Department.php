@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\DepartmentFilter;
 use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,33 @@ class Department extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Department::class, 'parent_department_id');
+    }
+
+    public static function getDepartments(array $queryParams)
+    {
+        $filter = app()->make(
+            DepartmentFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        return static::select('departments.*')
+            ->leftjoin(
+                'departments as parent_departments',
+                'departments.parent_department_id',
+                '=',
+                'parent_departments.id'
+            )
+            ->leftjoin(
+                'department_types',
+                'departments.department_type_id',
+                '=',
+                'department_types.id'
+            )
+            ->with('parent', 'type')
+            ->filter($filter)
+            ->sort($queryParams)
+            ->paginate(5)
+            ->withQueryString();
     }
 
     public function scopeSort(

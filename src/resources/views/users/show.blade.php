@@ -1,174 +1,131 @@
-<x-admin-layout :title="'Пользователь: ' . $user->name">
+<x-admin-layout :centered="true" :title="'Пользователь: ' . $user->name">
 
-    <div class="py-3">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
+    @if (session('status') === 'user-updated')
+        <x-alert type="success">
+            Данные успешно изменены
+        </x-alert>
+    @endif
 
-            @if (session('status') === 'user-updated')
-                <x-alert type="success" class="mb-4">
-                    Данные успешно изменены
-                </x-alert>
-            @endif
+    <div class="page-header">
+        <h1 class="h1">
+            {{ 'Пользователь: ' . $user->name }}
+        </h1>
 
-            <div class="sm:px-8">
-                <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ 'Пользователь: ' . $user->name }}
-                </h1>
-
-                @can('update', $user)
-                    <div class="my-4">
-                        <span class="mr-2">
-                            <a href="{{ route('users.edit', $user->id) }}">
-                                <x-button-edit>
-                                    Редактировать
-                                </x-button-edit>
-                            </a>
-                        </span>
-                        @can('delete', $user)
-                            <x-button-delete-with-modal
-                                question="Вы уверены, что хотите удалить данного пользователя?"
-                                warning="Это действие удалит пользователя, а также все созданные им заявки на ремонт."
-                                :route="route('users.destroy', $user->id)"
-                            >
-                                Удалить
-                            </x-button-delete-with-modal>
-                        @endcan
-                    </div>
-                @endcan
-            </div>
-
-            <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
-
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                                <div class="overflow-hidden">
-                                    <h2 class="mb-2 text-lg font-medium text-gray-900">
-                                        Персональные данные
-                                    </h2>
-
-                                    <table class="min-w-full text-left text-sm font-light">
-                                        <tbody>
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
-                                        >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Имя:</th>
-                                            <td class=" px-6 py-4"> {{ $user->name }}</td>
-                                        </tr>
-
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="px-2 py-4 text-right">Email:</th>
-                                            <td class=" px-6 py-4">
-                                                <a class="text-blue-600 dark:text-blue-500 hover:underline"
-                                                   href="mailto:{{$user->email}}">
-                                                    {{ $user->email }}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-            </div>
-
-            <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                                <div class="overflow-hidden">
-                                    <h2 class="mb-2 text-lg font-medium text-gray-900">
-                                        Служебные данные
-                                    </h2>
-
-                                    <table class="min-w-full text-left text-sm font-light">
-                                        <tbody>
-
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Роль в системе:</th>
-                                            <td class=" px-6 py-4"> {{ $user->role->name }}</td>
-                                        </tr>
-
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Должность:</th>
-                                            <td class=" px-6 py-4"> {{ $user->post }}</td>
-                                        </tr>
-
-                                        <tr
-                                            @if($user->department)
-                                            onclick="window.location='{{ route('departments.show', $user->department->id) }}';"
-                                            class="clickable border-b transition duration-300 ease-in-out
-                                             hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
-                                            @else
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600"
-                                            @endif
-                                        >
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Подразделение:</th>
-                                            <td class=" px-6 py-4">
-                                                @if($user->department)
-                                                {{ $user->department->name }}
-                                                @else
-                                                    нет
-                                                @endif
-                                            </td>
-                                        </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-            <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg">
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                                <div class="overflow-hidden">
-                                    <h2 class="mb-2 text-lg font-medium text-gray-900">
-                                        Хронологические данные
-                                    </h2>
-
-                                    <table class="min-w-full text-left text-sm font-light">
-                                        <tbody>
-
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="w-2/12 px-2 py-4 text-right">Регистрация:</th>
-                                            <td class=" px-6 py-4"> {{ $user->created_at }}</td>
-                                        </tr>
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="px-2 py-4 text-right">Подтверждение email:</th>
-                                            <td class=" px-6 py-4">
-                                                @if($user->email_verified_at)
-                                                    {{ $user->email_verified_at }}
-                                                @else
-                                                    не подтвержден
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                            <th scope="row" class="px-2 py-4 text-right">Последнее изменение <br>
-                                                профиля:
-                                            </th>
-                                            <td class=" px-6 py-4"> {{ $user->updated_at }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-            </div>
+        <div class="page-header__buttons">
+            @can('update', $user)
+                <a href="{{ route('users.edit', $user->id) }}">
+                    <x-buttons.edit>
+                        Редактировать
+                    </x-buttons.edit>
+                </a>
+            @endcan
+            @can('delete', $user)
+                <x-buttons.delete-with-modal
+                    question="Вы уверены, что хотите удалить данного пользователя?"
+                    warning="Это действие удалит пользователя, а также все созданные им заявки на ремонт."
+                    :route="route('users.destroy', $user->id)"
+                >
+                    Удалить
+                </x-buttons.delete-with-modal>
+            @endcan
         </div>
     </div>
+
+    <div class="content-block">
+
+        <h2 class="h2">
+            Персональные данные
+        </h2>
+
+        <table class="standard-table standard-table_left-header">
+            <tbody>
+            <tr>
+                <th scope="row" class="w-2/12">Имя:</th>
+                <td> {{ $user->name }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Email:</th>
+                <td>
+                    <a class="text-blue-600 dark:text-blue-500 hover:underline"
+                       href="mailto:{{$user->email}}">
+                        {{ $user->email }}
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="content-block">
+
+        <h2 class="h2">
+            Служебные данные
+        </h2>
+
+        <table class="standard-table standard-table_left-header">
+            <tbody>
+
+            <tr>
+                <th scope="row" class="w-2/12">Роль в системе:</th>
+                <td> {{ $user->role->name }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row" class="w-2/12">Должность:</th>
+                <td> {{ $user->post }}</td>
+            </tr>
+
+            <tr
+                @if($user->department)
+                    onclick="window.location='{{ route('departments.show', $user->department->id) }}';"
+                class="standard-table__clickable-row"
+                @endif
+            >
+                <th scope="row" class="w-2/12">Подразделение:</th>
+                <td>
+                    @if($user->department)
+                        {{ $user->department->name }}
+                    @else
+                        нет
+                    @endif
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="content-block">
+
+        <h2 class="h2">
+            Хронологические данные
+        </h2>
+
+        <table class="standard-table standard-table_left-header">
+            <tbody>
+
+            <tr>
+                <th scope="row" class="w-2/12">Регистрация:</th>
+                <td> {{ $user->created_at }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Подтверждение email:</th>
+                <td>
+                    @if($user->email_verified_at)
+                        {{ $user->email_verified_at }}
+                    @else
+                        не подтвержден
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Последнее изменение профиля:</th>
+                <td> {{ $user->updated_at }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </x-admin-layout>

@@ -40,11 +40,11 @@
                     </h2>
 
                     <div class="mt-6 flex justify-end">
-                        <x-button-cancel
+                        <x-buttons.cancel
                             class="mr-2"
                             data-te-modal-dismiss>
                             Отмена
-                        </x-button-cancel>
+                        </x-buttons.cancel>
 
                         <button
                             type="submit"

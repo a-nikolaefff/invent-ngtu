@@ -1,4 +1,4 @@
-@props(['title'])
+@props(['title', 'centered' => false, 'overflowXAuto' => true])
 
     <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
-        {{ $title }} | {{ config('app.name', 'Laravel') }}
+        {!! $title !!} | {{ config('app.name', 'Laravel') }}
     </title>
 
     <!-- Scripts -->
@@ -17,10 +17,12 @@
 <body class="font-sans antialiased">
 
 <div class="page" id="page">
-    <x-header
+
+    <x-common.header
         :is-page-with-admin-sidebar="true"
-    ></x-header>
-    <x-sidebar
+    ></x-common.header>
+
+    <x-common.sidebar
         :is-admin-sidebar="true"
         :menu="[
                 [
@@ -39,12 +41,12 @@
                     'boxIconClass' => 'bx-layer',
                 ],
             ]"
-    ></x-sidebar>
-    <main class="page__content content py-4">
-        <div class="sm:container mx-auto">
-            {{ $slot }}
-        </div>
-    </main>
+    ></x-common.sidebar>
+
+    <x-common.page-content :centered="$centered" :overflowXAuto="$overflowXAuto">
+        {{ $slot }}
+    </x-common.page-content>
+
 </div>
 </body>
 </html>
