@@ -23,7 +23,7 @@
                                 Панель администратора
                             </span>
                             <span class="sm:hidden">
-                                Админ. панель
+                                Адм. панель
                             </span>
                         </x-buttons.secondary>
                     </a>
