@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Filters\BuildingFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,9 +15,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Building extends Model implements HasMedia
+class Building extends Model implements HasMedia, GetByParams
 {
-    use Filterable, InteractsWithMedia;
+    use Filterable, InteractsWithMedia, StoreMedia;
 
     /**
      * The name of the table in the database
@@ -49,6 +52,27 @@ class Building extends Model implements HasMedia
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class, 'building_id');
+    }
+
+    public function scopeGetByParams(Builder $query, array $queryParams): void
+    {
+        $filter = app()->make(
+            BuildingFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->select('buildings.*')
+            ->leftjoin(
+                'building_types',
+                'buildings.building_type_id',
+                '=',
+                'building_types.id'
+            )
+            ->with(
+                'type',
+            )
+            ->filter($filter)
+            ->sort($queryParams);
     }
 
     public function scopeSort(

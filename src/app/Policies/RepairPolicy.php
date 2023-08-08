@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
+use App\Models\Equipment;
 use App\Models\Repair;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -64,5 +65,15 @@ class RepairPolicy
             UserRoleEnum::Admin,
             UserRoleEnum::SupplyAndRepairSpecialist
         );
+    }
+
+    /**
+     * Determine whether the user can store and delete images
+     */
+    public function manageImages(
+        User $user,
+        Repair $repair
+    ): bool {
+        return $user->can('update', $repair);
     }
 }

@@ -3,6 +3,7 @@
 namespace app\Http\Requests\BuildingType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBuildingTypeRequest extends FormRequest
 {
@@ -22,7 +23,10 @@ class UpdateBuildingTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255',
+                Rule::unique('building_types', 'name')->ignore(
+                    $this->building_type->id
+                )],
         ];
     }
 }

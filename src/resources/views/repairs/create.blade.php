@@ -71,7 +71,7 @@
                 <div class="max-w-4xl">
                     <x-forms.input-label for="shortDescription" value="Краткое описание"/>
                     <x-forms.text-input id="shortDescription" name="short_description" type="text"
-                                        :value="old('short_description')" required/>
+                                        :value="old('short_description')" required autocomplete="off"/>
                     <x-forms.input-error :messages="$errors->get('short_description')"/>
                 </div>
 

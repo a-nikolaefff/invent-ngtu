@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRoleEnum;
-use App\Filters\UserFilter;
 use App\Http\Requests\User\IndexUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserRole;
-use App\Notifications\UserAccountChanged;
+use App\Notifications\UserAccountChangedNotification;
 use App\Services\User\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -36,23 +35,12 @@ class UserController extends Controller
     public function index(IndexUserRequest $request): View
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            UserFilter::class,
-            ['queryParams' => $queryParams]
-        );
-        $users = User::select('users.*')
-            ->leftjoin(
-            'departments',
-            'users.department_id',
-            '=',
-            'departments.id'
-        )
-            ->with('role', 'department')
-            ->filter($filter)
-            ->sort($queryParams)
+
+        $users = User::getByParams($queryParams)
             ->paginate(5)
             ->withQueryString();
         $roles = UserRole::all();
+
         return view('users.index', compact('users', 'roles'));
     }
 
@@ -108,7 +96,7 @@ class UserController extends Controller
         $processedData = $service->processData($validatedData);
         $user->fill($processedData)->save();
         $user->load('role');
-        $user->notify(new UserAccountChanged());
+        $user->notify(new UserAccountChangedNotification());
         return redirect()->route('users.show', $user->id)->with(
             'status',
             'user-updated'

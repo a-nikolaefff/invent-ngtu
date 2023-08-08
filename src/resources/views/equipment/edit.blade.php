@@ -20,7 +20,8 @@
             <div class="form-wrapper">
                 <div class="max-w-4xl">
                     <x-forms.input-label for="number" value="Инвентарный номер"/>
-                    <x-forms.text-input id="number" name="number" type="text" :value="old('number', $equipment->number)" required/>
+                    <x-forms.text-input id="number" name="number" type="text" :value="old('number', $equipment->number)"
+                                        required autocomplete="off"/>
                     <x-forms.input-error :messages="$errors->get('number')"/>
                 </div>
 
@@ -43,7 +44,8 @@
 
                 <div class="max-w-4xl">
                     <x-forms.input-label for="name" value="Наименование"/>
-                    <x-forms.text-input id="name" name="name" type="text" :value="old('name', $equipment->name)" required/>
+                    <x-forms.text-input id="name" name="name" type="text" :value="old('name', $equipment->name)"
+                                        required autocomplete="off"/>
                     <x-forms.input-error :messages="$errors->get('name')"/>
                 </div>
 
@@ -135,7 +137,9 @@
                     id="decommissioningReasonWrapper">
                     <x-forms.input-label for="decommissioning_reason" value="Причина списания"/>
                     <x-forms.text-input id="decommissioning_reason" name="decommissioning_reason"
-                                        type="text" :value="old('decommissioning_reason', $equipment->decommissioning_reason)"/>
+                                        type="text"
+                                        :value="old('decommissioning_reason', $equipment->decommissioning_reason)"
+                                        autocomplete="off"/>
                     <x-forms.input-error :messages="$errors->get('decommissioning_reason')"/>
                 </div>
 

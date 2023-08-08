@@ -28,7 +28,9 @@ class DepartmentController extends Controller
     public function index(IndexDepartmentRequest $request)
     {
         $queryParams = $request->validated();
-        $departments = Department::getDepartments($queryParams);
+        $departments = Department::getByParams($queryParams)
+            ->paginate(5)
+            ->withQueryString();
         $departmentTypes = DepartmentType::all();
         return view(
             'departments.index',
@@ -51,8 +53,8 @@ class DepartmentController extends Controller
     public function store(StoreDepartmentRequest $request)
     {
         $validatedData = $request->validated();
-        Department::create($validatedData);
-        return redirect()->route('departments.index')
+        $department = Department::create($validatedData);
+        return redirect()->route('departments.show', $department->id)
             ->with('status', 'department-stored');
     }
 

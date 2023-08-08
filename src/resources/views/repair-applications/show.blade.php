@@ -17,6 +17,12 @@
     @endif
 
     @switch(session('status'))
+        @case('repair-application-stored')
+            <x-alert type="success">
+                Заявка отправлена на рассмотрение. Если необходимо вы можете приложить к заявке фотографии.
+            </x-alert>
+            @break
+
         @case('repair-application-updated')
             <x-alert type="success">
                 Данные успешно изменены
@@ -74,7 +80,7 @@
                 onclick="window.location='{{ route('equipment.show', $repairApplication->equipment->id) }}';"
                 class="standard-table__clickable-row">
                 <th scope="row" class="w-2/12">Неисправное оборудование:</th>
-                <td>{{ 'инв. № ' . $repairApplication->equipment->number . ', ' . $repairApplication->equipment->name }}</td>
+                <td>{{ $repairApplication->equipment->name . ', инв. № ' . $repairApplication->equipment->number }}</td>
             </tr>
 
             @if($canViewUserInformation)
@@ -170,7 +176,7 @@
                                     src="{{ $image->getUrl('preview') }}"
                                     data-te-img="{{ $image->getUrl() }}"
                                     alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
-                                    />
+                                />
                             </div>
                         </div>
                     @endforeach

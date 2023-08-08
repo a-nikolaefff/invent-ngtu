@@ -1,9 +1,11 @@
 <x-app-layout title="Оборудование">
 
-    @if (session('status') === 'equipment-stored')
-        <x-alert type="success">
-            Новое оборудование успешно добавлено
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'equipment-deleted')

@@ -1,9 +1,11 @@
 <x-app-layout title="Помещения">
 
-    @if (session('status') === 'room-stored')
-        <x-alert type="success">
-            Новое помещение успешно добавлено
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'room-deleted')

@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use App\Enums\UserRoleEnum;
+use App\Filters\RepairApplicationFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class RepairApplication extends Model implements HasMedia
+class RepairApplication extends Model implements HasMedia, GetByParams
 {
-    use HasFactory, Filterable, InteractsWithMedia;
+    use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
     /**
      * The name of the table in the database
@@ -67,6 +72,40 @@ class RepairApplication extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function scopeGetByParams(Builder $query, array $queryParams): void
+    {
+        $filter = app()->make(
+            RepairApplicationFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->select('repair_applications.*')
+            ->leftjoin(
+                'equipment',
+                'repair_applications.equipment_id',
+                '=',
+                'equipment.id'
+            )
+            ->leftjoin(
+                'users',
+                'repair_applications.user_id',
+                '=',
+                'users.id'
+            )
+            ->with('status', 'equipment', 'user')
+            ->when(
+                Auth::user()->cannot('viewAll', RepairApplication::class),
+                function ($query) {
+                    return $query->where(
+                        'repair_applications.user_id',
+                        Auth::user()->id
+                    );
+                }
+            )
+            ->filter($filter)
+            ->sort($queryParams);
     }
 
     public function scopeSort(

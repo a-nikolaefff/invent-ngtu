@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
+use App\Models\Equipment;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -71,4 +72,13 @@ class RoomPolicy
         );
     }
 
+    /**
+     * Determine whether the user can store and delete images
+     */
+    public function manageImages(
+        User $user,
+        Room $room
+    ): bool {
+        return $user->can('view', $room);
+    }
 }

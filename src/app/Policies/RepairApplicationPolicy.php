@@ -23,6 +23,18 @@ class RepairApplicationPolicy
     }
 
     /**
+     * Determine whether the user can view all models.
+     */
+    public function viewAll(User $user): bool
+    {
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
+        );
+    }
+
+    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, RepairApplication $repairApplication): bool
@@ -79,14 +91,13 @@ class RepairApplicationPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can delete the model.
      */
-    public function manageImages(
+    public function delete(
         User $user,
         RepairApplication $repairApplication
     ): bool {
-        if ($user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin)
-        ) {
+        if ($user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin)) {
             return true;
         } else {
             if ($user->hasRole(UserRoleEnum::Employee)) {
@@ -98,13 +109,14 @@ class RepairApplicationPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can store and delete images
      */
-    public function delete(
+    public function manageImages(
         User $user,
         RepairApplication $repairApplication
     ): bool {
-        if ($user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin)) {
+        if ($user->hasAnyRole(UserRoleEnum::SuperAdmin, UserRoleEnum::Admin)
+        ) {
             return true;
         } else {
             if ($user->hasRole(UserRoleEnum::Employee)) {

@@ -3,6 +3,9 @@
 namespace app\Http\Requests\Room;
 
 use App\Models\Building;
+use App\Models\Room;
+use App\Rules\BuildingRoomNumberExists;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRoomRequest extends FormRequest
@@ -23,7 +26,18 @@ class UpdateRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['required', 'string', 'max:20'],
+            'number' => ['required', 'string', 'max:20', function (string $attribute, mixed $value, Closure $fail) {
+                $buildingId = $this->request->get('building_id');
+                $isEngagedNumber = Room::where('building_id', $buildingId)
+                    ->where('number', $value)
+                    ->where('id', '!=', $this->room->id)
+                    ->exists();
+                if ($isEngagedNumber) {
+                    $fail(
+                        __('validation.unique', ['attribute' => __('validation.attributes.' . $attribute)])
+                    );
+                }
+            },],
             'name' => ['required', 'string', 'max:255'],
             'building_id' => ['required','exists:buildings,id'],
             'floor' => [
@@ -33,9 +47,13 @@ class UpdateRoomRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $building = Building::findOrFail($this->input('building_id'));
                     $maxFloor = $building->floor_amount;
-
                     if ($value > $maxFloor) {
-                        $fail("The floor must be less than or equal to $maxFloor.");
+                        $fail(
+                            __('validation.max.numeric', [
+                                'attribute' => __('validation.attributes.' . $attribute),
+                                'max' => $maxFloor,
+                            ])
+                        );
                     }
                 },
             ],

@@ -22,7 +22,7 @@ class StoreRepairApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'short_description' => ['required', 'string', 'max:50'],
+            'short_description' => ['required', 'string', 'max:125'],
             'full_description' => ['nullable', 'string', 'max:555'],
             'equipment_id' => ['required','exists:equipment,id'],
         ];

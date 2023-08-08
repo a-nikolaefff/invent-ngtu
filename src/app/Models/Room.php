@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Filters\EquipmentFilter;
+use App\Filters\RoomFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +17,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Room extends Model implements HasMedia
+class Room extends Model implements HasMedia, GetByParams
 {
-    use HasFactory, Filterable, InteractsWithMedia;
+    use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
     /**
      * The name of the table in the database
@@ -62,6 +66,70 @@ class Room extends Model implements HasMedia
     public function equipment(): HasMany
     {
         return $this->hasMany(Equipment::class, 'room_id');
+    }
+
+    public function scopeGetByParams(Builder $query, array $queryParams): void
+    {
+        $filter = app()->make(
+            RoomFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->select('rooms.*')
+            ->leftjoin(
+                'room_types',
+                'rooms.room_type_id',
+                '=',
+                'room_types.id'
+            )
+            ->leftjoin(
+                'departments',
+                'rooms.department_id',
+                '=',
+                'departments.id'
+            )
+            ->leftjoin(
+                'buildings',
+                'rooms.building_id',
+                '=',
+                'buildings.id'
+            )
+            ->with(
+                'type',
+                'department',
+                'building',
+            )
+            ->filter($filter)
+            ->sort($queryParams);
+    }
+
+    public function scopeGetByParamsAndBuilding(
+        Builder $query,
+        array $queryParams,
+        Building $building
+    ): void {
+        $filter = app()->make(
+            RoomFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->where('building_id', $building->id)
+            ->select('rooms.*')
+            ->leftjoin(
+                'room_types',
+                'rooms.room_type_id',
+                '=',
+                'room_types.id'
+            )
+            ->leftjoin(
+                'departments',
+                'rooms.department_id',
+                '=',
+                'departments.id'
+            )
+            ->with('type', 'department')
+            ->filter($filter)
+            ->sort($queryParams);
     }
 
     public function scopeSort(

@@ -5,11 +5,12 @@
 
 <x-app-layout title="Заявки на ремонт оборудования">
 
-    @if (session('status') === 'repair-application-stored')
-        <x-alert type="success">
-            Заявка отправлена на рассмотрение.
-            Если необходимо вы можете приложить к заявке фотографии на странице заявки.
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'repair-application-deleted')
@@ -117,7 +118,7 @@
                     <td class="hidden sm:table-cell">{{ $application->short_description }}</td>
 
                     <td>
-                        {{ 'инв. № ' . $application->equipment->number . ', ' . $application->equipment->name }}
+                        {{ $application->equipment->name . ', инв. № ' . $application->equipment->number }}
                     </td>
 
                     <td class="hidden lg:table-cell">

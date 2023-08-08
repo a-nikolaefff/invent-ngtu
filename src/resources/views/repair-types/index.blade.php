@@ -1,9 +1,11 @@
 <x-app-layout title="Типы ремонтов">
 
-    @if (session('status') === 'repair-type-stored')
-        <x-alert type="success">
-            Новый тип ремонтов успешно добавлен
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'repair-type-deleted')

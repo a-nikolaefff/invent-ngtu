@@ -22,10 +22,10 @@ class UpdateRepairRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'short_description' => ['required', 'string', 'max:50'],
+            'short_description' => ['required', 'string', 'max:125'],
             'full_description' => ['nullable', 'string', 'max:255'],
             'start_date' => ['nullable', 'date'],
-            'end_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'equipment_id' => ['required','exists:equipment,id'],
             'repair_type_id' => ['nullable','exists:repair_types,id'],
             'repair_status_id' => ['nullable','exists:repair_statuses,id'],

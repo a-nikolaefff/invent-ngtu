@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\BuildingFilter;
-use App\Filters\RoomFilter;
 use App\Http\Requests\Building\IndexBuildingRequest;
 use App\Http\Requests\Building\ShowBuildingRequest;
 use App\Http\Requests\Building\StoreBuildingRequest;
@@ -11,13 +9,10 @@ use App\Http\Requests\Building\UpdateBuildingRequest;
 use App\Http\Requests\Images\StoreImageRequest;
 use App\Models\Building;
 use App\Models\BuildingType;
-use App\Models\Equipment;
 use App\Models\Room;
 use App\Models\RoomType;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BuildingController extends Controller
 {
@@ -37,26 +32,12 @@ class BuildingController extends Controller
     public function index(IndexBuildingRequest $request)
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            BuildingFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
-        $buildings = Building::select('buildings.*')
-            ->leftjoin(
-                'building_types',
-                'buildings.building_type_id',
-                '=',
-                'building_types.id'
-            )
-            ->with(
-                'type',
-            )
-            ->filter($filter)
-            ->sort($queryParams)
+        $buildings = Building::getByParams($queryParams)
             ->paginate(5)
             ->withQueryString();
         $buildingTypes = BuildingType::all();
+
         return view('buildings.index', compact('buildings', 'buildingTypes'));
     }
 
@@ -75,8 +56,8 @@ class BuildingController extends Controller
     public function store(StoreBuildingRequest $request)
     {
         $validatedData = $request->validated();
-        Building::create($validatedData);
-        return redirect()->route('buildings.index')
+        $building = Building::create($validatedData);
+        return redirect()->route('buildings.show', $building->id)
             ->with('status', 'building-stored');
     }
 
@@ -89,36 +70,13 @@ class BuildingController extends Controller
 
         $queryParams = $request->validated();
 
-        $filter = app()->make(
-            RoomFilter::class,
-            ['queryParams' => $queryParams]
-        );
-
-        $rooms = null;
         if ($building->rooms->count() === 0) {
             $rooms = $building->rooms;
         } else {
-            $rooms = Room::where('building_id', $building->id)
-                ->select('rooms.*')
-                ->leftjoin(
-                    'room_types',
-                    'rooms.room_type_id',
-                    '=',
-                    'room_types.id'
-                )
-                ->leftjoin(
-                    'departments',
-                    'rooms.department_id',
-                    '=',
-                    'departments.id'
-                )
-                ->with('type', 'department')
-                ->filter($filter)
-                ->sort($queryParams)
+            $rooms = Room::getByParamsAndBuilding($queryParams, $building)
                 ->paginate(5)
                 ->withQueryString();
         }
-
         $roomTypes = RoomType::all();
         $floorAmount = $building->floor_amount;
 
@@ -185,18 +143,9 @@ class BuildingController extends Controller
         StoreImageRequest $request,
         Building $building
     ) {
-        $this->authorize('view', $building);
+        $this->authorize('manageImages', $building);
         $files = $request->file('images');
-
-        foreach ($files as $file) {
-            $building->addMedia($file)
-                ->withCustomProperties([
-                    'user_id' => Auth::user()->id,
-                    'user_name' => Auth::user()->name,
-                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
-                ])
-                ->toMediaCollection('images');
-        }
+        $building->storeMedia($files, 'images');
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'images-stored');
@@ -207,7 +156,7 @@ class BuildingController extends Controller
      */
     public function destroyImage(Request $request, Building $building)
     {
-        $this->authorize('view', $building);
+        $this->authorize('manageImages', $building);
 
         $images = $building->getMedia('images');
         $imageIndex = $request->get('image_index');

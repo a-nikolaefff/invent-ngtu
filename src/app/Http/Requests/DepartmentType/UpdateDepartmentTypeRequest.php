@@ -3,6 +3,7 @@
 namespace app\Http\Requests\DepartmentType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDepartmentTypeRequest extends FormRequest
 {
@@ -22,7 +23,14 @@ class UpdateDepartmentTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('department_types', 'name')->ignore(
+                    $this->department_type->id
+                )
+            ],
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace app\Http\Requests\RoomType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRoomTypeRequest extends FormRequest
 {
@@ -22,7 +23,14 @@ class UpdateRoomTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('room_types', 'name')->ignore(
+                    $this->room_type->id
+                )
+            ],
         ];
     }
 }

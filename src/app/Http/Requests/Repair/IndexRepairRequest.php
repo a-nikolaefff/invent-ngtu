@@ -29,7 +29,6 @@ class IndexRepairRequest extends FormRequest
     {
         $sortableColumns = [
             'short_description',
-            'full_description',
             'start_date',
             'end_date',
             'equipment_name',
@@ -44,7 +43,17 @@ class IndexRepairRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!RepairType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __(
+                                    'validation.invalid',
+                                    [
+                                        'attribute' => __(
+                                            'validation.attributes.'
+                                            . $attribute
+                                        )
+                                    ]
+                                )
+                            );
                         }
                     }
                 },
@@ -55,7 +64,9 @@ class IndexRepairRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!RepairStatus::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                            );
                         }
                     }
                 },

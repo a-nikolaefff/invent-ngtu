@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
 use App\Models\Equipment;
+use App\Models\RepairApplication;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,6 +20,18 @@ class EquipmentPolicy
             UserRoleEnum::Admin,
             UserRoleEnum::SupplyAndRepairSpecialist,
             UserRoleEnum::Employee,
+        );
+    }
+
+    /**
+     * Determine whether the user can view all models.
+     */
+    public function viewAll(User $user): bool
+    {
+        return $user->hasAnyRole(
+            UserRoleEnum::SuperAdmin,
+            UserRoleEnum::Admin,
+            UserRoleEnum::SupplyAndRepairSpecialist,
         );
     }
 
@@ -81,5 +94,15 @@ class EquipmentPolicy
             UserRoleEnum::Admin,
             UserRoleEnum::SupplyAndRepairSpecialist
         );
+    }
+
+    /**
+     * Determine whether the user can store and delete images
+     */
+    public function manageImages(
+        User $user,
+        Equipment $equipment
+    ): bool {
+        return $user->can('view', $equipment);
     }
 }

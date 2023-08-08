@@ -21,7 +21,7 @@
                 <div class="max-w-4xl">
                     <x-forms.input-label for="name" value="Наименование"/>
                     <x-forms.text-input id="name" name="name" type="text"
-                                        :value="old('name')" required/>
+                                        :value="old('name')" required autocomplete="off"/>
                     <x-forms.input-error :messages="$errors->get('name')"/>
                 </div>
 

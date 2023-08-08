@@ -39,7 +39,9 @@ class ShowBuildingRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!DepartmentType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                            );
                         }
                     }
                 },
@@ -52,7 +54,12 @@ class ShowBuildingRequest extends FormRequest
                     $building = Building::find($this->segment(2));
                     $maxFloor = $building->floor_amount;
                     if ($value > $maxFloor) {
-                        $fail("The floor must be less than or equal to $maxFloor.");
+                        $fail(
+                            __('validation.max.numeric', [
+                                'attribute' => __('validation.attributes.' . $attribute),
+                                'max' => $maxFloor,
+                            ])
+                        );
                     }
                 },
             ],

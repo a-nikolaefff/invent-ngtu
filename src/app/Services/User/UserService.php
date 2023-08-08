@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services\User;
 
+use App\Services\DataProcessor;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * This class provides functionality to process user data.
  */
-class UserService
+class UserService implements DataProcessor
 {
     /**
      * @var array The processed data after applying the data processing logic.

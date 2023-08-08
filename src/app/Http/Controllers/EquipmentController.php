@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRoleEnum;
-use App\Filters\EquipmentFilter;
-use App\Filters\RepairFilter;
 use App\Http\Requests\Equipment\CreateEquipmentRequest;
 use App\Http\Requests\Equipment\IndexEquipmentRequest;
 use App\Http\Requests\Equipment\ShowEquipmentRequest;
@@ -17,11 +14,9 @@ use App\Models\Repair;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
 use App\Models\Room;
-use Carbon\Carbon;
+use App\Services\Equipment\EquipmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 
 class EquipmentController extends Controller
 {
@@ -41,57 +36,10 @@ class EquipmentController extends Controller
     public function index(IndexEquipmentRequest $request)
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            EquipmentFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
-        $equipment = Equipment::select('equipment.*')
-            ->leftjoin(
-                'equipment_types',
-                'equipment.equipment_type_id',
-                '=',
-                'equipment_types.id'
-            )
-            ->leftjoin(
-                'rooms',
-                'equipment.room_id',
-                '=',
-                'rooms.id'
-            )
-            ->leftjoin(
-                'buildings',
-                'rooms.building_id',
-                '=',
-                'buildings.id'
-            )
-            ->leftjoin(
-                'departments',
-                'rooms.department_id',
-                '=',
-                'departments.id'
-            )
-            ->with(
-                'type',
-                'room',
-                'room.building',
-                'room.department',
-            )
-            ->when(
-                Auth::user()->hasRole(UserRoleEnum::Employee),
-                function ($query) {
-                    return $query->whereIn(
-                        'rooms.department_id',
-                        Auth::user()->department->getSelfAndDescendants()
-                            ->pluck('id')->toArray()
-                    );
-                }
-            )
-            ->filter($filter)
-            ->sort($queryParams)
+        $equipment = Equipment::getByParams($queryParams)
             ->paginate(5)
             ->withQueryString();
-
         $equipmentTypes = EquipmentType::all();
 
         return view(
@@ -122,22 +70,13 @@ class EquipmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEquipmentRequest $request)
+    public function store(StoreEquipmentRequest $request, EquipmentService $service)
     {
         $validatedData = $request->validated();
-        $validatedData['not_in_operation'] = $validatedData['not_in_operation']
-            ?? false;
-        $validatedData['decommissioned'] = $validatedData['decommissioned'] ??
-            false;;
-        $validatedData['decommissioning_date']
-            = $validatedData['decommissioned']
-            ? $validatedData['decommissioning_date'] : null;
-        $validatedData['decommissioning_reason']
-            = $validatedData['decommissioned']
-            ? $validatedData['decommissioning_reason'] : null;
+        $processedData = $service->processData($validatedData);
 
-        Equipment::create($validatedData);
-        return redirect()->route('equipment.index')
+        $equipment = Equipment::create($processedData);
+        return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'equipment-stored');
     }
 
@@ -150,25 +89,10 @@ class EquipmentController extends Controller
         $equipment->load('type', 'room', 'room.department', 'room.building');
 
         $queryParams = $request->validated();
-        $filter = app()->make(
-            RepairFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
-        $repairs = Repair::select('repairs.*')
-            ->where('repairs.equipment_id', $equipment->id)
-            ->leftjoin(
-                'repair_types',
-                'repairs.repair_type_id',
-                '=',
-                'repair_types.id'
-            )
-            ->with('type', 'status',)
-            ->filter($filter)
-            ->sort($queryParams)
+        $repairs = Repair::getByParamsAndEquipment($queryParams, $equipment)
             ->paginate(5)
             ->withQueryString();
-
         $repairTypes = RepairType::all();
         $repairStatuses = RepairStatus::all();
 
@@ -193,22 +117,13 @@ class EquipmentController extends Controller
      */
     public function update(
         UpdateEquipmentRequest $request,
+        EquipmentService $service,
         Equipment $equipment
     ) {
         $validatedData = $request->validated();
+        $processedData = $service->processData($validatedData);
 
-        $validatedData['not_in_operation'] = $validatedData['not_in_operation']
-            ?? false;
-        $validatedData['decommissioned'] = $validatedData['decommissioned'] ??
-            false;;
-        $validatedData['decommissioning_date']
-            = $validatedData['decommissioned']
-            ? $validatedData['decommissioning_date'] : null;
-        $validatedData['decommissioning_reason']
-            = $validatedData['decommissioned']
-            ? $validatedData['decommissioning_reason'] : null;
-
-        $equipment->fill($validatedData)->save();
+        $equipment->fill($processedData)->save();
         return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'equipment-updated');
     }
@@ -251,18 +166,9 @@ class EquipmentController extends Controller
         StoreImageRequest $request,
         Equipment $equipment
     ) {
-        $this->authorize('view', $equipment);
+        $this->authorize('manageImages', $equipment);
         $files = $request->file('images');
-
-        foreach ($files as $file) {
-            $equipment->addMedia($file)
-                ->withCustomProperties([
-                    'user_id' => Auth::user()->id,
-                    'user_name' => Auth::user()->name,
-                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
-                ])
-                ->toMediaCollection('images');
-        }
+        $equipment->storeMedia($files, 'images');
 
         return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'images-stored');
@@ -273,7 +179,7 @@ class EquipmentController extends Controller
      */
     public function destroyImage(Request $request, Equipment $equipment)
     {
-        $this->authorize('view', $equipment);
+        $this->authorize('manageImages', $equipment);
 
         $images = $equipment->getMedia('images');
         $imageIndex = $request->get('image_index');

@@ -19,13 +19,15 @@
                 <div class="form-wrapper">
                     <div class="max-w-4xl">
                         <x-forms.input-label for="number" value="Номер"/>
-                        <x-forms.text-input id="number" name="number" type="text" :value="old('number')" required/>
+                        <x-forms.text-input id="number" name="number" type="text" :value="old('number')"
+                                            required autocomplete="off"/>
                         <x-forms.input-error :messages="$errors->get('number')"/>
                     </div>
 
                     <div class="max-w-4xl">
                         <x-forms.input-label for="name" value="Наименование"/>
-                        <x-forms.text-input id="name" name="name" type="text" :value="old('name')" required/>
+                        <x-forms.text-input id="name" name="name" type="text" :value="old('name')"
+                                            required autocomplete="off"/>
                         <x-forms.input-error :messages="$errors->get('name')"/>
                     </div>
 

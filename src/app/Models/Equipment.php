@@ -2,19 +2,25 @@
 
 namespace App\Models;
 
+use App\Enums\UserRoleEnum;
+use App\Filters\EquipmentFilter;
+use App\Filters\RepairFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Equipment extends Model implements HasMedia
+class Equipment extends Model implements HasMedia, GetByParams
 {
-    use HasFactory, Filterable, InteractsWithMedia;
+    use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
     /**
      * The name of the table in the database
@@ -73,6 +79,104 @@ class Equipment extends Model implements HasMedia
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class, 'room_id');
+    }
+
+    public function scopeGetByParams(Builder $query, array $queryParams): void
+    {
+        $filter = app()->make(
+            EquipmentFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->select('equipment.*')
+            ->leftjoin(
+                'equipment_types',
+                'equipment.equipment_type_id',
+                '=',
+                'equipment_types.id'
+            )
+            ->leftjoin(
+                'rooms',
+                'equipment.room_id',
+                '=',
+                'rooms.id'
+            )
+            ->leftjoin(
+                'buildings',
+                'rooms.building_id',
+                '=',
+                'buildings.id'
+            )
+            ->leftjoin(
+                'departments',
+                'rooms.department_id',
+                '=',
+                'departments.id'
+            )
+            ->with(
+                'type',
+                'room',
+                'room.building',
+                'room.department',
+            )
+            ->when(
+                Auth::user()->cannot('viewAll', Equipment::class),
+                function ($query) {
+                    return $query->whereIn(
+                        'rooms.department_id',
+                        Auth::user()->department->getSelfAndDescendants()
+                            ->pluck('id')->toArray()
+                    );
+                }
+            )
+            ->filter($filter)
+            ->sort($queryParams);
+    }
+
+    public function scopeGetByParamsAndRoom(
+        Builder $query,
+        array $queryParams,
+        Room $room
+    ): void {
+        $filter = app()->make(
+            EquipmentFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->where('room_id', $room->id)
+            ->select('equipment.*')
+            ->leftjoin(
+                'equipment_types',
+                'equipment.equipment_type_id',
+                '=',
+                'equipment_types.id'
+            )
+            ->leftjoin(
+                'rooms',
+                'equipment.room_id',
+                '=',
+                'rooms.id'
+            )
+            ->leftjoin(
+                'buildings',
+                'rooms.building_id',
+                '=',
+                'buildings.id'
+            )
+            ->leftjoin(
+                'departments',
+                'rooms.department_id',
+                '=',
+                'departments.id'
+            )
+            ->with(
+                'type',
+                'room',
+                'room.building',
+                'room.department',
+            )
+            ->filter($filter)
+            ->sort($queryParams);
     }
 
     public function scopeSort(

@@ -40,7 +40,9 @@ class IndexRoomRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!DepartmentType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                            );
                         }
                     }
                 },
@@ -54,7 +56,12 @@ class IndexRoomRequest extends FormRequest
                     $maxFloor = $building->floor_amount;
 
                     if ($value > $maxFloor) {
-                        $fail("The floor must be less than or equal to $maxFloor.");
+                        $fail(
+                            __('validation.max.numeric', [
+                                'attribute' => __('validation.attributes.' . $attribute),
+                                'max' => $maxFloor,
+                            ])
+                        );
                     }
                 },
             ],

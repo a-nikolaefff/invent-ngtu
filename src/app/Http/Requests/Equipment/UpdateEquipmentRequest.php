@@ -34,7 +34,7 @@ class UpdateEquipmentRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'acquisition_date' => ['nullable', 'date'],
-            'decommissioning_date' => ['nullable', 'date'],
+            'decommissioning_date' => ['nullable', 'date','after_or_equal:acquisition_date'],
             'decommissioning_reason' => ['nullable', 'string', 'max:255'],
             'not_in_operation' => ['nullable'],
             'decommissioned' => ['nullable'],

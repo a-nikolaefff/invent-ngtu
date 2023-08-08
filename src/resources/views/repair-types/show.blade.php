@@ -1,10 +1,18 @@
 <x-app-layout :centered="true"  :title="'Тип ремонта: ' . $repairType->name">
 
-    @if (session('status') === 'repair-type-updated')
-        <x-alert type="success" class="mb-4">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('repair-type-stored')
+            <x-alert type="success">
+                Новый тип ремонтов успешно добавлен
+            </x-alert>
+            @break
+
+        @case('repair-type-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

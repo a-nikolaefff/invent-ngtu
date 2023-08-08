@@ -1,10 +1,13 @@
 <x-app-layout title="Типы оборудования">
 
-    @if (session('status') === 'equipment-type-stored')
-        <x-alert type="success">
-            Новый тип оборудования успешно добавлен
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
+
 
     @if (session('status') === 'equipment-type-deleted')
         <x-alert type="success">

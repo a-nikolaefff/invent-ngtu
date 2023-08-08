@@ -1,10 +1,18 @@
 <x-app-layout :centered="true"  :title="'Тип помещений: ' . $roomType->name">
 
-    @if (session('status') === 'room-type-updated')
-        <x-alert type="success" class="mb-4">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('room-type-stored')
+            <x-alert type="success">
+                Новый тип помещений успешно добавлен
+            </x-alert>
+            @break
+
+        @case('room-type-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

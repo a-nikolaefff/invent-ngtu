@@ -15,6 +15,11 @@ use App\Models\RepairApplication;
 use App\Models\RepairApplicationStatus;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
+use App\Models\User;
+use App\Notifications\RepairApplicationStatusChangedNotification;
+use App\Notifications\UserAccountChangedNotification;
+use App\Services\RepairApplication\StoreRepairApplicationService;
+use App\Services\RepairApplication\UpdateRepairApplicationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,39 +42,10 @@ class RepairApplicationController extends Controller
     public function index(IndexRepairApplicationRequest $request)
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            RepairApplicationFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
-        $repairApplications = RepairApplication::select('repair_applications.*')
-            ->leftjoin(
-                'equipment',
-                'repair_applications.equipment_id',
-                '=',
-                'equipment.id'
-            )
-            ->leftjoin(
-                'users',
-                'repair_applications.user_id',
-                '=',
-                'users.id'
-            )
-            ->with('status', 'equipment', 'user')
-            ->when(
-                Auth::user()->hasRole(UserRoleEnum::Employee),
-                function ($query) {
-                    return $query->where(
-                        'repair_applications.user_id',
-                        Auth::user()->id
-                    );
-                }
-            )
-            ->filter($filter)
-            ->sort($queryParams)
+        $repairApplications = RepairApplication::getByParams($queryParams)
             ->paginate(5)
             ->withQueryString();
-
         $applicationStatuses = RepairApplicationStatus::all();
 
         return view(
@@ -96,18 +72,20 @@ class RepairApplicationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRepairApplicationRequest $request)
+    public function store(StoreRepairApplicationRequest $request, StoreRepairApplicationService $service)
     {
         $validatedData = $request->validated();
-        $validatedData['application_date'] = Carbon::now();
-        $validatedData['repair_application_status_id']
-            = RepairApplicationStatus::where(
-            'name',
-            RepairApplicationStatusEnum::Pending->value
-        )->value('id');
-        $validatedData['user_id'] = $request->user()->id;
-        RepairApplication::create($validatedData);
-        return redirect()->route('repair-applications.index')
+        $processedData = $service->processData($validatedData);
+
+        $repairApplication = RepairApplication::create($processedData);
+
+        $service->setRepairApplication($repairApplication);
+        $service->notify();
+
+        return redirect()->route(
+            'repair-applications.show',
+            $repairApplication->id
+        )
             ->with('status', 'repair-application-stored');
     }
 
@@ -138,32 +116,22 @@ class RepairApplicationController extends Controller
      */
     public function update(
         UpdateRepairApplicationRequest $request,
+        UpdateRepairApplicationService $service,
         RepairApplication $repairApplication
     ) {
         $validatedData = $request->validated();
+        $processedData = $service->processData($validatedData);
 
-        $approvedAndRejectedStatusIds = RepairApplicationStatus::whereIn(
-            'name',
-            [
-                RepairApplicationStatusEnum::Approved->value,
-                RepairApplicationStatusEnum::Rejected->value
-            ]
-        )->pluck('id');
-        if ($approvedAndRejectedStatusIds->contains(
-            $validatedData['repair_application_status_id']
-        )
-        ) {
-            $validatedData['response_date'] = Carbon::now();
-        } else {
-            $validatedData['response_date'] = null;
-        }
+        $repairApplication->fill($processedData)->save();
 
-        $repairApplication->fill($validatedData)->save();
+        $service->setRepairApplication($repairApplication);
+        $service->notify();
+
         return redirect()->route(
             'repair-applications.show',
             $repairApplication->id
         )
-            ->with('status', 'repair-updated');
+            ->with('status', 'repair-application-updated');
     }
 
     /**
@@ -180,18 +148,9 @@ class RepairApplicationController extends Controller
         StoreImageRequest $request,
         RepairApplication $repairApplication
     ) {
-        $this->authorize('view', $repairApplication);
+        $this->authorize('manageImages', $repairApplication);
         $files = $request->file('images');
-
-        foreach ($files as $file) {
-            $repairApplication->addMedia($file)
-                ->withCustomProperties([
-                    'user_id' => Auth::user()->id,
-                    'user_name' => Auth::user()->name,
-                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
-                ])
-                ->toMediaCollection('images');
-        }
+        $repairApplication->storeMedia($files, 'images');
 
         return redirect()->route(
             'repair-applications.show',
@@ -207,7 +166,7 @@ class RepairApplicationController extends Controller
         Request $request,
         RepairApplication $repairApplication
     ) {
-        $this->authorize('view', $repairApplication);
+        $this->authorize('manageImages', $repairApplication);
 
         $images = $repairApplication->getMedia('images');
         $imageIndex = $request->get('image_index');

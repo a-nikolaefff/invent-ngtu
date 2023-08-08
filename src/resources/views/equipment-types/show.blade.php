@@ -1,10 +1,18 @@
 <x-app-layout :centered="true" :title="'Тип оборудования: ' . $equipmentType->name">
 
-    @if (session('status') === 'equipment-type-updated')
-        <x-alert type="success" class="mb-4">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('equipment-type-stored')
+            <x-alert type="success">
+                Новый тип оборудования успешно добавлен
+            </x-alert>
+            @break
+
+        @case('equipment-type-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

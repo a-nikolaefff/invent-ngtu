@@ -10,6 +10,12 @@ class EquipmentTypeSeeder extends Seeder
     private static array $baseTypes = [
         'компьютер',
         'проектор',
+        'принтер',
+        'сканер',
+        'видеоаппаратура',
+        'аудиоаппаратура',
+        'лабораторное оборудование',
+        'кондиционер',
     ];
 
     /**

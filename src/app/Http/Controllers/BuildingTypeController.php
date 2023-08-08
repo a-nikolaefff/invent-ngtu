@@ -45,8 +45,8 @@ class BuildingTypeController extends Controller
     public function store(StoreBuildingTypeRequest $request)
     {
         $validatedData = $request->validated();
-        BuildingType::create($validatedData);
-        return redirect()->route('building-types.index')
+        $buildingType = BuildingType::create($validatedData);
+        return redirect()->route('building-types.show', $buildingType->id)
             ->with('status', 'building-type-stored');
     }
 

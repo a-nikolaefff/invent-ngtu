@@ -3,6 +3,7 @@
 namespace app\Http\Requests\EquipmentType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateEquipmentTypeRequest extends FormRequest
 {
@@ -22,7 +23,14 @@ class UpdateEquipmentTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('equipment_types', 'name')->ignore(
+                    $this->equipment_type->id
+                )
+            ],
         ];
     }
 }

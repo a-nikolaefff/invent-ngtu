@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
 use App\Models\Building;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -69,5 +70,15 @@ class BuildingPolicy
             UserRoleEnum::Admin,
             UserRoleEnum::SupplyAndRepairSpecialist,
         );
+    }
+
+    /**
+     * Determine whether the user can store and delete images
+     */
+    public function manageImages(
+        User $user,
+        Building $building
+    ): bool {
+        return $user->can('view', $building);
     }
 }

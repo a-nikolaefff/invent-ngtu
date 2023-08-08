@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use App\Enums\UserRoleEnum;
+use App\Filters\RepairFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Repair extends Model implements HasMedia
+class Repair extends Model implements HasMedia, GetByParams
 {
-    use HasFactory, Filterable, InteractsWithMedia;
+    use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
     /**
      * The name of the table in the database
@@ -65,7 +70,73 @@ class Repair extends Model implements HasMedia
         return $this->belongsTo(RepairStatus::class, 'repair_status_id');
     }
 
-    public function scopeSort(
+    public function scopeGetByParams(
+        Builder $query,
+        array $queryParams
+    ): void {
+        $filter = app()->make(
+            RepairFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->select('repairs.*')
+        ->leftJoin(
+            'equipment',
+            'repairs.equipment_id',
+            '=',
+            'equipment.id'
+        )
+            ->leftJoin('rooms', 'equipment.room_id', '=', 'rooms.id')
+            ->leftJoin(
+                'repair_types',
+                'repairs.repair_type_id',
+                '=',
+                'repair_types.id'
+            )
+            ->with(
+                'type',
+                'status',
+                'equipment',
+            )
+            ->when(
+                Auth::user()->hasRole(UserRoleEnum::Employee),
+                function ($query) {
+                    return $query->whereIn(
+                        'rooms.department_id',
+                        Auth::user()->department->getSelfAndDescendants()
+                            ->pluck('id')->toArray()
+                    );
+                }
+            )
+            ->filter($filter)
+            ->sort($queryParams);
+    }
+
+    public function scopeGetByParamsAndEquipment(
+        Builder $query,
+        array $queryParams,
+        Equipment $equipment
+    ): void {
+        $filter = app()->make(
+            RepairFilter::class,
+            ['queryParams' => $queryParams]
+        );
+
+        $query->where('repairs.equipment_id', $equipment->id)
+            ->select('repairs.*')
+            ->leftjoin(
+                'repair_types',
+                'repairs.repair_type_id',
+                '=',
+                'repair_types.id'
+            )
+            ->with('type', 'status')
+            ->filter($filter)
+            ->sort($queryParams);
+    }
+
+    public
+    function scopeSort(
         Builder $query,
         array $queryParams,
         string $defaultSortColumn = '',
@@ -87,11 +158,12 @@ class Repair extends Model implements HasMedia
         );
     }
 
-    public function registerMediaConversions(Media $media = null): void
-    {
+    public
+    function registerMediaConversions(
+        Media $media = null
+    ): void {
         $this
             ->addMediaConversion('preview')
             ->fit(Manipulations::FIT_CROP, 300, 200);
-            //->nonQueued();
     }
 }

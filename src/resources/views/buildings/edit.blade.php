@@ -20,21 +20,23 @@
                 <div class="form-wrapper">
                     <div class="max-w-4xl">
                         <x-forms.input-label for="name" value="Наименование"/>
-                        <x-forms.text-input id="name" name="name" type="text" :value="old('name', $building->name)" required/>
+                        <x-forms.text-input id="name" name="name" type="text" :value="old('name', $building->name)"
+                                            required autocomplete="off"/>
                         <x-forms.input-error class="mt-2" :messages="$errors->get('name')"/>
                     </div>
 
                     <div class="max-w-xl">
                         <x-forms.input-label for="address" value="Адрес"/>
                         <x-forms.text-input id="address" name="address" type="text"
-                                            :value="old('address', $building->address)" required/>
+                                            :value="old('address', $building->address)"
+                                            required autocomplete="off"/>
                         <x-forms.input-error class="mt-2" :messages="$errors->get('address')"/>
                     </div>
 
                     <div class="max-w-xl">
                         <x-forms.input-label for="floorAmount" value="Количество этажей"/>
                         <x-forms.text-input id="floorAmount" name="floor_amount" type="number"
-                                            :value="old('floor_amount', $building->floor_amount)" required/>
+                                            :value="old('floor_amount', $building->floor_amount)" required autocomplete="off"/>
                         <x-forms.input-error :messages="$errors->get('floor_amount')"/>
                     </div>
 

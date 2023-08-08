@@ -1,7 +1,6 @@
 <x-guest-layout title="Сброс пароля">
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
-
         <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
@@ -14,7 +13,7 @@
 
         <!-- Password -->
         <div class="mt-4">
-            <x-forms.input-label for="password" :value="__('interface.password')" />
+            <x-forms.input-label for="password" :value="__('interface.new-password')" />
             <x-forms.text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             <x-forms.input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -30,7 +29,7 @@
             <x-forms.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-center mt-4">
             <x-buttons.confirm>
                 Сбросить пароль
             </x-buttons.confirm>

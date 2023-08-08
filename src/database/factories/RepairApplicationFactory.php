@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RepairApplicationStatusEnum;
 use App\Models\Equipment;
 use App\Models\RepairApplication;
 use App\Models\RepairApplicationStatus;
@@ -24,16 +25,28 @@ class RepairApplicationFactory extends Factory
      */
     public function definition(): array
     {
+        $verbs = [
+            'Отремонтировать',
+            'Провести обслуживание',
+            'Устранить поломку',
+            'Починить',
+            'Восстановить'
+        ];
+        $randomVerb = fake()->randomElement($verbs);
+
+        $status = RepairApplicationStatus::all()->random();
+
         return [
-            'short_description' => fake()->words(2, true),
-            'full_description' => fake()->words(6, true),
+            'short_description' => $randomVerb . ' ' . fake()->words(2, true),
+            'full_description' => $randomVerb . ' ' . fake()->words(6, true),
             'response' => fake()->words(6, true),
             'application_date' => Carbon::now(),
-            'response_date' => Carbon::now(),
+            'response_date' => $status->name
+            !== RepairApplicationStatusEnum::Pending->value ?
+                Carbon::now()::now()
+                : null,
             'equipment_id' => Equipment::pluck('id')->random(),
-            'repair_application_status_id' => RepairApplicationStatus::pluck(
-                'id'
-            )->random(),
+            'repair_application_status_id' => $status->id,
             'user_id' => User::pluck('id')->random(),
         ];
     }

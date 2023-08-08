@@ -23,9 +23,17 @@ class RepairFactory extends Factory
      */
     public function definition(): array
     {
+        $verbs = [
+            'Отремонтировано',
+            'Проведено обслуживание',
+            'Устранена поломка',
+            'Восстановлено'
+        ];
+        $randomVerb = fake()->randomElement($verbs);
+
         return [
-            'short_description' => fake()->words(2, true),
-            'full_description' => fake()->words(6, true),
+            'short_description' => $randomVerb . ' ' . fake()->words(2, true),
+            'full_description' => $randomVerb . ' ' . fake()->words(6, true),
             'start_date' => Carbon::now(),
             'end_date' => Carbon::now(),
             'equipment_id' => Equipment::pluck('id')->random(),

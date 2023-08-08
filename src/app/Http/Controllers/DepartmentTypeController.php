@@ -46,8 +46,8 @@ class DepartmentTypeController extends Controller
     public function store(StoreDepartmentTypeRequest $request)
     {
         $validatedData = $request->validated();
-        DepartmentType::create($validatedData);
-        return redirect()->route('department-types.index')
+        $departmentType = DepartmentType::create($validatedData);
+        return redirect()->route('department-types.show', $departmentType->id)
             ->with('status', 'department-type-stored');
     }
 

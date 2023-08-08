@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('address');
+            $table->string('name')->unique();
+            $table->string('address')->unique();
             $table->unsignedBigInteger('building_type_id')->nullable();
             $table->unsignedTinyInteger('floor_amount');
             $table->timestamps();

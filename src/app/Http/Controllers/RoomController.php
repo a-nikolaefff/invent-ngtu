@@ -38,46 +38,16 @@ class RoomController extends Controller
     public function index(IndexRoomRequest $request)
     {
         $queryParams = $request->validated();
-        $filter = app()->make(
-            RoomFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
-        $rooms = Room::select('rooms.*')
-            ->leftjoin(
-                'room_types',
-                'rooms.room_type_id',
-                '=',
-                'room_types.id'
-            )
-            ->leftjoin(
-                'departments',
-                'rooms.department_id',
-                '=',
-                'departments.id'
-            )
-            ->leftjoin(
-                'buildings',
-                'rooms.building_id',
-                '=',
-                'buildings.id'
-            )
-            ->with(
-                'type',
-                'department',
-                'building',
-            )
-            ->filter($filter)
-            ->sort($queryParams)
+        $rooms = Room::getByParams($queryParams)
             ->paginate(5)
             ->withQueryString();
-
         $roomTypes = RoomType::all();
         $buildings = Building::all();
 
         $floorAmount = -1;
         if (isset($queryParams['building_id'])) {
-            $floorAmount = Building::findOrFail($queryParams['building_id'])
+            $floorAmount = Building::find($queryParams['building_id'])
                 ->floor_amount;;
         }
 
@@ -113,8 +83,8 @@ class RoomController extends Controller
     public function store(StoreRoomRequest $request)
     {
         $validatedData = $request->validated();
-        Room::create($validatedData);
-        return redirect()->route('rooms.index')
+        $room = Room::create($validatedData);
+        return redirect()->route('rooms.show', $room->id)
             ->with('status', 'room-stored');
     }
 
@@ -126,50 +96,13 @@ class RoomController extends Controller
         $room->load('type', 'building', 'department', 'equipment');
 
         $queryParams = $request->validated();
-        $filter = app()->make(
-            EquipmentFilter::class,
-            ['queryParams' => $queryParams]
-        );
 
         $equipment = null;
         if ($room->equipment->count() === 0) {
             $equipment = $room->equipment;
         } else {
             if ($request->user()->can('view', $room->equipment->first())) {
-                $equipment = Equipment::where('room_id', $room->id)
-                    ->select('equipment.*')
-                    ->leftjoin(
-                        'equipment_types',
-                        'equipment.equipment_type_id',
-                        '=',
-                        'equipment_types.id'
-                    )
-                    ->leftjoin(
-                        'rooms',
-                        'equipment.room_id',
-                        '=',
-                        'rooms.id'
-                    )
-                    ->leftjoin(
-                        'buildings',
-                        'rooms.building_id',
-                        '=',
-                        'buildings.id'
-                    )
-                    ->leftjoin(
-                        'departments',
-                        'rooms.department_id',
-                        '=',
-                        'departments.id'
-                    )
-                    ->with(
-                        'type',
-                        'room',
-                        'room.building',
-                        'room.department',
-                    )
-                    ->filter($filter)
-                    ->sort($queryParams)
+                $equipment = Equipment::getByParamsAndRoom($queryParams, $room)
                     ->paginate(5)
                     ->withQueryString();
             }
@@ -247,18 +180,9 @@ class RoomController extends Controller
         StoreImageRequest $request,
         Room $room
     ) {
-        $this->authorize('view', $room);
+        $this->authorize('manageImages', $room);
         $files = $request->file('images');
-
-        foreach ($files as $file) {
-            $room->addMedia($file)
-                ->withCustomProperties([
-                    'user_id' => Auth::user()->id,
-                    'user_name' => Auth::user()->name,
-                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
-                ])
-                ->toMediaCollection('images');
-        }
+        $room->storeMedia($files, 'images');
 
         return redirect()->route('rooms.show', $room->id)
             ->with('status', 'images-stored');
@@ -269,7 +193,7 @@ class RoomController extends Controller
      */
     public function destroyImage(Request $request, Room $room)
     {
-        $this->authorize('view', $room);
+        $this->authorize('manageImages', $room);
 
         $images = $room->getMedia('images');
         $imageIndex = $request->get('image_index');

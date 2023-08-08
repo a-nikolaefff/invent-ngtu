@@ -45,8 +45,8 @@ class EquipmentTypeController extends Controller
     public function store(StoreEquipmentTypeRequest $request)
     {
         $validatedData = $request->validated();
-        EquipmentType::create($validatedData);
-        return redirect()->route('equipment-types.index')
+        $equipmentType = EquipmentType::create($validatedData);
+        return redirect()->route('equipment-types.show', $equipmentType->id)
             ->with('status', 'equipment-type-stored');
     }
 

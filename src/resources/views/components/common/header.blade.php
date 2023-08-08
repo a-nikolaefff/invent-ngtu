@@ -3,17 +3,7 @@
        id="header__toggle"></i>
 
     <div class="header__container container">
-        @guest
-            <div class="header__authorisation ms-1">
-                <a class="nav-link me-1 me-sm-3" href="{{ route('login') }}">
-                    <button type="button" class="btn btn-primary">Вход</button>
-                </a>
-                <a class="nav-link" href="{{ route('register') }}">
-                    <button type="button" class="btn btn-secondary">Регистрация</button>
-                </a>
-            </div>
-        @else
-
+        <div>
             @can('viewAny', App\Models\User::class)
                 @if($isPageWithAdminSidebar)
                     <a href="{{ route('buildings.index') }}">
@@ -39,12 +29,13 @@
                     </a>
                 @endif
             @endcan
+        </div>
 
-
-            <div class="relative" data-te-dropdown-ref>
+        <div class="relative max-w-min sm:max-w-fit" data-te-dropdown-ref>
+            <div class="">
                 <a
                     class="flex items-center px-4 md:px-6
-                    pb-2 pt-2.5 text-sm text-right font-medium leading-normal"
+                    pb-2 pt-2.5 text-sm text-right font-medium leading-tight sm:leading-normal"
                     href=""
                     type="button"
                     id="dropdownMenuButton2"
@@ -97,6 +88,6 @@
                 </ul>
             </div>
 
-        @endguest
+        </div>
     </div>
 </header>

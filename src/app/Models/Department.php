@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use App\Filters\DepartmentFilter;
+use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
-
-class Department extends Model
+class Department extends Model implements GetByParams
 {
     use Filterable;
 
@@ -49,14 +48,14 @@ class Department extends Model
         return $this->hasMany(Department::class, 'parent_department_id');
     }
 
-    public static function getDepartments(array $queryParams)
+    public function scopeGetByParams(Builder $query, array $queryParams): void
     {
         $filter = app()->make(
             DepartmentFilter::class,
             ['queryParams' => $queryParams]
         );
 
-        return static::select('departments.*')
+        $query->select('departments.*')
             ->leftjoin(
                 'departments as parent_departments',
                 'departments.parent_department_id',
@@ -71,9 +70,7 @@ class Department extends Model
             )
             ->with('parent', 'type')
             ->filter($filter)
-            ->sort($queryParams)
-            ->paginate(5)
-            ->withQueryString();
+            ->sort($queryParams);
     }
 
     public function scopeSort(

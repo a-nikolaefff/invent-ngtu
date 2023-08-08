@@ -1,10 +1,18 @@
 <x-admin-layout :centered="true" :title="'Подразделение: ' . $department->name">
 
-    @if (session('status') === 'department-updated')
-        <x-alert type="success">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('department-stored')
+            <x-alert type="success">
+                Новое подразделение успешно добавлено
+            </x-alert>
+            @break
+
+        @case('department-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

@@ -1,9 +1,11 @@
 <x-app-layout title="Ремонты оборудования">
 
-    @if (session('status') === 'repair-stored')
-        <x-alert type="success">
-            Новый ремонт успешно добавлен
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'repair-deleted')
@@ -111,7 +113,7 @@
 
                     <td>{{ $repair->short_description }}</td>
 
-                    <td>{{ 'инв. № ' . $repair->equipment->number . ', ' . $repair->equipment->name }}</td>
+                    <td>{{ $repair->equipment->name . ', инв. № ' . $repair->equipment->number }}</td>
 
                     <td class="hidden lg:table-cell">
                         @if($repair->start_date)

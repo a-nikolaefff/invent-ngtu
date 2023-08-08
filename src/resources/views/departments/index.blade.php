@@ -8,12 +8,6 @@
         @endforeach
     @endif
 
-    @if (session('status') === 'department-stored')
-        <x-alert type="success">
-            Новое подразделение успешно добавлено
-        </x-alert>
-    @endif
-
     @if (session('status') === 'department-deleted')
         <x-alert type="success">
             Подразделение удалено

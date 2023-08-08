@@ -1,5 +1,5 @@
 @php
-    $canManageImages = \Illuminate\Support\Facades\Auth::user()->can('update', $repair);
+    $canManageImages = \Illuminate\Support\Facades\Auth::user()->can('manageImages', $repair);
 @endphp
 
 <x-app-layout :centered="true" :title="'Ремонт: ' . $repair->name">
@@ -13,6 +13,12 @@
     @endif
 
     @switch(session('status'))
+        @case('repair-stored')
+            <x-alert type="success">
+                Новый ремонт успешно добавлен
+            </x-alert>
+            @break
+
         @case('repair-updated')
             <x-alert type="success">
                 Данные успешно изменены
@@ -69,7 +75,7 @@
                 onclick="window.location='{{ route('equipment.show', $repair->equipment->id) }}';"
                 class="standard-table__clickable-row">
                 <th scope="row" class="w-2/12">Ремонтируемое оборудование:</th>
-                <td>{{ 'инв. № ' . $repair->equipment->number . ', ' . $repair->equipment->name }}</td>
+                <td>{{ $repair->equipment->name . ', инв. № ' . $repair->equipment->number }}</td>
             </tr>
 
             <tr>
@@ -160,7 +166,7 @@
                                     src="{{ $image->getUrl('preview') }}"
                                     data-te-img="{{ $image->getUrl() }}"
                                     alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
-                                    />
+                                />
                             </div>
                         </div>
                     @endforeach
@@ -204,7 +210,7 @@
                                     src="{{ $image->getUrl('preview') }}"
                                     data-te-img="{{ $image->getUrl() }}"
                                     alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
-                                    />
+                                />
                             </div>
                         </div>
                     @endforeach

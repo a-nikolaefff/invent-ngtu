@@ -1,10 +1,18 @@
 <x-admin-layout :centered="true" :title="'Тип подразделений: ' . $departmentType->name">
 
-    @if (session('status') === 'department-type-updated')
-        <x-alert type="success" class="mb-4">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('department-type-stored')
+            <x-alert type="success">
+                Новый тип подразделения успешно добавлен
+            </x-alert>
+            @break
+
+        @case('department-type-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

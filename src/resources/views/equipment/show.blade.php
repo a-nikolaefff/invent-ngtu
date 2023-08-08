@@ -9,6 +9,12 @@
     @endif
 
     @switch(session('status'))
+        @case('equipment-stored')
+            <x-alert type="success">
+                Новое оборудование успешно добавлено
+            </x-alert>
+            @break
+
         @case('equipment-updated')
             <x-alert type="success">
                 Данные успешно изменены

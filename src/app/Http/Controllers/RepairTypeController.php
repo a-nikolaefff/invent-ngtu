@@ -45,8 +45,8 @@ class RepairTypeController extends Controller
     public function store(StoreRepairTypeRequest $request)
     {
         $validatedData = $request->validated();
-        RepairType::create($validatedData);
-        return redirect()->route('repair-types.index')
+        $repairType = RepairType::create($validatedData);
+        return redirect()->route('repair-types.show', $repairType->id)
             ->with('status', 'repair-type-stored');
     }
 

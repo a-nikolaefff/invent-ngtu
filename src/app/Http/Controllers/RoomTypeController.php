@@ -46,8 +46,8 @@ class RoomTypeController extends Controller
     public function store(StoreRoomTypeRequest $request)
     {
         $validatedData = $request->validated();
-        RoomType::create($validatedData);
-        return redirect()->route('room-types.index')
+        $roomType = RoomType::create($validatedData);
+        return redirect()->route('room-types.show', $roomType->id)
             ->with('status', 'room-type-stored');
     }
 

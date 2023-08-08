@@ -1,10 +1,18 @@
 <x-app-layout :centered="true" :title="'Тип зданий: ' . $buildingType->name">
 
-    @if (session('status') === 'building-type-updated')
-        <x-alert type="success" class="mb-4">
-            Данные успешно изменены
-        </x-alert>
-    @endif
+    @switch(session('status'))
+        @case('building-type-stored')
+            <x-alert type="success">
+                Новый тип зданий успешно добавлен
+            </x-alert>
+            @break
+
+        @case('building-type-updated')
+            <x-alert type="success">
+                Данные успешно изменены
+            </x-alert>
+            @break
+    @endswitch
 
     <div class="page-header">
         <h1 class="h1">

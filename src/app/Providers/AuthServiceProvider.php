@@ -27,7 +27,11 @@ use App\Policies\RepairTypePolicy;
 use App\Policies\RoomPolicy;
 use App\Policies\RoomTypePolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Lang;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -38,12 +42,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            User::class => UserPolicy::class,
             DepartmentType::class => DepartmentTypePolicy::class,
             BuildingType::class => BuildingTypePolicy::class,
             RoomType::class => RoomTypePolicy::class,
             EquipmentType::class => EquipmentTypePolicy::class,
             RepairType::class => RepairTypePolicy::class,
+            User::class => UserPolicy::class,
             Department::class => DepartmentPolicy::class,
             Building::class => BuildingPolicy::class,
             Room::class => RoomPolicy::class,
@@ -57,6 +61,15 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject(__('email.verification.subject'))
+                ->greeting(__('email.greeting'))
+                ->line(__('email.verification.description'))
+                ->action(__('email.verification.action'), $url)
+                ->salutation(__('email.salutation'));
+        });
     }
 }

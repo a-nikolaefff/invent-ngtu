@@ -1,9 +1,11 @@
 <x-app-layout title="Типы зданий">
 
-    @if (session('status') === 'building-type-stored')
-        <x-alert type="success">
-            Новый тип здания успешно добавлен
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'building-type-deleted')

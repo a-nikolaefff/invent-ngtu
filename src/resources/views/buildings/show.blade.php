@@ -7,6 +7,12 @@
     @endif
 
     @switch(session('status'))
+        @case('$building-stored')
+            <x-alert type="success" class="mb-4">
+                Новое здание успешно добавлено
+            </x-alert>
+            @break
+
         @case('$building-updated')
             <x-alert type="success" class="mb-4">
                 Данные успешно изменены

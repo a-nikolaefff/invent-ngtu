@@ -42,7 +42,9 @@ class ShowEquipmentRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!RepairType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                            );
                         }
                     }
                 },
@@ -53,7 +55,9 @@ class ShowEquipmentRequest extends FormRequest
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (!RepairStatus::where('id', $value)->exists()) {
                         if ($value !== 'none') {
-                            $fail("The {$attribute} is invalid.");
+                            $fail(
+                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                            );
                         }
                     }
                 },

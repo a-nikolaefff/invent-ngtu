@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 /**
  * Notification of a change in user account information
  */
-class UserAccountChanged extends Notification
+class UserAccountChangedNotification extends Notification
 {
     use Queueable;
 
@@ -44,18 +44,12 @@ class UserAccountChanged extends Notification
             ->line(
                 __('email.account_change.role') . ': ' . $notifiable->role->name
             )
+            ->line(
+                __('email.account_change.department') . ': ' . $notifiable->department->name
+            )
+            ->line(
+                __('email.account_change.post') . ': ' . $notifiable->post
+            )
             ->salutation(__('email.salutation'));
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
     }
 }

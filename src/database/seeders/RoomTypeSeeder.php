@@ -11,6 +11,10 @@ class RoomTypeSeeder extends Seeder
 {
     private static array $baseTypes = [
         'аудитория',
+        'лекционный зал',
+        'компьютерный класс',
+        'деканат',
+        'лаборатория',
         'кабинет',
         'туалет',
     ];

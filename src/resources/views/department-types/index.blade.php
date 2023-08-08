@@ -1,9 +1,11 @@
 <x-admin-layout title="Типы подразделений">
 
-    @if (session('status') === 'department-type-stored')
-        <x-alert type="success">
-            Новый тип подразделения успешно добавлен
-        </x-alert>
+    @if ($errors)
+        @foreach($errors->all() as $error)
+            <x-alert type="danger">
+                {{ $error }}
+            </x-alert>
+        @endforeach
     @endif
 
     @if (session('status') === 'department-type-deleted')

@@ -3,6 +3,7 @@
 namespace app\Http\Requests\RepairType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRepairTypeRequest extends FormRequest
 {
@@ -22,7 +23,10 @@ class UpdateRepairTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255',
+                Rule::unique('repair_types', 'name')->ignore(
+                    $this->repair_type->id
+                )],
         ];
     }
 }

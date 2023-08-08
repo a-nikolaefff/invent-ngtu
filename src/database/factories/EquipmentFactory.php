@@ -22,9 +22,13 @@ class EquipmentFactory extends Factory
     public function definition(): array
     {
         $isDecommissioned = fake()->boolean;
+        $equipmentType = EquipmentType::all()->random();
+
+        $equipmentNameFirstLetterUpper = mb_strtoupper(mb_substr($equipmentType->name, 0, 1, "UTF-8"), "UTF-8");
+        $equipmentName = $equipmentNameFirstLetterUpper . mb_substr($equipmentType->name, 1, null, "UTF-8");
 
         return [
-            'name' => fake()->words(2, true),
+            'name' => $equipmentName . ' ' . fake()->words(2, true),
             'number' => fake()->unique()->randomNumber(6, true),
             'description' => fake()->words(2, true),
             'acquisition_date' => Carbon::now(),
@@ -36,7 +40,7 @@ class EquipmentFactory extends Factory
                 true
             ) : null,
             'room_id' => Room::pluck('id')->random(),
-            'equipment_type_id' => EquipmentType::pluck('id')->random(),
+            'equipment_type_id' => $equipmentType->id,
         ];
     }
 

@@ -9,7 +9,13 @@
     @endif
 
     @switch(session('status'))
-        @case('$room-updated')
+        @case('room-stored')
+            <x-alert type="success">
+                Новое помещение успешно добавлено
+            </x-alert>
+            @break
+
+        @case('room-updated')
             <x-alert type="success">
                 Данные успешно изменены
             </x-alert>
@@ -304,7 +310,7 @@
                                 src="{{ $image->getUrl('preview') }}"
                                 data-te-img="{{ $image->getUrl() }}"
                                 alt="{{ 'Добавлена ' . $image->getCustomProperty('datetime') . ' пользователем ' . $image->getCustomProperty('user_name') .' (id ' . $image->getCustomProperty('user_id') . ')'}} "
-                                />
+                            />
                         </div>
                     </div>
                 @endforeach
