@@ -11,20 +11,33 @@ Alpine.start();
 
 import './components/sidebar';
 
-const modules = [
-    { id: 'departmentAutocomplete', module: './components/autocompletes/department-autocomplete.js' },
-    { id: 'roomAutocomplete', module: './components/autocompletes/room-autocomplete.js' },
-    { id: 'equipmentAutocomplete', module: './components/autocompletes/equipment-autocomplete' },
-    { id: 'sortableTable', module: './components/sortable-table' },
-    { id: 'searchForm', module: './components/search-form' },
-    { id: 'building_id', module: './pages/rooms' },
-    { id: 'decommissioned', module: './pages/equipment' }
-];
-modules.forEach(({ id, module }) => {
-    if (document.getElementById(id)) {
-        import(module);
-    }
-});
+if (document.getElementById('departmentAutocomplete')) {
+    import ('./components/autocompletes/department-autocomplete.js');
+}
+
+if (document.getElementById('roomAutocomplete')) {
+    import ('./components/autocompletes/room-autocomplete.js');
+}
+
+if (document.getElementById('equipmentAutocomplete')) {
+    import ('./components/autocompletes/equipment-autocomplete');
+}
+
+if (document.getElementById('sortableTable')) {
+    import ('./components/sortable-table');
+}
+
+if (document.getElementById('searchForm')) {
+    import ('./components/search-form');
+}
+
+if (document.getElementById('building_id')) {
+    import ('./pages/rooms');
+}
+
+if (document.getElementById('decommissioned')) {
+    import ('./pages/equipment');
+}
 
 // Handle reusable components
 
