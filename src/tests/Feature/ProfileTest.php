@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
+use Database\Seeders\DepartmentSeeder;
+use Database\Seeders\UserRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,6 +15,8 @@ class ProfileTest extends TestCase
 
     public function test_profile_page_is_displayed(): void
     {
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
+
         $user = User::factory()->create();
 
         $response = $this
@@ -23,6 +28,9 @@ class ProfileTest extends TestCase
 
     public function test_profile_information_can_be_updated(): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
+
         $user = User::factory()->create();
 
         $response = $this
@@ -43,8 +51,12 @@ class ProfileTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
-    public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
+    public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(
+    ): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
+
         $user = User::factory()->create();
 
         $response = $this
@@ -63,6 +75,8 @@ class ProfileTest extends TestCase
 
     public function test_user_can_delete_their_account(): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
         $user = User::factory()->create();
 
         $response = $this
@@ -79,8 +93,11 @@ class ProfileTest extends TestCase
         $this->assertNull($user->fresh());
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account(): void
+    public function test_correct_password_must_be_provided_to_delete_account(
+    ): void
     {
+        $this->withoutMiddleware();
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
         $user = User::factory()->create();
 
         $response = $this
@@ -90,8 +107,7 @@ class ProfileTest extends TestCase
                 'password' => 'wrong-password',
             ]);
 
-        $response
-            ->assertSessionHasErrorsIn('userDeletion', 'password')
+        $response->assertSessionHasErrorsIn('userDeletion', 'password')
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());

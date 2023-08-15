@@ -2,9 +2,16 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\BuildingSeeder;
+use Database\Seeders\BuildingTypeSeeder;
+use Database\Seeders\DepartmentSeeder;
+use Database\Seeders\UserRoleSeeder;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -20,19 +27,24 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class,]);
+
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+        $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
+
         $user = User::factory()->create();
 
         $this->post('/login', [

@@ -56,8 +56,16 @@ class UserRole extends Model
      */
     public function scopeAllRolesExcept(
         Builder $query,
-        UserRoleEnum $roleType
+        array|UserRoleEnum $roleTypes
     ): void {
-        $query->where('name', '!=', $roleType->value);
+        if (is_array($roleTypes)) {
+            $roleValues = array_map(function ($roleType) {
+                return $roleType->value;
+            }, $roleTypes);
+
+            $query->whereNotIn('name', $roleValues);
+        } else {
+            $query->where('name', '!=', $roleTypes->value);
+        }
     }
 }

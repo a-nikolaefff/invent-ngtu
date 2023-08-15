@@ -12,6 +12,6 @@ class RepairApplicationSeeder extends Seeder
      */
     public function run(): void
     {
-        RepairApplication::factory()->count(50)->create();
+        RepairApplication::factory()->count(30)->create();
     }
 }
