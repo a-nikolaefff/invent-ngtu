@@ -8,7 +8,7 @@ use App\Services\DataProcessor;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * This class provides functionality to process user data.
+ * Represents a data processor for user-related data.
  */
 class UserService implements DataProcessor
 {

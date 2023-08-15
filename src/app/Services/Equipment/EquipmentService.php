@@ -6,6 +6,9 @@ namespace App\Services\Equipment;
 
 use App\Services\DataProcessor;
 
+/**
+ * Represents a data processor for equipment-related data.
+ */
 class EquipmentService implements DataProcessor
 {
     /**

@@ -23,7 +23,7 @@ class DepartmentFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on role ID.
+     * Apply the filter based on department type ID.
      *
      * @param Builder $builder          The Builder instance.
      * @param mixed   $departmentTypeId The role ID.

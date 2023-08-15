@@ -26,7 +26,7 @@ class RepairApplicationFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on room type ID.
+     * Apply the filter based on repair application status ID.
      *
      * @param Builder $builder The Builder instance.
      * @param mixed   $statusId The role ID.

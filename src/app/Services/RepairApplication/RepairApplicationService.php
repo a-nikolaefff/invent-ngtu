@@ -6,6 +6,9 @@ namespace App\Services\RepairApplication;
 
 use App\Models\RepairApplication;
 
+/**
+ * An abstract class representing a service for processing repair application data .
+ */
 abstract class RepairApplicationService
 {
     /**

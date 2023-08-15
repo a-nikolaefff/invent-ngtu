@@ -7,6 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Spatie\MediaLibrary\HasMedia;
 
+/**
+ * Class FileLoader
+ *
+ * Represents a utility class for loading files into a media collection of a model.
+ */
 class FileLoader
 {
     public static function load(HasMedia $model, string $folderPath, string $collectionName): void {

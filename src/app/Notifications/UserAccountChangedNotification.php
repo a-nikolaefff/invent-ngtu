@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Notification of a change in user account information
+ * Represents a notification sent when a user's account details change.
  */
 class UserAccountChangedNotification extends Notification
 {

@@ -6,7 +6,6 @@ namespace App\Services\RepairApplication;
 
 use App\Enums\RepairApplicationStatusEnum;
 use App\Enums\UserRoleEnum;
-use App\Models\RepairApplication;
 use App\Models\RepairApplicationStatus;
 use App\Models\User;
 use App\Models\UserRole;
@@ -14,6 +13,9 @@ use App\Notifications\NewRepairApplicationNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Represents a service for storing repair application data
+ */
 class StoreRepairApplicationService extends RepairApplicationService
 {
 

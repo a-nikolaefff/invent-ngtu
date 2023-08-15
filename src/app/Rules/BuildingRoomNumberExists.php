@@ -3,11 +3,13 @@
 namespace App\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Validation\Validator;
 
+/**
+ * Represents a validation rule to check if a building room number exists.
+ */
 class BuildingRoomNumberExists implements ValidationRule, ValidatorAwareRule
 {
     /**

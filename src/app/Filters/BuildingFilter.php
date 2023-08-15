@@ -23,7 +23,7 @@ class BuildingFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on role ID.
+     * Apply the filter based on building type ID.
      *
      * @param Builder $builder        The Builder instance.
      * @param mixed   $buildingTypeId The role ID.

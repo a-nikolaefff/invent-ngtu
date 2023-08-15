@@ -27,7 +27,7 @@ class EquipmentFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on room type ID.
+     * Apply the filter based on equipment type ID.
      *
      * @param Builder $builder         The Builder instance.
      * @param mixed   $equipmentTypeId The role ID.

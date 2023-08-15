@@ -4,10 +4,12 @@ namespace App\Notifications;
 
 use App\Models\RepairApplication;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * Represents a notification sent for a new repair application.
+ */
 class NewRepairApplicationNotification extends Notification
 {
     use Queueable;

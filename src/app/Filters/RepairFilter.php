@@ -25,7 +25,7 @@ class RepairFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on room type ID.
+     * Apply the filter based on repair type ID.
      *
      * @param Builder $builder      The Builder instance.
      * @param mixed   $repairTypeId The role ID.
@@ -39,7 +39,7 @@ class RepairFilter extends AbstractFilter
     }
 
     /**
-     * Apply the filter based on room type ID.
+     * Apply the filter based on repair status ID.
      *
      * @param Builder $builder        The Builder instance.
      * @param mixed   $repairStatusId The role ID.

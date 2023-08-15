@@ -9,6 +9,9 @@ use App\Models\RepairApplicationStatus;
 use App\Notifications\RepairApplicationStatusChangedNotification;
 use Carbon\Carbon;
 
+/**
+ * Represents a service for updating repair application data
+ */
 class UpdateRepairApplicationService extends RepairApplicationService
 {
 

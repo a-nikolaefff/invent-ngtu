@@ -10,8 +10,17 @@ use App\Models\User;
 use App\Models\UserRole;
 use App\Notifications\NewRepairApplicationNotification;
 
+/**
+ * Represents an action to notify specialists about a new repair application.
+ */
 class NotifySpecialistAboutNewRepairApplicationAction
 {
+    /**
+     * Execute the action to notify specialists about a new repair application.
+     *
+     * @param RepairApplication $repairApplication The repair application to notify about.
+     * @return void
+     */
     public function execute(RepairApplication $repairApplication)
     {
         $specialistRoleId = UserRole::where(
