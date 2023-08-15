@@ -1,4 +1,4 @@
-<x-guest-layout title="Подтверждение пароля">
+<x-layouts.guest title="Подтверждение пароля">
     <div class="mb-4 text-sm text-gray-600">
         Пожалуйста, подтвердите свой пароль, прежде чем продолжить.
     </div>
@@ -24,4 +24,4 @@
             </x-buttons.confirm>
         </div>
     </form>
-</x-guest-layout>
+</x-layouts.guest>

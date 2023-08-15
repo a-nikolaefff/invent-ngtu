@@ -1,3 +1,5 @@
+@props(['$isAdminSidebar', 'menu'])
+
 <div class="sidebar @if($isAdminSidebar) sidebar_admin @endif" id="sidebar">
     <nav class="sidebar__content">
             <a class="sidebar__logo" href="{{ url('/') }}">

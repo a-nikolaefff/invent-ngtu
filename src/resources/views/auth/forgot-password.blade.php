@@ -1,4 +1,4 @@
-<x-guest-layout title="Восстановление пароля">
+<x-layouts.guest title="Восстановление пароля">
     <div class="mb-4 text-sm text-gray-600">
         Забыли пароль? Просто сообщите нам свой адрес электронной почты,
         и мы отправим вам ссылку для сброса пароля, которая позволит вам выбрать новый.
@@ -27,4 +27,4 @@
             </x-buttons.confirm>
         </div>
     </form>
-</x-guest-layout>
+</x-layouts.guest>

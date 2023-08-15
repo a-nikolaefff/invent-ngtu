@@ -1,4 +1,4 @@
-<x-admin-layout title="Типы подразделений">
+<x-layouts.admin title="Типы подразделений">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -56,4 +56,4 @@
         {{ $departmentTypes->links() }}
     @endif
 
-</x-admin-layout>
+</x-layouts.admin>

@@ -1,4 +1,4 @@
-<x-app-layout :centered="true" :title="'Оборудование:  инв. № ' . $equipment->number . ', ' . $equipment->name">
+<x-layouts.app :centered="true" :title="'Оборудование:  инв. № ' . $equipment->number . ', ' . $equipment->name">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -364,4 +364,4 @@
         </table>
     </div>
 
-</x-app-layout>
+</x-layouts.app>

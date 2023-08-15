@@ -1,4 +1,4 @@
-<x-admin-layout :title="'Редактирование пользователя: ' . $user->name" :centered="true" :overflowXAuto="false">
+<x-layouts.admin :title="'Редактирование пользователя: ' . $user->name" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -63,4 +63,4 @@
                 </div>
             </form>
         </div>
-</x-admin-layout>
+</x-layouts.admin>

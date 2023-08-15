@@ -1,4 +1,4 @@
-<x-guest-layout title="Регистрация">
+<x-layouts.guest title="Регистрация">
     <div class="w-full sm:max-w-5xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <form method="POST" action="{{ route('register') }}">
             @csrf
@@ -87,4 +87,4 @@
             </div>
         </form>
     </div>
-</x-guest-layout>
+</x-layouts.guest>

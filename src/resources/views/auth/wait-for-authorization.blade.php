@@ -1,4 +1,4 @@
-<x-guest-layout title="Ожидание авторизации">
+<x-layouts.guest title="Ожидание авторизации">
     <div class="mb-4 text-sm text-gray-600 text-center">
         Ваш адрес электронной почты подтвержден!
         <br>
@@ -14,5 +14,5 @@
             {{ __('interface.log-out') }}
         </button>
     </form>
-</x-guest-layout>
+</x-layouts.guest>
 

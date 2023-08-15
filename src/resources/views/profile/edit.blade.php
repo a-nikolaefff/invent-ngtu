@@ -1,4 +1,4 @@
-<x-app-layout title="Профиль" :centered="true">
+<x-layouts.app title="Профиль" :centered="true">
 
     @if (session('status') === 'profile-updated')
         <x-alert type="success">
@@ -95,4 +95,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-layouts.app>

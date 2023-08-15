@@ -1,3 +1,5 @@
+@props(['isPageWithAdminSidebar'])
+
 <header class="header" id="header">
     <i class="header__toggle @if($isPageWithAdminSidebar) header__toggle_admin @endif bx bx-menu"
        id="header__toggle"></i>

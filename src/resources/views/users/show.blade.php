@@ -1,4 +1,4 @@
-<x-admin-layout :centered="true" :title="'Пользователь: ' . $user->name">
+<x-layouts.admin :centered="true" :title="'Пользователь: ' . $user->name">
 
     @if (session('status') === 'user-updated')
         <x-alert type="success">
@@ -128,4 +128,4 @@
         </table>
     </div>
 
-</x-admin-layout>
+</x-layouts.admin>

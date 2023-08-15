@@ -1,4 +1,4 @@
-<x-app-layout title="Типы помещений">
+<x-layouts.app title="Типы помещений">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -57,4 +57,4 @@
         {{ $roomTypes->links() }}
     @endif
 
-</x-app-layout>
+</x-layouts.app>

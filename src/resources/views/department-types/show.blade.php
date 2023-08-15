@@ -1,4 +1,4 @@
-<x-admin-layout :centered="true" :title="'Тип подразделений: ' . $departmentType->name">
+<x-layouts.admin :centered="true" :title="'Тип подразделений: ' . $departmentType->name">
 
     @switch(session('status'))
         @case('department-type-stored')
@@ -75,4 +75,4 @@
         </table>
     </div>
 
-</x-admin-layout>
+</x-layouts.admin>

@@ -1,4 +1,4 @@
-<x-admin-layout title="Пользователи">
+<x-layouts.admin title="Пользователи">
 
     @if (session('status') === 'user-deleted')
         <x-alert type="success">
@@ -17,7 +17,7 @@
         class="w-full lg:w-10/12 xl:w-1/2"
         :value="request()->search"
         placeholder="Поиск по имени, email или подразделению"
-    ></x-search-form>
+    />
 
     <x-option-selector
         class="w-full md:w-8/12 lg:w-4/12"
@@ -85,4 +85,4 @@
         {{ $users->links() }}
     @endif
 
-</x-admin-layout>
+</x-layouts.admin>

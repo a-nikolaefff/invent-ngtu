@@ -1,4 +1,4 @@
-<x-app-layout :centered="true" :title="'Здание: ' . $building->name">
+<x-layouts.app :centered="true" :title="'Здание: ' . $building->name">
 
     @if (session('status') === 'department-updated')
         <x-alert type="success">
@@ -257,4 +257,4 @@
         </table>
     </div>
 
-</x-app-layout>
+</x-layouts.app>

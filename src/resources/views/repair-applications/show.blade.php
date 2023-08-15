@@ -6,7 +6,7 @@
     ->can('viewUserInformation', App\Models\RepairApplication::class);
 @endphp
 
-<x-app-layout :centered="true" :title="'Заявка на ремонт: ' . $repairApplication->name">
+<x-layouts.app :centered="true" :title="'Заявка на ремонт: ' . $repairApplication->name">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -185,4 +185,4 @@
         </div>
     @endif
 
-</x-app-layout>
+</x-layouts.app>

@@ -3,7 +3,7 @@
     ->can('viewUserInformation', App\Models\RepairApplication::class);
 @endphp
 
-<x-app-layout title="Заявки на ремонт оборудования">
+<x-layouts.app title="Заявки на ремонт оборудования">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -33,7 +33,7 @@
         class="w-full lg:w-10/12 xl:w-1/2"
         :value="request()->search"
         placeholder="Поиск по номеру или описанию заявки, инв. номеру или наим. оборудования"
-    ></x-search-form>
+    />
 
     <x-option-selector
         class="w-full md:w-8/12 lg:w-4/12"
@@ -163,4 +163,4 @@
         </table>
         {{ $repairApplications->links() }}
     @endif
-</x-app-layout>
+</x-layouts.app>

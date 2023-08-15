@@ -1,4 +1,4 @@
-<x-admin-layout :title="'Редактирование типа подразделений: ' . $departmentType->name" :centered="true"
+<x-layouts.admin :title="'Редактирование типа подразделений: ' . $departmentType->name" :centered="true"
                 :overflowXAuto="false">
 
     <div class="page-header">
@@ -33,4 +33,4 @@
         </form>
     </div>
 
-</x-admin-layout>
+</x-layouts.admin>

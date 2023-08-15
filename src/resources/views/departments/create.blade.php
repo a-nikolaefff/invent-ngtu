@@ -1,4 +1,4 @@
-<x-admin-layout title="Добавление нового подразделения" :centered="true" :overflowXAuto="false">
+<x-layouts.admin title="Добавление нового подразделения" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -65,4 +65,4 @@
         </form>
     </div>
 
-</x-admin-layout>
+</x-layouts.admin>

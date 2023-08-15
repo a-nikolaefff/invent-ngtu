@@ -1,4 +1,4 @@
-<x-app-layout :title="'Редактирование типа ремонта: ' . $repairType->name" :centered="true" :overflowXAuto="false">
+<x-layouts.app :title="'Редактирование типа ремонта: ' . $repairType->name" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -34,4 +34,4 @@
         </form>
     </div>
 
-</x-app-layout>
+</x-layouts.app>

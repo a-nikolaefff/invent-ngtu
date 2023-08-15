@@ -1,4 +1,4 @@
-<x-app-layout title="Помещения">
+<x-layouts.app title="Помещения">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -24,7 +24,7 @@
         class="w-full lg:w-10/12 xl:w-1/2"
         :value="request()->search"
         placeholder="Поиск по номеру, наименованию, подразделению"
-    ></x-search-form>
+    />
 
     <x-option-selector
         class="w-full md:w-8/12 lg:w-4/12"
@@ -148,4 +148,4 @@
         </table>
         {{ $rooms->links() }}
     @endif
-</x-app-layout>
+</x-layouts.app>

@@ -1,4 +1,4 @@
-<x-guest-layout title="Сброс пароля">
+<x-layouts.guest title="Сброс пароля">
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
         <!-- Password Reset Token -->
@@ -35,4 +35,4 @@
             </x-buttons.confirm>
         </div>
     </form>
-</x-guest-layout>
+</x-layouts.guest>

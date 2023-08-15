@@ -1,4 +1,4 @@
-<x-admin-layout title="Подразделения">
+<x-layouts.admin title="Подразделения">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -24,7 +24,7 @@
         class="w-full lg:w-10/12 xl:w-1/2"
         :value="request()->search"
         placeholder="Поиск по наименованию или краткому наименованию"
-    ></x-search-form>
+    />
 
     <x-option-selector
         class="w-full md:w-8/12 lg:w-4/12"
@@ -102,4 +102,4 @@
         {{ $departments->links() }}
     @endif
 
-</x-admin-layout>
+</x-layouts.admin>

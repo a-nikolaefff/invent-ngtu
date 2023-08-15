@@ -2,7 +2,7 @@
     $canManageImages = \Illuminate\Support\Facades\Auth::user()->can('manageImages', $repair);
 @endphp
 
-<x-app-layout :centered="true" :title="'Ремонт: ' . $repair->name">
+<x-layouts.app :centered="true" :title="'Ремонт: ' . $repair->name">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -239,4 +239,4 @@
             </tbody>
         </table>
     </div>
-</x-app-layout>
+</x-layouts.app>

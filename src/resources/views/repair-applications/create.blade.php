@@ -1,4 +1,4 @@
-<x-app-layout title="Создание новой заявки на ремонт оборудования" :centered="true" :overflowXAuto="false">
+<x-layouts.app title="Создание новой заявки на ремонт оборудования" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -61,4 +61,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-layouts.app>

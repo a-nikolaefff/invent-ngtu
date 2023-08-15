@@ -1,4 +1,4 @@
-<x-app-layout title="Добавление нового оборудования" :centered="true" :overflowXAuto="false">
+<x-layouts.app title="Добавление нового оборудования" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -146,4 +146,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-layouts.app>

@@ -1,4 +1,4 @@
-<x-app-layout :title="'Редактирование типа оборудования: ' . $equipmentType->name" :centered="true"
+<x-layouts.app :title="'Редактирование типа оборудования: ' . $equipmentType->name" :centered="true"
               :overflowXAuto="false">
 
     <div class="page-header">
@@ -36,4 +36,4 @@
         </form>
     </div>
 
-</x-app-layout>
+</x-layouts.app>

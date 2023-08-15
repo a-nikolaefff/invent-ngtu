@@ -1,4 +1,4 @@
-<x-app-layout title="Ремонты оборудования">
+<x-layouts.app title="Ремонты оборудования">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -24,7 +24,7 @@
         class="w-full lg:w-10/12 xl:w-1/2"
         :value="request()->search"
         placeholder="Поиск по описанию ремонта, инв. номеру или наименованию оборудования"
-    ></x-search-form>
+    />
 
     <div class="md:flex mb-2">
         <x-option-selector
@@ -148,4 +148,4 @@
         </table>
         {{ $repairs->links() }}
     @endif
-</x-app-layout>
+</x-layouts.app>

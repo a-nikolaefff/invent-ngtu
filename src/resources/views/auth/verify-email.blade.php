@@ -1,4 +1,4 @@
-<x-guest-layout title="Подтверждение email">
+<x-layouts.guest title="Подтверждение email">
     <div class="mb-4 text-sm text-gray-600 text-center">
         Спасибо за регистрацию!
         <br>
@@ -33,4 +33,4 @@
             </button>
         </form>
     </div>
-</x-guest-layout>
+</x-layouts.guest>

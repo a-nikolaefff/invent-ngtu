@@ -1,4 +1,4 @@
-<x-app-layout :centered="true" :title="'Помещение: ' . $room->name">
+<x-layouts.app :centered="true" :title="'Помещение: ' . $room->name">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -340,4 +340,4 @@
     </div>
 
 
-</x-app-layout>
+</x-layouts.app>
