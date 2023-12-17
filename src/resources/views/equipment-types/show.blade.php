@@ -1,4 +1,4 @@
-<x-layouts.app :centered="true" :title="'Тип оборудования: ' . $equipmentType->name">
+<x-layouts.admin :centered="true" :title="'Тип оборудования: ' . $equipmentType->name">
 
     @switch(session('status'))
         @case('equipment-type-stored')
@@ -76,4 +76,4 @@
         </table>
     </div>
 
-</x-layouts.app>
+</x-layouts.admin>

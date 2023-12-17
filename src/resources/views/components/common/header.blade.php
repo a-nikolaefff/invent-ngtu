@@ -6,7 +6,7 @@
 
     <div class="header__container container">
         <div>
-            @can('viewAny', App\Models\User::class)
+            @can('viewAdminPanel', \Illuminate\Support\Facades\Auth::user())
                 @if($isPageWithAdminSidebar)
                     <a href="{{ route('buildings.index') }}">
                         <x-buttons.primary>
@@ -19,7 +19,7 @@
                         </x-buttons.primary>
                     </a>
                 @else
-                    <a href="{{ route('users.index') }}">
+                    <a href="{{ route('admin-main') }}">
                         <x-buttons.secondary>
                             <span class="hidden sm:inline-flex">
                                 Панель администратора

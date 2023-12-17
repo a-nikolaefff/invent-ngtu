@@ -6,6 +6,11 @@
                 <span class="sidebar__logo-icon"></span>
                 <span class="sidebar__logo-name">ИНВЕНТ НГТУ</span>
             </a>
+        <a href="{{ route('admin-main') }}"
+           class="sidebar__link @if(request()->routeIs('admin-main')) sidebar__link_active @endif">
+            <i class="sidebar__icon bx bx-windows"></i>
+            <span class="nav_name">Главная</span>
+        </a>
             @foreach($menu as $item)
             <a href="{{ route($item['route']) }}"
                    class="sidebar__link @if(request()->routeIs($item['route'])) sidebar__link_active @endif">

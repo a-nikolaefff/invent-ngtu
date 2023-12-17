@@ -1,4 +1,4 @@
-<x-layouts.app title="Добавление нового типа помещений" :centered="true" :overflowXAuto="false">
+<x-layouts.admin title="Добавление нового типа помещений" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -29,4 +29,4 @@
                 </div>
             </form>
         </div>
-</x-layouts.app>
+</x-layouts.admin>

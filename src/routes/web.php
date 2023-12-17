@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\BuildingTypeController;
 use App\Http\Controllers\DepartmentController;
@@ -119,6 +120,10 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
         [RepairApplicationController::class, 'destroyImage']
     )->name('repair-applications.destroy-image');
     Route::resource('repair-applications', RepairApplicationController::class);
+
+    Route::get('/admin-main', [AdminPanelController::class, 'index'])
+        ->name('admin-main')
+        ->middleware('admin_or_specialist');
 });
 
 require __DIR__ . '/auth.php';
