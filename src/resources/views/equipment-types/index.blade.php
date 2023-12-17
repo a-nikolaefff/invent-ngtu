@@ -1,4 +1,4 @@
-<x-layouts.app title="Типы оборудования">
+<x-layouts.admin title="Типы оборудования">
 
     @if ($errors)
         @foreach($errors->all() as $error)
@@ -57,4 +57,4 @@
         {{ $equipmentTypes->links() }}
     @endif
 
-</x-layouts.app>
+</x-layouts.admin>

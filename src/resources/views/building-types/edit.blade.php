@@ -1,4 +1,4 @@
-<x-layouts.app :title="'Редактирование типа зданий: ' . $buildingType->name" :centered="true" :overflowXAuto="false">
+<x-layouts.admin :title="'Редактирование типа зданий: ' . $buildingType->name" :centered="true" :overflowXAuto="false">
 
     <div class="page-header">
         <h1 class="h1">
@@ -32,4 +32,4 @@
             </form>
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.admin>

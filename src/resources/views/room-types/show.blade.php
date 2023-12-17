@@ -1,4 +1,4 @@
-<x-layouts.app :centered="true"  :title="'Тип помещений: ' . $roomType->name">
+<x-layouts.admin :centered="true"  :title="'Тип помещений: ' . $roomType->name">
 
     @switch(session('status'))
         @case('room-type-stored')
@@ -76,4 +76,4 @@
         </table>
     </div>
 
-</x-layouts.app>
+</x-layouts.admin>

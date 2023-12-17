@@ -1,4 +1,4 @@
-<x-layouts.app :centered="true"  :title="'Тип ремонта: ' . $repairType->name">
+<x-layouts.admin :centered="true"  :title="'Тип ремонта: ' . $repairType->name">
 
     @switch(session('status'))
         @case('repair-type-stored')
@@ -78,4 +78,4 @@
     </div>
 
 
-</x-layouts.app>
+</x-layouts.admin>

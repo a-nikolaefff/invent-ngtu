@@ -1,5 +1,3 @@
-@props(['title', 'centered' => false, 'overflowXAuto' => true])
-
 @php
     $user = Auth::user();
 
@@ -64,38 +62,33 @@
      }
 @endphp
 
+<x-layouts.admin title="Панель администратора">
 
-    <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="page-header page-header_not-centered">
+        <h1 class="h1">
+            Панель администратора
+        </h1>
+    </div>
 
-    <title>
-        {!! $title !!} | {{ config('app.name', 'Laravel') }}
-    </title>
+    <div>
+        <div class="grid grid-cols-3 gap-7">
+        @foreach($menu as $menuItem)
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.scss', 'resources/js/app.js'])
-</head>
-<body class="font-sans antialiased">
+                <a href="{{ route($menuItem['route']) }}">
+                    <div
+                        class="block rounded-lg bg-white border-2  p-6
+                    shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]
+                    dark:bg-neutral-700">
+                        <h5
+                            class="flex content-center mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+                            <i class="sidebar__icon text-pink-600 bx {{ $menuItem['boxIconClass'] }}"></i>
+                            <span class="ms-2">{{ $menuItem['title'] }}</span>
+                        </h5>
+                    </div>
+                </a>
+        @endforeach
+        </div>
+    </div>
 
-<div class="page" id="page">
 
-    <x-common.header
-        :is-page-with-admin-sidebar="true"
-    ></x-common.header>
-
-    <x-common.sidebar
-        :is-admin-sidebar="true"
-        :menu="$menu"
-    ></x-common.sidebar>
-
-    <x-common.page-content :centered="$centered" :overflowXAuto="$overflowXAuto">
-        {{ $slot }}
-    </x-common.page-content>
-
-</div>
-</body>
-</html>
+</x-layouts.admin>

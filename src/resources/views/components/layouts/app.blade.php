@@ -30,38 +30,6 @@
              'boxIconClass' => 'bxs-paper-plane',
         ]
     ];
-
-     if($user->can('viewAny', App\Models\BuildingType::class)) {
-         $menu[] = [
-                'title' => 'Типы зданий',
-                 'route' => 'building-types.index',
-                 'boxIconClass' => 'bx-home',
-            ];
-     }
-
-     if($user->can('viewAny', App\Models\RoomType::class)) {
-         $menu[] =  [
-                'title' => 'Типы помещений',
-                 'route' => 'room-types.index',
-                 'boxIconClass' => 'bx-category',
-            ];
-     }
-
-     if($user->can('viewAny', App\Models\EquipmentType::class)) {
-         $menu[] = [
-                'title' => 'Типы оборудования',
-                'route' => 'equipment-types.index',
-                'boxIconClass' => 'bx-list-ul',
-            ];
-     }
-
-     if($user->can('viewAny', App\Models\RepairType::class)) {
-         $menu[] = [
-                'title' => 'Типы ремонтов',
-                'route' => 'repair-types.index',
-                 'boxIconClass' => 'bx-cog',
-            ];
-     }
 @endphp
 
     <!DOCTYPE html>

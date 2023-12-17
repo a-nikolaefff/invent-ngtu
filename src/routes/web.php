@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\BuildingTypeController;
 use App\Http\Controllers\DepartmentController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\RepairTypeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPanelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -119,6 +121,13 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
         [RepairApplicationController::class, 'destroyImage']
     )->name('repair-applications.destroy-image');
     Route::resource('repair-applications', RepairApplicationController::class);
+
+    Route::get('/admin-main', [AdminPanelController::class, 'index'])
+        ->name('admin-main')
+        ->middleware('admin_or_specialist');
+
+    Route::get('/user-main', [UserPanelController::class, 'index'])
+        ->name('user-main');
 });
 
 require __DIR__ . '/auth.php';
