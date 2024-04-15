@@ -14,7 +14,7 @@
             </a>
         @else
             <a href="{{ route('user-main') }}"
-               class="sidebar__link @if(request()->routeIs('usermain')) sidebar__link_active @endif">
+               class="sidebar__link @if(request()->routeIs('user-main')) sidebar__link_active @endif">
                 <i class="sidebar__icon bx bx-windows"></i>
                 <span class="nav_name">Главная</span>
             </a>
