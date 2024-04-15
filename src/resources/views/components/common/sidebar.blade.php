@@ -2,7 +2,7 @@
 
 <div class="sidebar @if($isAdminSidebar) sidebar_admin @endif" id="sidebar">
     <nav class="sidebar__content">
-            <a class="sidebar__logo" href="{{ url('/') }}">
+            <a class="sidebar__logo" href="@if($isAdminSidebar) {{ route('admin-main') }} @else {{ route('user-main') }} @endif">
                 <span class="sidebar__logo-icon"></span>
                 <span class="sidebar__logo-name">ИНВЕНТ НГТУ</span>
             </a>
