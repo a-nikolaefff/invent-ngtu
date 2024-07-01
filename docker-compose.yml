@@ -24,24 +24,23 @@ services:
     networks:
         - web
 
-  mysql:
-    image: mysql:8.3
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_database:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: default
-      MYSQL_ROOT_PASSWORD: root
-    networks:
-      - web
+  pgsql:
+      image: postgres:16.2
+      ports:
+          - "5432:5432"
+      volumes:
+          - pgsql_database:/var/lib/postgresql/data
+      environment:
+          POSTGRES_DB: ${DB_DATABASE}
+          POSTGRES_USER: ${DB_USERNAME}
+          POSTGRES_PASSWORD: ${DB_PASSWORD}
+      networks:
+          - web
 
 networks:
   web:
     driver: bridge
 
 volumes:
-  mysql_database:
+  pgsql_database:
     driver: local
