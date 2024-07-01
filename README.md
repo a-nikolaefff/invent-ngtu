@@ -8,5 +8,6 @@
 ## Стек
 * PHP 8.3
 * Laravel 10
+* PostgreSQL 16.2
 * Blade
 * Tailwind

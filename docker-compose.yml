@@ -37,6 +37,17 @@ services:
       networks:
           - web
 
+  pgsql_test:
+      image: postgres:16.2
+      ports:
+          - "5433:5432"
+      environment:
+          POSTGRES_DB: ${DB_DATABASE}
+          POSTGRES_USER: ${DB_USERNAME}
+          POSTGRES_PASSWORD: ${DB_PASSWORD}
+      networks:
+          - web
+
 networks:
   web:
     driver: bridge
