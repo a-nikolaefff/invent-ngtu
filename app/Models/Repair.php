@@ -72,11 +72,11 @@ class Repair extends Model implements HasMedia, GetByParams
 
     public function scopeGetByParams(
         Builder $query,
-        array $queryParams
+        array $params
     ): void {
         $filter = app()->make(
             RepairFilter::class,
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         $query->select('repairs.*')
@@ -109,7 +109,7 @@ class Repair extends Model implements HasMedia, GetByParams
                 }
             )
             ->filter($filter)
-            ->sort($queryParams);
+            ->sort($params);
     }
 
     public function scopeGetByParamsAndEquipment(

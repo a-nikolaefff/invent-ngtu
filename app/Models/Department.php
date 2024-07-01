@@ -48,11 +48,11 @@ class Department extends Model implements GetByParams
         return $this->hasMany(Department::class, 'parent_department_id');
     }
 
-    public function scopeGetByParams(Builder $query, array $queryParams): void
+    public function scopeGetByParams(Builder $query, array $params): void
     {
         $filter = app()->make(
             DepartmentFilter::class,
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         $query->select('departments.*')
@@ -70,7 +70,7 @@ class Department extends Model implements GetByParams
             )
             ->with('parent', 'type')
             ->filter($filter)
-            ->sort($queryParams);
+            ->sort($params);
     }
 
     public function scopeSort(

@@ -81,11 +81,11 @@ class Equipment extends Model implements HasMedia, GetByParams
         return $this->belongsTo(Room::class, 'room_id');
     }
 
-    public function scopeGetByParams(Builder $query, array $queryParams): void
+    public function scopeGetByParams(Builder $query, array $params): void
     {
         $filter = app()->make(
             EquipmentFilter::class,
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         $query->select('equipment.*')
@@ -130,7 +130,7 @@ class Equipment extends Model implements HasMedia, GetByParams
                 }
             )
             ->filter($filter)
-            ->sort($queryParams);
+            ->sort($params);
     }
 
     public function scopeGetByParamsAndRoom(

@@ -4,7 +4,6 @@ namespace app\Http\Requests\Room;
 
 use App\Models\Building;
 use App\Models\Room;
-use App\Rules\BuildingRoomNumberExists;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 

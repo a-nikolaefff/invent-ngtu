@@ -11,6 +11,7 @@ use App\Models\Building;
 use App\Models\BuildingType;
 use App\Models\Room;
 use App\Models\RoomType;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -29,25 +30,20 @@ class BuildingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexBuildingRequest $request)
+    public function index(IndexBuildingRequest $request): View
     {
-        $queryParams = $request->validated();
-
-        $buildings = Building::getByParams($queryParams)
-            ->paginate(5)
-            ->withQueryString();
-        $buildingTypes = BuildingType::all();
-
-        return view('buildings.index', compact('buildings', 'buildingTypes'));
+        return view('buildings.index', [
+            'buildings' => Building::getByParams($request->validated())->paginate(5)->withQueryString(),
+            'buildingTypes' => BuildingType::all(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        $buildingTypes = BuildingType::all();
-        return view('buildings.create', compact('buildingTypes'));
+        return view('buildings.create', ['buildingTypes' => BuildingType::all()]);
     }
 
     /**
@@ -55,8 +51,8 @@ class BuildingController extends Controller
      */
     public function store(StoreBuildingRequest $request)
     {
-        $validatedData = $request->validated();
-        $building = Building::create($validatedData);
+        $building = Building::create($request->validated());
+
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'building-stored');
     }
@@ -66,28 +62,18 @@ class BuildingController extends Controller
      */
     public function show(ShowBuildingRequest $request, Building $building)
     {
-        $building->load('type');
-
-        $queryParams = $request->validated();
-
-        if ($building->rooms->count() === 0) {
-            $rooms = $building->rooms;
-        } else {
-            $rooms = Room::getByParamsAndBuilding($queryParams, $building)
-                ->paginate(5)
-                ->withQueryString();
-        }
-        $roomTypes = RoomType::all();
-        $floorAmount = $building->floor_amount;
+        $rooms = Room::getByParamsAndBuilding($request->validated(), $building)
+            ->paginate(5)
+            ->withQueryString();
 
         return view(
             'buildings.show',
-            compact(
-                'building',
-                'rooms',
-                'roomTypes',
-                'floorAmount'
-            )
+            [
+                'building' => $building,
+                'rooms' => $rooms,
+                'roomTypes' => RoomType::all(),
+                'floorAmount' => $building->floor_amount
+            ]
         );
     }
 
@@ -96,9 +82,12 @@ class BuildingController extends Controller
      */
     public function edit(Building $building)
     {
-        $building->load('type');
-        $buildingTypes = BuildingType::all();
-        return view('buildings.edit', compact('building', 'buildingTypes'));
+        return view('buildings.edit',
+            [
+                'building' => $building,
+                'buildingTypes' => BuildingType::all(),
+            ]
+        );
     }
 
     /**
@@ -106,8 +95,8 @@ class BuildingController extends Controller
      */
     public function update(UpdateBuildingRequest $request, Building $building)
     {
-        $validatedData = $request->validated();
-        $building->fill($validatedData)->save();
+        $building->fill($request->validated())->save();
+
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'building-updated');
     }
@@ -118,6 +107,7 @@ class BuildingController extends Controller
     public function destroy(Building $building)
     {
         $building->delete();
+
         return redirect()->route('buildings.index')
             ->with('status', 'building-deleted');
     }
@@ -131,21 +121,19 @@ class BuildingController extends Controller
      */
     public function floorAmount(Request $request): JsonResponse
     {
-        $buildingId = $request->input('id');
-        $floorAmount = Building::findOrFail($buildingId)->floor_amount;
+        $floorAmount = Building::findOrFail($$request->input('id'))->floor_amount;
+
         return response()->json($floorAmount);
     }
 
     /**
      * Store a new image.
      */
-    public function storeImages(
-        StoreImageRequest $request,
-        Building $building
-    ) {
+    public function storeImages(StoreImageRequest $request, Building $building)
+    {
         $this->authorize('manageImages', $building);
-        $files = $request->file('images');
-        $building->storeMedia($files, 'images');
+
+        $building->storeMedia($request->file('images'), 'images');
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'images-stored');
@@ -161,6 +149,7 @@ class BuildingController extends Controller
         $images = $building->getMedia('images');
         $imageIndex = $request->get('image_index');
         $images[$imageIndex]->delete();
+
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'image-deleted');
     }

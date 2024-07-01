@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface GetByParams
 {
-    public function scopeGetByParams(Builder $query, array $queryParams): void;
+    public function scopeGetByParams(Builder $query, array $params): void;
 }

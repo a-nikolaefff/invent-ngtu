@@ -113,11 +113,11 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
         return false;
     }
 
-    public function scopeGetByParams(Builder $query, array $queryParams): void
+    public function scopeGetByParams(Builder $query, array $params): void
     {
         $filter = app()->make(
             UserFilter::class,
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         $query->select('users.*')
@@ -129,7 +129,7 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
             )
             ->with('role', 'department')
             ->filter($filter)
-            ->sort($queryParams);
+            ->sort($params);
     }
 
     public function scopeSort(

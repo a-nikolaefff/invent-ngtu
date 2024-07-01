@@ -74,11 +74,11 @@ class RepairApplication extends Model implements HasMedia, GetByParams
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function scopeGetByParams(Builder $query, array $queryParams): void
+    public function scopeGetByParams(Builder $query, array $params): void
     {
         $filter = app()->make(
             RepairApplicationFilter::class,
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         $query->select('repair_applications.*')
@@ -105,7 +105,7 @@ class RepairApplication extends Model implements HasMedia, GetByParams
                 }
             )
             ->filter($filter)
-            ->sort($queryParams);
+            ->sort($params);
     }
 
     public function scopeSort(
