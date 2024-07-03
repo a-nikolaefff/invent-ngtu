@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Notifications;
 
@@ -52,10 +53,10 @@ class ResetPasswordNotification extends Notification
                     __('email.reset.warning'),
                     [
                         'count' => config(
-                            'auth.passwords.' . config(
+                            'auth.passwords.'.config(
                                 'auth.defaults.passwords'
-                            ) . '.expire'
-                        )
+                            ).'.expire'
+                        ),
                     ]
                 )
             )

@@ -2,7 +2,6 @@
 
 namespace app\Http\Requests\Equipment;
 
-use App\Models\Building;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateEquipmentRequest extends FormRequest
@@ -23,7 +22,7 @@ class CreateEquipmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'room_id' => ['nullable','exists:rooms,id'],
+            'room_id' => ['nullable', 'exists:rooms,id'],
         ];
     }
 }

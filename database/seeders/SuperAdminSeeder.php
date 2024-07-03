@@ -30,7 +30,7 @@ class SuperAdminSeeder extends Seeder
             ),
             'department_id' => $informationSystemsDepartmentId,
             'post' => 'инженер-программист',
-            'email_verified_at' => date('Y-m-d H:i:s')
+            'email_verified_at' => date('Y-m-d H:i:s'),
         ]);
     }
 }

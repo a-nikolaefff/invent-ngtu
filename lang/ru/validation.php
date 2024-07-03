@@ -191,7 +191,7 @@ return [
     'attributes' => [
         'address' => 'адрес',
         'acquisition_date' => 'дата приобретения',
-        'building_id' =>'здание',
+        'building_id' => 'здание',
         'building_type_id' => 'тип зданий',
         'direction' => 'направление сортировки',
         'decommissioned' => 'статус на балансе университета',

@@ -103,6 +103,7 @@ class BuildingSeeder extends Seeder
                 'images' => 'dining_room_studpit',
             ],
         ];
+
     /**
      * Run the database seeds.
      */
@@ -121,7 +122,7 @@ class BuildingSeeder extends Seeder
 
             FileLoader::load(
                 $createdBuilding,
-                'app/examples/buildings/' . $building['images'],
+                'app/examples/buildings/'.$building['images'],
                 'images'
             );
         }

@@ -12,14 +12,13 @@ trait Filterable
     /**
      * Filter data according to the passed filter
      *
-     * @param Builder $builder
-     * @param FilterInterface $filter
      *
      * @return Builder
      */
     public function scopeFilter(Builder $builder, FilterInterface $filter)
     {
         $filter->apply($builder);
+
         return $builder;
     }
 }

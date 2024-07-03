@@ -2,7 +2,6 @@
 
 namespace app\Http\Requests\Equipment;
 
-use App\Models\Building;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreEquipmentRequest extends FormRequest
@@ -27,12 +26,12 @@ class StoreEquipmentRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'acquisition_date' => ['nullable', 'date'],
-            'decommissioning_date' => ['nullable', 'date','after_or_equal:acquisition_date'],
+            'decommissioning_date' => ['nullable', 'date', 'after_or_equal:acquisition_date'],
             'decommissioning_reason' => ['nullable', 'string', 'max:255'],
             'not_in_operation' => ['nullable'],
             'decommissioned' => ['nullable'],
-            'equipment_type_id' => ['nullable','exists:equipment_types,id'],
-            'room_id' => ['required','exists:rooms,id'],
+            'equipment_type_id' => ['nullable', 'exists:equipment_types,id'],
+            'room_id' => ['required', 'exists:rooms,id'],
         ];
     }
 }

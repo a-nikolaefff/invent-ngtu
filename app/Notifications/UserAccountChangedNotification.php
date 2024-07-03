@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Notifications;
 
@@ -42,13 +43,13 @@ class UserAccountChangedNotification extends Notification
             ->line(__('email.account_change.description'))
             ->line(__('email.account_change.new_details'))
             ->line(
-                __('email.account_change.role') . ': ' . $notifiable->role->name
+                __('email.account_change.role').': '.$notifiable->role->name
             )
             ->line(
-                __('email.account_change.department') . ': ' . $notifiable->department->name
+                __('email.account_change.department').': '.$notifiable->department->name
             )
             ->line(
-                __('email.account_change.post') . ': ' . $notifiable->post
+                __('email.account_change.post').': '.$notifiable->post
             )
             ->salutation(__('email.salutation'));
     }

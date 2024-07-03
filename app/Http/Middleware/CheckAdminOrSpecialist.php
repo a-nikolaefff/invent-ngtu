@@ -12,9 +12,8 @@ class CheckAdminOrSpecialist
     /**
      * Handle an incoming request.
      *
-     * @param Request $request The incoming request.
-     * @param Closure $next    The next middleware closure.
-     *
+     * @param  Request  $request The incoming request.
+     * @param  Closure  $next    The next middleware closure.
      * @return Response The response from the next middleware or a redirect response.
      */
     public function handle(Request $request, Closure $next): Response
@@ -23,9 +22,8 @@ class CheckAdminOrSpecialist
             UserRoleEnum::SuperAdmin,
             UserRoleEnum::Admin,
             UserRoleEnum::SupplyAndRepairSpecialist)) {
-                return $next($request);
-            }
-        else {
+            return $next($request);
+        } else {
             abort(403);
         }
     }

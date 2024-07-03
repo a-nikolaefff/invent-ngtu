@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
@@ -30,6 +32,7 @@ class UserPolicy
             if (isset($newTargetUserRoleId)) {
                 $superAdminRoleId = UserRole::getRole(UserRoleEnum::SuperAdmin)
                     ->get()->first()->id;
+
                 return $newTargetUserRoleId !== $superAdminRoleId;
             } else {
                 return true;
@@ -52,7 +55,8 @@ class UserPolicy
                     UserRole::getRole(UserRoleEnum::Admin)
                         ->get()->first()->id,
                 ];
-                return !in_array(
+
+                return ! in_array(
                     $newTargetUserRoleId,
                     $AllAdminRoleId,
                     true
@@ -61,18 +65,19 @@ class UserPolicy
                 return true;
             }
         }
+
         return false;
     }
 
     public function delete(User $user, User $targetUser): bool
     {
         if ($user->hasRole(UserRoleEnum::SuperAdmin)
-            && !$targetUser->hasRole(UserRoleEnum::SuperAdmin)
+            && ! $targetUser->hasRole(UserRoleEnum::SuperAdmin)
         ) {
             return true;
         } else {
             if ($user->hasRole(UserRoleEnum::Admin)
-                && !$targetUser->hasAnyRole(
+                && ! $targetUser->hasAnyRole(
                     UserRoleEnum::SuperAdmin,
                     UserRoleEnum::Admin
                 )

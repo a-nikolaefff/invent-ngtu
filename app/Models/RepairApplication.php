@@ -2,22 +2,23 @@
 
 namespace App\Models;
 
-use App\Enums\UserRoleEnum;
 use App\Filters\RepairApplicationFilter;
-use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\StoreMedia;
+use App\Observers\RepairApplicationObserver;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class RepairApplication extends Model implements HasMedia, GetByParams
+class RepairApplication extends Model implements HasMedia
 {
     use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
@@ -56,11 +57,17 @@ class RepairApplication extends Model implements HasMedia, GetByParams
             'response_date' => 'date',
         ];
 
+    /**
+     * Get the equipment in repair application
+     */
     public function equipment(): BelongsTo
     {
         return $this->belongsTo(Equipment::class, 'equipment_id');
     }
 
+    /**
+     * Get the status of repair application
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(
@@ -69,18 +76,24 @@ class RepairApplication extends Model implements HasMedia, GetByParams
         );
     }
 
+    /**
+     * Get the user who sent repair application
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Get repair application list by parameters
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Filter parameters
+     *
+     * @throws BindingResolutionException
+     */
     public function scopeGetByParams(Builder $query, array $params): void
     {
-        $filter = app()->make(
-            RepairApplicationFilter::class,
-            ['queryParams' => $params]
-        );
-
         $query->select('repair_applications.*')
             ->leftjoin(
                 'equipment',
@@ -104,25 +117,33 @@ class RepairApplication extends Model implements HasMedia, GetByParams
                     );
                 }
             )
-            ->filter($filter)
+            ->filter(new RepairApplicationFilter($params))
             ->sort($params);
     }
 
+    /**
+     * Apply sort
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Sort parameters
+     * @param  string  $defaultSortColumn Default sort column
+     * @param  string  $defaultSortDirection Default sort direction
+     */
     public function scopeSort(
         Builder $query,
-        array $queryParams,
+        array $params,
         string $defaultSortColumn = '',
         string $defaultSortDirection = 'asc'
     ): void {
-        $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
-        $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
+        $sortColumn = $params['sort'] ?? $defaultSortColumn;
+        $sortDirection = $params['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 $sortColumn = match ($sortColumn) {
                     'equipment_name' => 'equipment.name',
                     'user_name' => 'users.name',
-                    default => 'repair_applications.' . $sortColumn,
+                    default => 'repair_applications.'.$sortColumn,
                 };
 
                 return $query->orderBy($sortColumn, $sortDirection);
@@ -130,6 +151,11 @@ class RepairApplication extends Model implements HasMedia, GetByParams
         );
     }
 
+    /**
+     * Register media conversions for image files
+     *
+     * @throws InvalidManipulation
+     */
     public function registerMediaConversions(Media $media = null): void
     {
         $this

@@ -14,7 +14,7 @@ use App\Models\Repair;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
 use App\Models\Room;
-use App\Services\Equipment\EquipmentService;
+use App\Services\EquipmentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -61,6 +61,7 @@ class EquipmentController extends Controller
             $validatedData['room_id'] ?? null
         );
         $equipmentTypes = EquipmentType::all();
+
         return view(
             'equipment.create',
             compact('equipmentTypes', 'chosenRoom')
@@ -70,16 +71,13 @@ class EquipmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEquipmentRequest $request, EquipmentService $service)
+    public function store(StoreEquipmentRequest $request, EquipmentService $equipmentService)
     {
-        $validatedData = $request->validated();
-        $processedData = $service->processData($validatedData);
+        $equipment = $equipmentService->create($request->validated());
 
-        $equipment = Equipment::create($processedData);
         return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'equipment-stored');
     }
-
 
     /**
      * Display the specified resource.
@@ -109,21 +107,17 @@ class EquipmentController extends Controller
     {
         $equipment->load('type', 'room', 'room.department', 'room.building');
         $equipmentTypes = EquipmentType::all();
+
         return view('equipment.edit', compact('equipment', 'equipmentTypes'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(
-        UpdateEquipmentRequest $request,
-        EquipmentService $service,
-        Equipment $equipment
-    ) {
-        $validatedData = $request->validated();
-        $processedData = $service->processData($validatedData);
+    public function update(UpdateEquipmentRequest $request, EquipmentService $equipmentService, Equipment $equipment)
+    {
+        $equipmentService->update($equipment, $request->validated());
 
-        $equipment->fill($processedData)->save();
         return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'equipment-updated');
     }
@@ -134,6 +128,7 @@ class EquipmentController extends Controller
     public function destroy(Equipment $equipment)
     {
         $equipment->delete();
+
         return redirect()->route('equipment.index')
             ->with('status', 'equipment-deleted');
     }
@@ -142,20 +137,20 @@ class EquipmentController extends Controller
      * Returns the result of a search for equipment in JSON format.
      *
      * @param Request $request The request object.
-     *
      * @return JsonResponse The JSON response with customer data.
      */
     public function autocomplete(Request $request): JsonResponse
     {
         $keyword = $request->input('search');
 
-        $equipment = Equipment::where('number', 'like', "%$keyword%")
+        $equipment = Equipment::where('number', 'ilike', "%$keyword%")
             ->get()->toArray();
 
         for ($i = 0; $i < count($equipment); $i++) {
             $equipment[$i]['number'] = '№ ' . $equipment[$i]['number'] . ', '
                 . $equipment[$i]['name'];
         }
+
         return response()->json($equipment);
     }
 
@@ -164,8 +159,9 @@ class EquipmentController extends Controller
      */
     public function storeImages(
         StoreImageRequest $request,
-        Equipment $equipment
-    ) {
+        Equipment         $equipment
+    )
+    {
         $this->authorize('manageImages', $equipment);
         $files = $request->file('images');
         $equipment->storeMedia($files, 'images');
@@ -184,6 +180,7 @@ class EquipmentController extends Controller
         $images = $equipment->getMedia('images');
         $imageIndex = $request->get('image_index');
         $images[$imageIndex]->delete();
+
         return redirect()->route('equipment.show', $equipment->id)
             ->with('status', 'image-deleted');
     }

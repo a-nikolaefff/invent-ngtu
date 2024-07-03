@@ -32,12 +32,12 @@ class StoreRoomRequest extends FormRequest
                     ->exists();
                 if ($isEngagedNumber) {
                     $fail(
-                        __('validation.unique', ['attribute' => __('validation.attributes.' . $attribute)])
+                        __('validation.unique', ['attribute' => __('validation.attributes.'.$attribute)])
                     );
                 }
-            },],
+            }, ],
             'name' => ['required', 'string', 'max:255'],
-            'building_id' => ['required','exists:buildings,id'],
+            'building_id' => ['required', 'exists:buildings,id'],
             'floor' => [
                 'required',
                 'numeric',
@@ -48,15 +48,15 @@ class StoreRoomRequest extends FormRequest
                     if ($value > $maxFloor) {
                         $fail(
                             __('validation.max.numeric', [
-                                'attribute' => __('validation.attributes.' . $attribute),
+                                'attribute' => __('validation.attributes.'.$attribute),
                                 'max' => $maxFloor,
                             ])
                         );
                     }
                 },
             ],
-            'room_type_id' => ['nullable','exists:room_types,id'],
-            'department_id' => ['nullable','exists:departments,id'],
+            'room_type_id' => ['nullable', 'exists:room_types,id'],
+            'department_id' => ['nullable', 'exists:departments,id'],
         ];
     }
 }

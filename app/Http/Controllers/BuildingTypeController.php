@@ -24,11 +24,9 @@ class BuildingTypeController extends Controller
      */
     public function index(IndexBuildingTypeRequest $request)
     {
-        $queryParams = $request->validated();
-        $buildingTypes = BuildingType::sort($queryParams)
-            ->paginate(5)
-            ->withQueryString();
-        return view('building-types.index', compact('buildingTypes'));
+        return view('building-types.index', [
+            'buildingTypes' => BuildingType::sort($request->validated())->paginate(5)->withQueryString(),
+        ]);
     }
 
     /**
@@ -44,8 +42,8 @@ class BuildingTypeController extends Controller
      */
     public function store(StoreBuildingTypeRequest $request)
     {
-        $validatedData = $request->validated();
-        $buildingType = BuildingType::create($validatedData);
+        $buildingType = BuildingType::create($request->validated());
+
         return redirect()->route('building-types.show', $buildingType->id)
             ->with('status', 'building-type-stored');
     }
@@ -71,8 +69,8 @@ class BuildingTypeController extends Controller
      */
     public function update(UpdateBuildingTypeRequest $request, BuildingType $buildingType)
     {
-        $validatedData = $request->validated();
-        $buildingType->fill($validatedData)->save();
+        $buildingType->fill($request->validated())->save();
+
         return redirect()->route('building-types.show', $buildingType->id)
             ->with('status', 'building-type-updated');
     }
@@ -83,6 +81,7 @@ class BuildingTypeController extends Controller
     public function destroy(BuildingType $buildingType)
     {
         $buildingType->delete();
+
         return redirect()->route('building-types.index')
             ->with('status', 'building-type-deleted');
     }

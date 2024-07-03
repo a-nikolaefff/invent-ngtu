@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
@@ -27,11 +29,9 @@ use App\Policies\RepairTypePolicy;
 use App\Policies\RoomPolicy;
 use App\Policies\RoomTypePolicy;
 use App\Policies\UserPolicy;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Lang;
 
 class AuthServiceProvider extends ServiceProvider
 {

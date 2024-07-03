@@ -27,14 +27,11 @@ class DepartmentController extends Controller
      */
     public function index(IndexDepartmentRequest $request)
     {
-        $queryParams = $request->validated();
-        $departments = Department::getByParams($queryParams)
-            ->paginate(5)
-            ->withQueryString();
-        $departmentTypes = DepartmentType::all();
-        return view(
-            'departments.index',
-            compact('departments', 'departmentTypes')
+        return view('departments.index',
+            [
+                'departments' => Department::getByParams($request->validated())->paginate(5)->withQueryString(),
+                'departmentTypes' => DepartmentType::all(),
+            ]
         );
     }
 
@@ -43,8 +40,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        $departmentTypes = DepartmentType::all();
-        return view('departments.create', compact('departmentTypes'));
+        return view('departments.create', ['departmentTypes' => DepartmentType::all()]);
     }
 
     /**
@@ -52,8 +48,8 @@ class DepartmentController extends Controller
      */
     public function store(StoreDepartmentRequest $request)
     {
-        $validatedData = $request->validated();
-        $department = Department::create($validatedData);
+        $department = Department::create($request->validated());
+
         return redirect()->route('departments.show', $department->id)
             ->with('status', 'department-stored');
     }
@@ -64,6 +60,7 @@ class DepartmentController extends Controller
     public function show(Department $department)
     {
         $department->load('type', 'parent', 'children');
+
         return view('departments.show', compact('department'));
     }
 
@@ -73,22 +70,20 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         $department->load('type', 'parent');
-        $departmentTypes = DepartmentType::all();
-        return view(
-            'departments.edit',
-            compact('department', 'departmentTypes')
-        );
+
+        return view('departments.edit', [
+            'department' => $department,
+            'departmentTypes' => DepartmentType::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(
-        UpdateDepartmentRequest $request,
-        Department $department
-    ) {
-        $validatedData = $request->validated();
-        $department->fill($validatedData)->save();
+    public function update(UpdateDepartmentRequest $request, Department $department)
+    {
+        $department->fill($request->validated())->save();
+
         return redirect()->route('departments.show', $department->id)
             ->with('status', 'department-updated');
     }
@@ -99,24 +94,21 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         $department->delete();
+
         return redirect()->route('departments.index')
             ->with('status', 'department-deleted');
     }
 
-
     /**
      * Returns the result of a search for customers in JSON format.
      *
-     * @param Request $request The request object.
-     *
+     * @param  Request  $request The request object.
      * @return JsonResponse The JSON response with customer data.
      */
     public function autocomplete(Request $request): JsonResponse
     {
-        $keyword = $request->input('search');
-        $departments = Department::where('name', 'like', "%$keyword%")
-            ->orWhere('short_name', 'like', "%$keyword%")
-            ->get();
+        $departments = Department::searchByNameOrShortName($request->input('search', ''))->get();
+
         return response()->json($departments);
     }
 }

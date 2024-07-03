@@ -2,7 +2,6 @@
 
 namespace app\Http\Requests\Images;
 
-use App\Models\Building;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreImageRequest extends FormRequest

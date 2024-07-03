@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRoleEnum;
 use App\Filters\UserFilter;
-use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail, GetByParams
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, Filterable;
 
@@ -64,8 +65,6 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
 
     /**
      * Get current role of the user.
-     *
-     * @return BelongsTo
      */
     public function role(): BelongsTo
     {
@@ -74,8 +73,6 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
 
     /**
      * Get the department of the user.
-     *
-     * @return BelongsTo
      */
     public function department(): BelongsTo
     {
@@ -84,23 +81,16 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
 
     /**
      * Check if the user has a specific role.
-     *
-     * @param UserRoleEnum $roleType
-     *
-     * @return bool
      */
     public function hasRole(UserRoleEnum $roleType): bool
     {
         $userRoleName = $this->role->name;
+
         return $userRoleName === $roleType->value;
     }
 
     /**
      * Check if the user has any of the specified roles.
-     *
-     * @param UserRoleEnum ...$roleTypes
-     *
-     * @return bool
      */
     public function hasAnyRole(UserRoleEnum ...$roleTypes): bool
     {
@@ -110,16 +100,20 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
                 return true;
             }
         }
+
         return false;
     }
 
+    /**
+     * Get user list by parameters
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Filter parameters
+     *
+     * @throws BindingResolutionException
+     */
     public function scopeGetByParams(Builder $query, array $params): void
     {
-        $filter = app()->make(
-            UserFilter::class,
-            ['queryParams' => $params]
-        );
-
         $query->select('users.*')
             ->leftjoin(
                 'departments',
@@ -128,30 +122,42 @@ class User extends Authenticatable implements MustVerifyEmail, GetByParams
                 'departments.id'
             )
             ->with('role', 'department')
-            ->filter($filter)
+            ->filter(new UserFilter($params))
             ->sort($params);
     }
 
+    /**
+     * Apply sort
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Sort parameters
+     * @param  string  $defaultSortColumn Default sort column
+     * @param  string  $defaultSortDirection Default sort direction
+     */
     public function scopeSort(
         Builder $query,
-        array $queryParams,
+        array $params,
         string $defaultSortColumn = '',
         string $defaultSortDirection = 'asc'
     ): void {
-        $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
-        $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
+        $sortColumn = $params['sort'] ?? $defaultSortColumn;
+        $sortDirection = $params['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 if ($sortColumn === 'department_name') {
                     return $query->orderBy('departments.name', $sortDirection);
                 }
+
                 return $query->orderBy($sortColumn, $sortDirection);
             }
         );
     }
 
-    public function sendPasswordResetNotification($token)
+    /**
+     * Send password reset notification
+     */
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
     }

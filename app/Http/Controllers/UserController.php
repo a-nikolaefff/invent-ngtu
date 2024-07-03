@@ -8,7 +8,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Notifications\UserAccountChangedNotification;
-use App\Services\User\UserService;
+use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -28,8 +28,7 @@ class UserController extends Controller
     /**
      * Display a listing of the users.
      *
-     * @param IndexUserRequest $request The index user request instance.
-     *
+     * @param  IndexUserRequest  $request The index user request instance.
      * @return View The users index view.
      */
     public function index(IndexUserRequest $request): View
@@ -47,21 +46,20 @@ class UserController extends Controller
     /**
      * Show the user.
      *
-     * @param User $user The user instance.
-     *
+     * @param  User  $user The user instance.
      * @return View The edit user form view.
      */
     public function show(User $user): View
     {
         $user->load('role', 'department');
+
         return view('users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the user.
      *
-     * @param User $user The user instance.
-     *
+     * @param  User  $user The user instance.
      * @return View The edit user form view.
      */
     public function edit(User $user): View
@@ -74,29 +72,33 @@ class UserController extends Controller
                 return $role->name === $adminRoleName;
             });
         }
+
         return view('users.edit', compact(['user', 'roles']));
     }
 
     /**
      * Update the user in storage.
      *
-     * @param UpdateUserRequest $request The update user request instance.
-     * @param User              $user    The user instance.
-     * @param UserService       $service The user service instance.
-     *
+     * @param  UpdateUserRequest  $request The update user request instance.
+     * @param  User  $user    The user instance.
+     * @param  UserService  $userService The user service instance.
      * @return RedirectResponse A redirect response to the users index.
      */
     public function update(
         UpdateUserRequest $request,
         User $user,
-        UserService $service
+        UserService $userService
     ): RedirectResponse {
         $validatedData = $request->validated();
+
         $this->authorize('update', [$user, $validatedData['role_id']]);
-        $processedData = $service->processData($validatedData);
-        $user->fill($processedData)->save();
+
+        $userService->update($user, $validatedData);
+
         $user->load('role');
+
         $user->notify(new UserAccountChangedNotification());
+
         return redirect()->route('users.show', $user->id)->with(
             'status',
             'user-updated'
@@ -106,13 +108,13 @@ class UserController extends Controller
     /**
      * Remove the user from storage.
      *
-     * @param User $user The user instance.
-     *
+     * @param  User  $user The user instance.
      * @return RedirectResponse A redirect response to the users index.
      */
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
+
         return redirect()->route('users.index')
             ->with('status', 'user-deleted');
     }

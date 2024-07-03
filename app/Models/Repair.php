@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\UserRoleEnum;
 use App\Filters\RepairFilter;
-use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Repair extends Model implements HasMedia, GetByParams
+class Repair extends Model implements HasMedia
 {
     use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
@@ -74,18 +73,13 @@ class Repair extends Model implements HasMedia, GetByParams
         Builder $query,
         array $params
     ): void {
-        $filter = app()->make(
-            RepairFilter::class,
-            ['queryParams' => $params]
-        );
-
         $query->select('repairs.*')
-        ->leftJoin(
-            'equipment',
-            'repairs.equipment_id',
-            '=',
-            'equipment.id'
-        )
+            ->leftJoin(
+                'equipment',
+                'repairs.equipment_id',
+                '=',
+                'equipment.id'
+            )
             ->leftJoin('rooms', 'equipment.room_id', '=', 'rooms.id')
             ->leftJoin(
                 'repair_types',
@@ -103,25 +97,19 @@ class Repair extends Model implements HasMedia, GetByParams
                 function ($query) {
                     return $query->whereIn(
                         'rooms.department_id',
-                        Auth::user()->department->getSelfAndDescendants()
-                            ->pluck('id')->toArray()
+                        Auth::user()->department->getSelfAndDescendants()->pluck('id')->toArray()
                     );
                 }
             )
-            ->filter($filter)
+            ->filter(new RepairFilter($params))
             ->sort($params);
     }
 
     public function scopeGetByParamsAndEquipment(
         Builder $query,
-        array $queryParams,
+        array $params,
         Equipment $equipment
     ): void {
-        $filter = app()->make(
-            RepairFilter::class,
-            ['queryParams' => $queryParams]
-        );
-
         $query->where('repairs.equipment_id', $equipment->id)
             ->select('repairs.*')
             ->leftjoin(
@@ -131,12 +119,11 @@ class Repair extends Model implements HasMedia, GetByParams
                 'repair_types.id'
             )
             ->with('type', 'status')
-            ->filter($filter)
-            ->sort($queryParams);
+            ->filter(new RepairFilter($params))
+            ->sort($params);
     }
 
-    public
-    function scopeSort(
+    public function scopeSort(
         Builder $query,
         array $queryParams,
         string $defaultSortColumn = '',
@@ -145,12 +132,12 @@ class Repair extends Model implements HasMedia, GetByParams
         $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
         $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 $sortColumn = match ($sortColumn) {
                     'equipment_name' => 'equipment.name',
                     'repair_type_name' => 'repair_types.name',
-                    default => 'repairs.' . $sortColumn,
+                    default => 'repairs.'.$sortColumn,
                 };
 
                 return $query->orderBy($sortColumn, $sortDirection);
@@ -158,8 +145,7 @@ class Repair extends Model implements HasMedia, GetByParams
         );
     }
 
-    public
-    function registerMediaConversions(
+    public function registerMediaConversions(
         Media $media = null
     ): void {
         $this

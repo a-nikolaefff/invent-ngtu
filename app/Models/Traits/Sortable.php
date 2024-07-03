@@ -10,11 +10,6 @@ trait Sortable
 {
     /**
      * Sort data by parameters from query string
-     *
-     * @param Builder $query
-     * @param array   $queryParams
-     *
-     * @return void
      */
     public function scopeSort(
         Builder $query,
@@ -25,7 +20,7 @@ trait Sortable
         $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
         $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 return $query->orderBy($sortColumn, $sortDirection);
             }

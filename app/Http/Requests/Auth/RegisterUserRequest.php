@@ -15,14 +15,13 @@ class RegisterUserRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                'unique:'.User::class
+                'unique:'.User::class,
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'department_id' => ['exists:departments,id'],
             'post' => ['required', 'string', 'max:255'],
-            'g-recaptcha-response' => 'required|captcha'
+            'g-recaptcha-response' => 'required|captcha',
         ];
-
 
     /**
      * Determine if the user is authorized to make this request.

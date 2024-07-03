@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\RepairApplication;
@@ -13,6 +15,7 @@ use Illuminate\Notifications\Notification;
 class NewRepairApplicationNotification extends Notification
 {
     use Queueable;
+
     private RepairApplication $repairApplication;
 
     /**
@@ -43,16 +46,16 @@ class NewRepairApplicationNotification extends Notification
             ->greeting(__('email.greeting'))
             ->line(__('email.new_repair_application.description'))
             ->line(
-                __('email.new_repair_application.equipment_number') . ': ' . $this->repairApplication->equipment->number
+                __('email.new_repair_application.equipment_number').': '.$this->repairApplication->equipment->number
             )
             ->line(
-                __('email.new_repair_application.equipment_name') . ': ' . $this->repairApplication->equipment->name
+                __('email.new_repair_application.equipment_name').': '.$this->repairApplication->equipment->name
             )
             ->line(
-                __('email.new_repair_application.number') . ': ' . $this->repairApplication->id
+                __('email.new_repair_application.number').': '.$this->repairApplication->id
             )
             ->line(
-                __('email.repair_application_status_change.short_description') . ': ' . $this->repairApplication->short_description
+                __('email.repair_application_status_change.short_description').': '.$this->repairApplication->short_description
             )
             ->salutation(__('email.salutation'));
     }

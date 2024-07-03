@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
 use App\Models\EquipmentType;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class EquipmentTypePolicy
 {

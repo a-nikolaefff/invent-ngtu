@@ -2,8 +2,6 @@
 
 namespace app\Http\Requests\Equipment;
 
-use App\Models\Building;
-use App\Models\DepartmentType;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
 use Closure;
@@ -40,10 +38,10 @@ class ShowEquipmentRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!RepairType::where('id', $value)->exists()) {
+                    if (! RepairType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }
@@ -53,10 +51,10 @@ class ShowEquipmentRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!RepairStatus::where('id', $value)->exists()) {
+                    if (! RepairStatus::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }

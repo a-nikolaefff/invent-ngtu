@@ -29,7 +29,7 @@ class UpdateDepartmentTypeRequest extends FormRequest
                 'max:255',
                 Rule::unique('department_types', 'name')->ignore(
                     $this->department_type->id
-                )
+                ),
             ],
         ];
     }

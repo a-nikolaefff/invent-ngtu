@@ -22,7 +22,7 @@ class CreateRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'building_id' => ['nullable','exists:buildings,id'],
+            'building_id' => ['nullable', 'exists:buildings,id'],
         ];
     }
 }

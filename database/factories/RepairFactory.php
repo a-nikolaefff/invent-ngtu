@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Equipment;
-use App\Models\EquipmentType;
 use App\Models\Repair;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
@@ -27,13 +26,13 @@ class RepairFactory extends Factory
             'Отремонтировано',
             'Проведено обслуживание',
             'Устранена поломка',
-            'Восстановлено'
+            'Восстановлено',
         ];
         $randomVerb = fake()->randomElement($verbs);
 
         return [
-            'short_description' => $randomVerb . ' ' . fake()->words(2, true),
-            'full_description' => $randomVerb . ' ' . fake()->words(6, true),
+            'short_description' => $randomVerb.' '.fake()->words(2, true),
+            'full_description' => $randomVerb.' '.fake()->words(6, true),
             'start_date' => Carbon::now(),
             'end_date' => Carbon::now(),
             'equipment_id' => Equipment::pluck('id')->random(),

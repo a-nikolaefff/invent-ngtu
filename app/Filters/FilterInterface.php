@@ -14,8 +14,7 @@ interface FilterInterface
     /**
      * Apply the filter to the Builder instance.
      *
-     * @param Builder $builder The Builder instance.
-     * @return void
+     * @param  Builder  $builder The Builder instance.
      */
-    public function apply(Builder $builder);
+    public function apply(Builder $builder): void;
 }

@@ -72,7 +72,7 @@ class BuildingController extends Controller
                 'building' => $building,
                 'rooms' => $rooms,
                 'roomTypes' => RoomType::all(),
-                'floorAmount' => $building->floor_amount
+                'floorAmount' => $building->floor_amount,
             ]
         );
     }
@@ -115,8 +115,7 @@ class BuildingController extends Controller
     /**
      * Returns the floor amount of the building in JSON format.
      *
-     * @param Request $request The request object.
-     *
+     * @param  Request  $request The request object.
      * @return JsonResponse The JSON response with customer data.
      */
     public function floorAmount(Request $request): JsonResponse
@@ -146,9 +145,9 @@ class BuildingController extends Controller
     {
         $this->authorize('manageImages', $building);
 
-        $images = $building->getMedia('images');
         $imageIndex = $request->get('image_index');
-        $images[$imageIndex]->delete();
+        $image = $building->getMedia('images')->get($imageIndex);
+        $image?->delete();
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'image-deleted');

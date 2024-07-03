@@ -13,7 +13,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -41,7 +40,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($validatedData['password']),
             'department_id' => $validatedData['department_id'],
             'post' => $validatedData['post'],
-            'role_id' => UserRole::getRole(UserRoleEnum::Stranger)->value('id')
+            'role_id' => UserRole::getRole(UserRoleEnum::Stranger)->value('id'),
 
         ]);
 

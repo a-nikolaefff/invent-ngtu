@@ -29,7 +29,7 @@ class UpdateRoomTypeRequest extends FormRequest
                 'max:255',
                 Rule::unique('room_types', 'name')->ignore(
                     $this->room_type->id
-                )
+                ),
             ],
         ];
     }

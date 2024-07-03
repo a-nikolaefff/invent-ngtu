@@ -25,7 +25,7 @@ class UpdateRepairApplicationRequest extends FormRequest
             'response' => ['nullable', 'string', 'max:255'],
             'repair_application_status_id' => [
                 'required',
-                'exists:repair_application_statuses,id'
+                'exists:repair_application_statuses,id',
             ],
         ];
     }

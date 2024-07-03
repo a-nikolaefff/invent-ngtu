@@ -18,8 +18,7 @@ class DisplayUserListTest extends TestCase
      * A basic feature test example.
      */
     public function test_list_of_users_can_be_shown_to_super_administrator(
-    ): void
-    {
+    ): void {
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
         $superAdminRoleId = UserRole::where(
@@ -36,8 +35,7 @@ class DisplayUserListTest extends TestCase
     }
 
     public function test_list_of_users_can_be_shown_to_administrator(
-    ): void
-    {
+    ): void {
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
         $adminRoleId = UserRole::where(
@@ -54,8 +52,7 @@ class DisplayUserListTest extends TestCase
     }
 
     public function test_list_of_users_cannot_be_shown_to_supply_and_repair_specialist(
-    ): void
-    {
+    ): void {
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
         $specialistRoleId = UserRole::where(
@@ -72,8 +69,7 @@ class DisplayUserListTest extends TestCase
     }
 
     public function test_list_of_users_cannot_be_shown_to_employee(
-    ): void
-    {
+    ): void {
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
         $employeeRoleId = UserRole::where(
@@ -90,8 +86,7 @@ class DisplayUserListTest extends TestCase
     }
 
     public function test_list_of_users_cannot_be_shown_to_guest(
-    ): void
-    {
+    ): void {
         $response = $this->get('/users');
 
         $response->assertRedirect('/login');

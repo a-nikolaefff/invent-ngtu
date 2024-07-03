@@ -6,7 +6,6 @@ use App\Http\Requests\DepartmentType\IndexDepartmentTypeRequest;
 use App\Http\Requests\DepartmentType\StoreDepartmentTypeRequest;
 use App\Http\Requests\DepartmentType\UpdateDepartmentTypeRequest;
 use App\Models\DepartmentType;
-use App\Models\User;
 
 class DepartmentTypeController extends Controller
 {
@@ -29,6 +28,7 @@ class DepartmentTypeController extends Controller
         $departmentTypes = DepartmentType::sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         return view('department-types.index', compact('departmentTypes'));
     }
 
@@ -47,6 +47,7 @@ class DepartmentTypeController extends Controller
     {
         $validatedData = $request->validated();
         $departmentType = DepartmentType::create($validatedData);
+
         return redirect()->route('department-types.show', $departmentType->id)
             ->with('status', 'department-type-stored');
     }
@@ -76,6 +77,7 @@ class DepartmentTypeController extends Controller
     ) {
         $validatedData = $request->validated();
         $departmentType->fill($validatedData)->save();
+
         return redirect()->route('department-types.show', $departmentType->id)
             ->with('status', 'department-type-updated');
     }
@@ -86,6 +88,7 @@ class DepartmentTypeController extends Controller
     public function destroy(DepartmentType $departmentType)
     {
         $departmentType->delete();
+
         return redirect()->route('department-types.index')
             ->with('status', 'department-type-deleted');
     }

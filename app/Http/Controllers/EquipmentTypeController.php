@@ -28,6 +28,7 @@ class EquipmentTypeController extends Controller
         $equipmentTypes = EquipmentType::sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         return view('equipment-types.index', compact('equipmentTypes'));
     }
 
@@ -46,6 +47,7 @@ class EquipmentTypeController extends Controller
     {
         $validatedData = $request->validated();
         $equipmentType = EquipmentType::create($validatedData);
+
         return redirect()->route('equipment-types.show', $equipmentType->id)
             ->with('status', 'equipment-type-stored');
     }
@@ -73,6 +75,7 @@ class EquipmentTypeController extends Controller
     {
         $validatedData = $request->validated();
         $equipmentType->fill($validatedData)->save();
+
         return redirect()->route('equipment-types.show', $equipmentType->id)
             ->with('status', 'equipment-type-updated');
     }
@@ -83,6 +86,7 @@ class EquipmentTypeController extends Controller
     public function destroy(EquipmentType $equipmentType)
     {
         $equipmentType->delete();
+
         return redirect()->route('equipment-types.index')
             ->with('status', 'equipment-type-deleted');
     }

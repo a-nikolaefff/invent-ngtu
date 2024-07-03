@@ -2,8 +2,6 @@
 
 namespace app\Http\Requests\Repair;
 
-use App\Models\Building;
-use App\Models\DepartmentType;
 use App\Models\RepairStatus;
 use App\Models\RepairType;
 use Closure;
@@ -41,7 +39,7 @@ class IndexRepairRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!RepairType::where('id', $value)->exists()) {
+                    if (! RepairType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
                                 __(
@@ -49,8 +47,8 @@ class IndexRepairRequest extends FormRequest
                                     [
                                         'attribute' => __(
                                             'validation.attributes.'
-                                            . $attribute
-                                        )
+                                            .$attribute
+                                        ),
                                     ]
                                 )
                             );
@@ -62,10 +60,10 @@ class IndexRepairRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!RepairStatus::where('id', $value)->exists()) {
+                    if (! RepairStatus::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }

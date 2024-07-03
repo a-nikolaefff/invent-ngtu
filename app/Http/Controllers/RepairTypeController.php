@@ -28,6 +28,7 @@ class RepairTypeController extends Controller
         $repairTypes = RepairType::sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         return view('repair-types.index', compact('repairTypes'));
     }
 
@@ -46,6 +47,7 @@ class RepairTypeController extends Controller
     {
         $validatedData = $request->validated();
         $repairType = RepairType::create($validatedData);
+
         return redirect()->route('repair-types.show', $repairType->id)
             ->with('status', 'repair-type-stored');
     }
@@ -73,6 +75,7 @@ class RepairTypeController extends Controller
     {
         $validatedData = $request->validated();
         $repairType->fill($validatedData)->save();
+
         return redirect()->route('repair-types.show', $repairType->id)
             ->with('status', 'repair-type-updated');
     }
@@ -83,6 +86,7 @@ class RepairTypeController extends Controller
     public function destroy(RepairType $repairType)
     {
         $repairType->delete();
+
         return redirect()->route('repair-types.index')
             ->with('status', 'repair-type-deleted');
     }

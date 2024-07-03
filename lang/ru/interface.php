@@ -7,4 +7,3 @@ return [
     'confirm-password' => 'Подтвердите пароль',
     'log-out' => 'Выйти',
 ];
-

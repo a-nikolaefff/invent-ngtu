@@ -1,24 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Enums\UserRoleEnum;
 use App\Filters\EquipmentFilter;
-use App\Filters\RepairFilter;
-use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\StoreMedia;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Equipment extends Model implements HasMedia, GetByParams
+class Equipment extends Model implements HasMedia
 {
     use HasFactory, Filterable, InteractsWithMedia, StoreMedia;
 
@@ -61,33 +62,48 @@ class Equipment extends Model implements HasMedia, GetByParams
             'decommissioning_date' => 'date',
         ];
 
-    public function setNotInOperationAttribute($value)
+    /**
+     * Set not in operation attribute
+     */
+    public function setNotInOperationAttribute($value): void
     {
-        $this->attributes['not_in_operation'] = (boolean) $value;
+        $this->attributes['not_in_operation'] = (bool) $value;
     }
 
-    public function setDecommissionedAttribute($value)
+    /**
+     * Set decommissioned attribute
+     */
+    public function setDecommissionedAttribute($value): void
     {
-        $this->attributes['decommissioned'] = (boolean) $value;
+        $this->attributes['decommissioned'] = (bool) $value;
     }
 
+    /**
+     * Get room type
+     */
     public function type(): BelongsTo
     {
         return $this->belongsTo(EquipmentType::class, 'equipment_type_id');
     }
 
+    /**
+     * Get the room where equipment placed
+     */
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class, 'room_id');
     }
 
+    /**
+     * Get equipment list by parameters
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Filter parameters
+     *
+     * @throws BindingResolutionException
+     */
     public function scopeGetByParams(Builder $query, array $params): void
     {
-        $filter = app()->make(
-            EquipmentFilter::class,
-            ['queryParams' => $params]
-        );
-
         $query->select('equipment.*')
             ->leftjoin(
                 'equipment_types',
@@ -129,20 +145,24 @@ class Equipment extends Model implements HasMedia, GetByParams
                     );
                 }
             )
-            ->filter($filter)
+            ->filter(new EquipmentFilter($params))
             ->sort($params);
     }
 
+    /**
+     * Get equipment list by parameters and room
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Filter parameters
+     * @param  Room  $room Target room
+     *
+     * @throws BindingResolutionException
+     */
     public function scopeGetByParamsAndRoom(
         Builder $query,
-        array $queryParams,
+        array $params,
         Room $room
     ): void {
-        $filter = app()->make(
-            EquipmentFilter::class,
-            ['queryParams' => $queryParams]
-        );
-
         $query->where('room_id', $room->id)
             ->select('equipment.*')
             ->leftjoin(
@@ -175,37 +195,50 @@ class Equipment extends Model implements HasMedia, GetByParams
                 'room.building',
                 'room.department',
             )
-            ->filter($filter)
-            ->sort($queryParams);
+            ->filter(new EquipmentFilter($params))
+            ->sort($params);
     }
 
+    /**
+     * Apply sort
+     *
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Sort parameters
+     * @param  string  $defaultSortColumn Default sort column
+     * @param  string  $defaultSortDirection Default sort direction
+     */
     public function scopeSort(
         Builder $query,
-        array $queryParams,
+        array $params,
         string $defaultSortColumn = '',
         string $defaultSortDirection = 'asc'
     ): void {
-        $sortColumn = $queryParams['sort'] ?? $defaultSortColumn;
-        $sortDirection = $queryParams['direction'] ?? $defaultSortDirection;
+        $sortColumn = $params['sort'] ?? $defaultSortColumn;
+        $sortDirection = $params['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 $sortColumn = match ($sortColumn) {
                     'equipment_type_name' => 'equipment_types.name',
                     'department_name' => 'departments.name',
                     'location' => 'buildings.name',
-                    default => 'equipment.' . $sortColumn,
+                    default => 'equipment.'.$sortColumn,
                 };
                 if ($sortColumn !== 'buildings.name') {
                     return $query->orderBy($sortColumn, $sortDirection);
                 } else {
                     return $query->orderBy($sortColumn, $sortDirection)
-                        ->orderBy('rooms.number',$sortDirection);
+                        ->orderBy('rooms.number', $sortDirection);
                 }
             }
         );
     }
 
+    /**
+     * Register media conversions for image files
+     *
+     * @throws InvalidManipulation
+     */
     public function registerMediaConversions(Media $media = null): void
     {
         $this

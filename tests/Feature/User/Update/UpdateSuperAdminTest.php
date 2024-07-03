@@ -19,8 +19,7 @@ class UpdateSuperAdminTest extends TestCase
      * A basic feature test example.
      */
     public function test_super_administrator_cannot_be_updated_by_super_administrator(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -32,14 +31,13 @@ class UpdateSuperAdminTest extends TestCase
 
         $response = $this
             ->actingAs($superAdmin)
-            ->put('/users/' . $superAdmin->id);
+            ->put('/users/'.$superAdmin->id);
 
         $response->assertStatus(403);
     }
 
     public function test_super_administrator_cannot_be_updated_by_administrator(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -57,14 +55,13 @@ class UpdateSuperAdminTest extends TestCase
 
         $response = $this
             ->actingAs($admin)
-            ->put('/users/' . $superAdmin->id);
+            ->put('/users/'.$superAdmin->id);
 
         $response->assertStatus(403);
     }
 
     public function test_super_administrator_cannot_be_updated_by_supply_and_repair_specialist(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -82,14 +79,13 @@ class UpdateSuperAdminTest extends TestCase
 
         $response = $this
             ->actingAs($specialist)
-            ->put('/users/' . $superAdmin->id);
+            ->put('/users/'.$superAdmin->id);
 
         $response->assertStatus(403);
     }
 
     public function test_super_administrator_cannot_be_updated_by_employee(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -107,14 +103,13 @@ class UpdateSuperAdminTest extends TestCase
 
         $response = $this
             ->actingAs($employee)
-            ->put('/users/' . $superAdmin->id);
+            ->put('/users/'.$superAdmin->id);
 
         $response->assertStatus(403);
     }
 
     public function test_super_administrator_cannot_be_updated_by_guest(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -124,7 +119,7 @@ class UpdateSuperAdminTest extends TestCase
         )->value('id');
         $superAdmin = User::factory()->create(['role_id' => $superAdminRoleId]);
 
-        $response = $this->put('/users/' . $superAdmin->id);
+        $response = $this->put('/users/'.$superAdmin->id);
 
         $response->assertRedirect('/login');
     }

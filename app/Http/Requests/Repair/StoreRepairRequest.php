@@ -26,9 +26,9 @@ class StoreRepairRequest extends FormRequest
             'full_description' => ['nullable', 'string', 'max:255'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'equipment_id' => ['required','exists:equipment,id'],
-            'repair_type_id' => ['nullable','exists:repair_types,id'],
-            'repair_status_id' => ['nullable','exists:repair_statuses,id'],
+            'equipment_id' => ['required', 'exists:equipment,id'],
+            'repair_type_id' => ['nullable', 'exists:repair_types,id'],
+            'repair_status_id' => ['nullable', 'exists:repair_statuses,id'],
         ];
     }
 }

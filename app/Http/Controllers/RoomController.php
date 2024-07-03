@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\EquipmentFilter;
-use App\Filters\RoomFilter;
 use App\Http\Requests\Images\StoreImageRequest;
 use App\Http\Requests\Room\CreateRoomRequest;
 use App\Http\Requests\Room\IndexRoomRequest;
@@ -15,10 +13,8 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
 use App\Models\RoomType;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -48,7 +44,7 @@ class RoomController extends Controller
         $floorAmount = -1;
         if (isset($queryParams['building_id'])) {
             $floorAmount = Building::find($queryParams['building_id'])
-                ->floor_amount;;
+                ->floor_amount;
         }
 
         return view(
@@ -71,6 +67,7 @@ class RoomController extends Controller
         $chosenBuilding = Building::find($validatedData['building_id'] ?? null);
         $roomTypes = RoomType::all();
         $buildings = Building::all();
+
         return view(
             'rooms.create',
             compact('roomTypes', 'buildings', 'chosenBuilding')
@@ -84,6 +81,7 @@ class RoomController extends Controller
     {
         $validatedData = $request->validated();
         $room = Room::create($validatedData);
+
         return redirect()->route('rooms.show', $room->id)
             ->with('status', 'room-stored');
     }
@@ -124,6 +122,7 @@ class RoomController extends Controller
         $room->load('type', 'building', 'department');
         $roomTypes = RoomType::all();
         $buildings = Building::all();
+
         return view(
             'rooms.edit',
             compact('room', 'roomTypes', 'buildings')
@@ -137,6 +136,7 @@ class RoomController extends Controller
     {
         $validatedData = $request->validated();
         $room->fill($validatedData)->save();
+
         return redirect()->route('rooms.show', $room->id)
             ->with('status', 'room-updated');
     }
@@ -147,6 +147,7 @@ class RoomController extends Controller
     public function destroy(Room $room)
     {
         $room->delete();
+
         return redirect()->route('rooms.index')
             ->with('status', 'room-deleted');
     }
@@ -154,8 +155,7 @@ class RoomController extends Controller
     /**
      * Returns the result of a search for customers in JSON format.
      *
-     * @param Request $request The request object.
-     *
+     * @param  Request  $request The request object.
      * @return JsonResponse The JSON response with customer data.
      */
     public function autocomplete(Request $request): JsonResponse
@@ -163,13 +163,14 @@ class RoomController extends Controller
         $keyword = $request->input('search');
 
         $rooms = Room::with('building')
-            ->where('number', 'like', "%$keyword%")
+            ->where('number', 'ilike', "%$keyword%")
             ->get()->toArray();
 
         for ($i = 0; $i < count($rooms); $i++) {
-            $rooms[$i]['number'] = $rooms[$i]['number'] . ' ('
-                . $rooms[$i]['building']['name'] . ')';
+            $rooms[$i]['number'] = $rooms[$i]['number'].' ('
+                .$rooms[$i]['building']['name'].')';
         }
+
         return response()->json($rooms);
     }
 
@@ -198,6 +199,7 @@ class RoomController extends Controller
         $images = $room->getMedia('images');
         $imageIndex = $request->get('image_index');
         $images[$imageIndex]->delete();
+
         return redirect()->route('rooms.show', $room->id)
             ->with('status', 'image-deleted');
     }

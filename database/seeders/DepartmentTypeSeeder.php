@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\DepartmentType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DepartmentTypeSeeder extends Seeder
@@ -21,7 +20,7 @@ class DepartmentTypeSeeder extends Seeder
         'группа',
         'сектор',
         'клуб',
-        ];
+    ];
 
     /**
      * Run the database seeds.

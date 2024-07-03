@@ -52,8 +52,7 @@ class ProfileTest extends TestCase
     }
 
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
 
@@ -94,8 +93,7 @@ class ProfileTest extends TestCase
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(
-    ): void
-    {
+    ): void {
         $this->withoutMiddleware();
         $this->seed([UserRoleSeeder::class, DepartmentSeeder::class]);
         $user = User::factory()->create();

@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Building;
 use App\Models\Department;
-use App\Models\Equipment;
 use App\Models\Room;
 use App\Models\RoomType;
 use Database\Helpers\FileLoader;
@@ -29,14 +28,14 @@ class RoomFactory extends Factory
         $departmentId = Department::pluck('id');
         $roomType = RoomType::all()->random();
 
-        $roomNameFirstLetterUpper = mb_strtoupper(mb_substr($roomType->name, 0, 1, "UTF-8"), "UTF-8");
-        $roomName = $roomNameFirstLetterUpper . mb_substr($roomType->name, 1, null, "UTF-8");
+        $roomNameFirstLetterUpper = mb_strtoupper(mb_substr($roomType->name, 0, 1, 'UTF-8'), 'UTF-8');
+        $roomName = $roomNameFirstLetterUpper.mb_substr($roomType->name, 1, null, 'UTF-8');
 
         return [
-            'name' => $roomName . ' ' .fake()->words(2, true),
+            'name' => $roomName.' '.fake()->words(2, true),
             'number' => $roomNumberFirstDigit
-                . $floor
-                . fake()->randomNumber(2, true),
+                .$floor
+                .fake()->randomNumber(2, true),
             'department_id' => $departmentId->random(),
             'room_type_id' => $roomType->id,
             'building_id' => $building->id,

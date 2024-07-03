@@ -2,11 +2,6 @@
 
 namespace app\Http\Requests\RepairApplication;
 
-use App\Models\Building;
-use App\Models\DepartmentType;
-use App\Models\RepairStatus;
-use App\Models\RepairType;
-use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -41,7 +36,7 @@ class IndexRepairApplicationRequest extends FormRequest
             'repair_application_status_id' => [
                 'nullable',
                 'string',
-                'exists:repair_application_statuses,id'
+                'exists:repair_application_statuses,id',
             ],
             'search' => ['nullable', 'string'],
             'sort' => ['nullable', Rule::in($sortableColumns)],

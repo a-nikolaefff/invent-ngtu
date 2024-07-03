@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\UserRoleSeeder;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;

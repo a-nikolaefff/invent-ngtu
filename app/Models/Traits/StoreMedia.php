@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Traits;
 
-use App\Filters\FilterInterface;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Spatie\MediaLibrary\HasMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait StoreMedia
@@ -22,7 +19,7 @@ trait StoreMedia
                 ->withCustomProperties([
                     'user_id' => Auth::user()->id,
                     'user_name' => Auth::user()->name,
-                    'datetime' => Carbon::now()->format('d.m.Y H:i:s')
+                    'datetime' => Carbon::now()->format('d.m.Y H:i:s'),
                 ])
                 ->toMediaCollection($mediaCollection);
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Models\RepairApplication;
@@ -45,13 +47,13 @@ class RepairApplicationStatusChangedNotification extends Notification
             ->line(__('email.repair_application_status_change.description'))
             ->line(__('email.repair_application_status_change.new_details'))
             ->line(
-                __('email.repair_application_status_change.number') . ': ' . $this->repairApplication->id
+                __('email.repair_application_status_change.number').': '.$this->repairApplication->id
             )
             ->line(
-                __('email.repair_application_status_change.short_description') . ': ' . $this->repairApplication->short_description
+                __('email.repair_application_status_change.short_description').': '.$this->repairApplication->short_description
             )
             ->line(
-                __('email.repair_application_status_change.status') . ': ' . $this->repairApplication->status->name
+                __('email.repair_application_status_change.status').': '.$this->repairApplication->status->name
             )
             ->salutation(__('email.salutation'));
     }

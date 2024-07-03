@@ -33,7 +33,7 @@ class PasswordConfirmationTest extends TestCase
         $employeeRoleId = UserRole::where('name', UserRoleEnum::Employee->value)
             ->value('id');
 
-        $user = User::factory()->create(['role_id' => $employeeRoleId ]);
+        $user = User::factory()->create(['role_id' => $employeeRoleId]);
 
         $response = $this->actingAs($user)->post('/confirm-password', [
             'password' => 'password',

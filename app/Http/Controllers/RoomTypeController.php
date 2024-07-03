@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoomType\IndexRoomTypeRequest;
 use App\Http\Requests\RoomType\StoreRoomTypeRequest;
 use App\Http\Requests\RoomType\UpdateRoomTypeRequest;
-use App\Models\BuildingType;
 use App\Models\RoomType;
 
 class RoomTypeController extends Controller
@@ -29,6 +28,7 @@ class RoomTypeController extends Controller
         $roomTypes = RoomType::sort($queryParams)
             ->paginate(5)
             ->withQueryString();
+
         return view('room-types.index', compact('roomTypes'));
     }
 
@@ -47,6 +47,7 @@ class RoomTypeController extends Controller
     {
         $validatedData = $request->validated();
         $roomType = RoomType::create($validatedData);
+
         return redirect()->route('room-types.show', $roomType->id)
             ->with('status', 'room-type-stored');
     }
@@ -74,6 +75,7 @@ class RoomTypeController extends Controller
     {
         $validatedData = $request->validated();
         $roomType->fill($validatedData)->save();
+
         return redirect()->route('room-types.show', $roomType->id)
             ->with('status', 'room-type-updated');
     }
@@ -84,6 +86,7 @@ class RoomTypeController extends Controller
     public function destroy(RoomType $roomType)
     {
         $roomType->delete();
+
         return redirect()->route('room-types.index')
             ->with('status', 'room-type-deleted');
     }

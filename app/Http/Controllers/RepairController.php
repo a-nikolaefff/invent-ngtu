@@ -59,6 +59,7 @@ class RepairController extends Controller
         );
         $repairTypes = RepairType::all();
         $repairStatuses = RepairStatus::all();
+
         return view(
             'repairs.create',
             compact('chosenEquipment', 'repairTypes', 'repairStatuses')
@@ -72,6 +73,7 @@ class RepairController extends Controller
     {
         $validatedData = $request->validated();
         $repair = Repair::create($validatedData);
+
         return redirect()->route('repairs.show', $repair->id)
             ->with('status', 'repair-stored');
     }
@@ -82,6 +84,7 @@ class RepairController extends Controller
     public function show(Repair $repair)
     {
         $repair->load('type', 'status', 'equipment');
+
         return view('repairs.show', compact('repair'));
     }
 
@@ -93,6 +96,7 @@ class RepairController extends Controller
         $repair->load('type', 'status', 'equipment');
         $repairTypes = RepairType::all();
         $repairStatuses = RepairStatus::all();
+
         return view(
             'repairs.edit',
             compact('repair', 'repairTypes', 'repairStatuses')
@@ -106,6 +110,7 @@ class RepairController extends Controller
     {
         $validatedData = $request->validated();
         $repair->fill($validatedData)->save();
+
         return redirect()->route('repairs.show', $repair->id)
             ->with('status', 'repair-updated');
     }
@@ -116,6 +121,7 @@ class RepairController extends Controller
     public function destroy(Repair $repair)
     {
         $repair->delete();
+
         return redirect()->route('repairs.index')
             ->with('status', 'repair-deleted');
     }
@@ -160,6 +166,7 @@ class RepairController extends Controller
         $images = $repair->getMedia('before');
         $imageIndex = $request->get('image_index');
         $images[$imageIndex]->delete();
+
         return redirect()->route('repairs.show', $repair->id)
             ->with('status', 'image-deleted');
     }
@@ -174,6 +181,7 @@ class RepairController extends Controller
         $images = $repair->getMedia('after');
         $imageIndex = $request->get('image_index');
         $images[$imageIndex]->delete();
+
         return redirect()->route('repairs.show', $repair->id)
             ->with('status', 'image-deleted');
     }

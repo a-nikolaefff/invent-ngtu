@@ -3,9 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Department;
-use App\Models\Repair;
-use App\Models\RepairType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,7 +26,7 @@ class DatabaseSeeder extends Seeder
             RepairApplicationStatusSeeder::class,
         ];
         $appEnv = config('app.env');
-        if($appEnv === 'development') {
+        if ($appEnv === 'development') {
             $seeders[] = UserSeeder::class;
             $seeders[] = RoomSeeder::class;
             $seeders[] = EquipmentSeeder::class;

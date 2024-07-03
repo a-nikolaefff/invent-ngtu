@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Filters\BuildingFilter;
-use App\Models\Interfaces\GetByParams;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\StoreMedia;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +17,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Building extends Model implements HasMedia, GetByParams
+class Building extends Model implements HasMedia
 {
     use Filterable, InteractsWithMedia, StoreMedia;
 
@@ -49,8 +50,6 @@ class Building extends Model implements HasMedia, GetByParams
 
     /**
      * Get the type of the building
-     *
-     * @return BelongsTo
      */
     public function type(): BelongsTo
     {
@@ -59,8 +58,6 @@ class Building extends Model implements HasMedia, GetByParams
 
     /**
      * Get the rooms located in the building.
-     *
-     * @return HasMany
      */
     public function rooms(): HasMany
     {
@@ -70,8 +67,8 @@ class Building extends Model implements HasMedia, GetByParams
     /**
      * Get building list by parameters
      *
-     * @param Builder $query Database query builder
-     * @param array $params Filter parameters
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Filter parameters
      */
     public function scopeGetByParams(Builder $query, array $params): void
     {
@@ -90,25 +87,26 @@ class Building extends Model implements HasMedia, GetByParams
     /**
      * Apply sort
      *
-     * @param Builder $query Database query builder
-     * @param array $params Sort parameters
-     * @param string $defaultSortColumn Default sort column
-     * @param string $defaultSortDirection Default sort direction
+     * @param  Builder  $query Database query builder
+     * @param  array  $params Sort parameters
+     * @param  string  $defaultSortColumn Default sort column
+     * @param  string  $defaultSortDirection Default sort direction
      */
     public function scopeSort(
         Builder $query,
-        array   $params,
-        string  $defaultSortColumn = '',
-        string  $defaultSortDirection = 'asc'
+        array $params,
+        string $defaultSortColumn = '',
+        string $defaultSortDirection = 'asc'
     ): void {
         $sortColumn = $params['sort'] ?? $defaultSortColumn;
         $sortDirection = $params['direction'] ?? $defaultSortDirection;
         $query->when(
-            !empty($sortColumn),
+            ! empty($sortColumn),
             function ($query) use ($sortColumn, $sortDirection) {
                 if ($sortColumn === 'building_type_name') {
                     return $query->orderBy('building_types.name', $sortDirection);
                 }
+
                 return $query->orderBy($sortColumn, $sortDirection);
             }
         );
@@ -117,8 +115,6 @@ class Building extends Model implements HasMedia, GetByParams
     /**
      * Register media conversions for image files
      *
-     * @param Media|null $media
-     * @return void
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

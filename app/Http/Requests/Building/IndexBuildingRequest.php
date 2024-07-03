@@ -35,10 +35,10 @@ class IndexBuildingRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!BuildingType::where('id', $value)->exists()) {
+                    if (! BuildingType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }

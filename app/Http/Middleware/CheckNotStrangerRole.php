@@ -12,9 +12,8 @@ class CheckNotStrangerRole
     /**
      * Handle an incoming request.
      *
-     * @param Request $request The incoming request.
-     * @param Closure $next    The next middleware closure.
-     *
+     * @param  Request  $request The incoming request.
+     * @param  Closure  $next    The next middleware closure.
      * @return Response The response from the next middleware or a redirect response.
      */
     public function handle(Request $request, Closure $next): Response
@@ -22,6 +21,7 @@ class CheckNotStrangerRole
         if ($request->user() && $request->user()->hasRole(UserRoleEnum::Stranger)) {
             return redirect(route('authorization.notice'));
         }
+
         return $next($request);
     }
 }

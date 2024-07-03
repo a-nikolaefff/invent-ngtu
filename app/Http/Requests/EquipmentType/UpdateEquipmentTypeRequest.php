@@ -29,7 +29,7 @@ class UpdateEquipmentTypeRequest extends FormRequest
                 'max:255',
                 Rule::unique('equipment_types', 'name')->ignore(
                     $this->equipment_type->id
-                )
+                ),
             ],
         ];
     }

@@ -11,6 +11,7 @@ class RepairTypeSeeder extends Seeder
         'плановый',
         'срочный',
     ];
+
     /**
      * Run the database seeds.
      */

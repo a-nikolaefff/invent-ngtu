@@ -59,6 +59,7 @@ class ProfileController extends Controller
 
             return Redirect::to('/');
         }
+
         return Redirect::back();
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Enums\UserRoleEnum;
 use App\Models\Equipment;
-use App\Models\RepairApplication;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class EquipmentPolicy
 {
@@ -86,7 +86,6 @@ class EquipmentPolicy
     /**
      * Determine whether the user can delete the model.
      */
-
     public function delete(User $user, Equipment $equipment): bool
     {
         return $user->hasAnyRole(

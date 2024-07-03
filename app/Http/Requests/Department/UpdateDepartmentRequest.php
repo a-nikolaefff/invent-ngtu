@@ -2,8 +2,6 @@
 
 namespace app\Http\Requests\Department;
 
-use App\Rules\NotSameAsCurrentDepartment;
-use App\Rules\NotSelfParent;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,14 +30,14 @@ class UpdateDepartmentRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('departments', 'name')
-                    ->ignore($this->department->id)
+                    ->ignore($this->department->id),
             ],
             'short_name' => [
                 'nullable',
                 'string',
                 'max:50',
                 Rule::unique('departments', 'short_name')
-                    ->ignore($this->department->id)
+                    ->ignore($this->department->id),
             ],
             'department_type_id' => ['nullable', 'exists:department_types,id'],
             'parent_department_id' => [

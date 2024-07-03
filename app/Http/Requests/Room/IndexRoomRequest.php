@@ -38,10 +38,10 @@ class IndexRoomRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!DepartmentType::where('id', $value)->exists()) {
+                    if (! DepartmentType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }
@@ -58,7 +58,7 @@ class IndexRoomRequest extends FormRequest
                     if ($value > $maxFloor) {
                         $fail(
                             __('validation.max.numeric', [
-                                'attribute' => __('validation.attributes.' . $attribute),
+                                'attribute' => __('validation.attributes.'.$attribute),
                                 'max' => $maxFloor,
                             ])
                         );

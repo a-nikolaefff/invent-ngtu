@@ -12,8 +12,12 @@ use Illuminate\Database\Eloquent\Builder;
 class UserFilter extends AbstractFilter
 {
     public const ROLE_ID = 'role_id';
+
     public const SEARCH = 'search';
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getCallbacks(): array
     {
         return [
@@ -25,11 +29,10 @@ class UserFilter extends AbstractFilter
     /**
      * Apply the filter based on role ID.
      *
-     * @param Builder $builder The Builder instance.
-     * @param mixed $roleId The role ID.
-     * @return void
+     * @param  Builder  $builder The Builder instance.
+     * @param  string|int  $roleId The role ID.
      */
-    public function roleId(Builder $builder, $roleId)
+    public function roleId(Builder $builder, string|int $roleId): void
     {
         $builder->where('role_id', $roleId);
     }
@@ -37,17 +40,16 @@ class UserFilter extends AbstractFilter
     /**
      * Apply the filter based on search keyword.
      *
-     * @param Builder $builder The Builder instance.
-     * @param string $keyword The search keyword.
-     * @return void
+     * @param  Builder  $builder The Builder instance.
+     * @param  string  $keyword The search keyword.
      */
-    public function search(Builder $builder, $keyword)
+    public function search(Builder $builder, string $keyword): void
     {
         $builder->where(function ($query) use ($keyword) {
-            $query->where('users.name', 'like', "%$keyword%")
-                ->orWhere('email', 'like', "%$keyword%")
-                ->orWhere('departments.name', 'like', "%$keyword%")
-                ->orWhere('departments.short_name', 'like', "%$keyword%");
+            $query->where('users.name', 'ilike', "%$keyword%")
+                ->orWhere('email', 'ilike', "%$keyword%")
+                ->orWhere('departments.name', 'ilike', "%$keyword%")
+                ->orWhere('departments.short_name', 'ilike', "%$keyword%");
         });
     }
 }

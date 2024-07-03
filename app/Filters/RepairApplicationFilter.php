@@ -7,20 +7,21 @@ namespace App\Filters;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Class representing a user filter.
+ * Class representing a repair application filter.
  */
 class RepairApplicationFilter extends AbstractFilter
 {
     public const REPAIR_APPLICATION_STATUS = 'repair_application_status_id';
+
     public const SEARCH = 'search';
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getCallbacks(): array
     {
         return [
-            self::REPAIR_APPLICATION_STATUS => [
-                $this,
-                'repairApplicationStatus'
-            ],
+            self::REPAIR_APPLICATION_STATUS => [$this, 'repairApplicationStatus'],
             self::SEARCH => [$this, 'search'],
         ];
     }
@@ -28,34 +29,27 @@ class RepairApplicationFilter extends AbstractFilter
     /**
      * Apply the filter based on repair application status ID.
      *
-     * @param Builder $builder The Builder instance.
-     * @param mixed   $statusId The role ID.
-     *
-     * @return void
+     * @param  Builder  $builder The Builder instance.
+     * @param  string|int  $statusId The status ID.
      */
-    public function repairApplicationStatus(Builder $builder, $statusId)
+    public function repairApplicationStatus(Builder $builder, string|int $statusId): void
     {
-        $builder->where(
-            'repair_applications.repair_application_status_id',
-            $statusId
-        );
+        $builder->where('repair_applications.repair_application_status_id', $statusId);
     }
 
     /**
      * Apply the filter based on search keyword.
      *
-     * @param Builder $builder The Builder instance.
-     * @param string  $keyword The search keyword.
-     *
-     * @return void
+     * @param  Builder  $builder The Builder instance.
+     * @param  string  $keyword The search keyword.
      */
-    public function search(Builder $builder, $keyword)
+    public function search(Builder $builder, string $keyword): void
     {
         $builder->where(function ($query) use ($keyword) {
-            $query->where('repair_applications.id', 'like', "%$keyword%")
-                ->orWhere('repair_applications.short_description', 'like', "%$keyword%")
-                ->orWhere('equipment.number', 'like', "%$keyword%")
-                ->orWhere('equipment.name', 'like', "%$keyword%");
+            $query->where('repair_applications.id', 'ilike', "%$keyword%")
+                ->orWhere('repair_applications.short_description', 'ilike', "%$keyword%")
+                ->orWhere('equipment.number', 'ilike', "%$keyword%")
+                ->orWhere('equipment.name', 'ilike', "%$keyword%");
         });
     }
 }

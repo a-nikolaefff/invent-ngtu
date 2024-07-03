@@ -17,7 +17,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * AbstractFilter constructor.
      *
-     * @param array $queryParams The query parameters array.
+     * @param  array  $queryParams The query parameters array.
      */
     public function __construct(array $queryParams)
     {
@@ -31,7 +31,10 @@ abstract class AbstractFilter implements FilterInterface
      */
     abstract protected function getCallbacks(): array;
 
-    public function apply(Builder $builder)
+    /**
+     * {@inheritDoc}
+     */
+    public function apply(Builder $builder): void
     {
         foreach ($this->getCallbacks() as $name => $callback) {
             if (isset($this->queryParams[$name])) {

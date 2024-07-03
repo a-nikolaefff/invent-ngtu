@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\BuildingType;
 use App\Models\RoomType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoomTypeSeeder extends Seeder

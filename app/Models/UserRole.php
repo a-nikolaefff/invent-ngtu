@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\UserRoleEnum;
@@ -25,8 +27,6 @@ class UserRole extends Model
 
     /**
      * Get the users associated with the role.
-     *
-     * @return HasMany
      */
     public function users(): HasMany
     {
@@ -35,11 +35,6 @@ class UserRole extends Model
 
     /**
      * Get a role by role type.
-     *
-     * @param Builder      $query
-     * @param UserRoleEnum $roleType
-     *
-     * @return void
      */
     public function scopeGetRole(Builder $query, UserRoleEnum $roleType): void
     {
@@ -49,10 +44,8 @@ class UserRole extends Model
     /**
      * Get all roles except a specific role type.
      *
-     * @param Builder      $query
-     * @param UserRoleEnum $roleType
-     *
-     * @return void
+     * @param  Builder  $query Database query builder
+     * @param  array<UserRoleEnum>|UserRoleEnum  $roleTypes Excluder roles or a role
      */
     public function scopeAllRolesExcept(
         Builder $query,

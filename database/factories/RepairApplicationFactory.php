@@ -6,8 +6,6 @@ use App\Enums\RepairApplicationStatusEnum;
 use App\Models\Equipment;
 use App\Models\RepairApplication;
 use App\Models\RepairApplicationStatus;
-use App\Models\RepairStatus;
-use App\Models\RepairType;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Helpers\FileLoader;
@@ -30,15 +28,15 @@ class RepairApplicationFactory extends Factory
             'Провести обслуживание',
             'Устранить поломку',
             'Починить',
-            'Восстановить'
+            'Восстановить',
         ];
         $randomVerb = fake()->randomElement($verbs);
 
         $status = RepairApplicationStatus::all()->random();
 
         return [
-            'short_description' => $randomVerb . ' ' . fake()->words(2, true),
-            'full_description' => $randomVerb . ' ' . fake()->words(6, true),
+            'short_description' => $randomVerb.' '.fake()->words(2, true),
+            'full_description' => $randomVerb.' '.fake()->words(6, true),
             'response' => fake()->words(6, true),
             'application_date' => Carbon::now(),
             'response_date' => $status->name

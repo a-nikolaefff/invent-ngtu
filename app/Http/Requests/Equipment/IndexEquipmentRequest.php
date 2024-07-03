@@ -2,7 +2,6 @@
 
 namespace app\Http\Requests\Equipment;
 
-use App\Models\Building;
 use App\Models\DepartmentType;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
@@ -30,7 +29,7 @@ class IndexEquipmentRequest extends FormRequest
             'name',
             'equipment_type_name',
             'location',
-            'department_name'
+            'department_name',
         ];
 
         return [
@@ -38,10 +37,10 @@ class IndexEquipmentRequest extends FormRequest
                 'nullable',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if (!DepartmentType::where('id', $value)->exists()) {
+                    if (! DepartmentType::where('id', $value)->exists()) {
                         if ($value !== 'none') {
                             $fail(
-                                __('validation.invalid', ['attribute' => __('validation.attributes.' . $attribute)])
+                                __('validation.invalid', ['attribute' => __('validation.attributes.'.$attribute)])
                             );
                         }
                     }

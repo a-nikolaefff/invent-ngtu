@@ -24,8 +24,8 @@ class StoreDepartmentRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255', 'unique:departments,name'],
             'short_name' => ['nullable', 'string', 'max:50', 'unique:departments,short_name'],
-            'department_type_id' => ['nullable','exists:department_types,id'],
-            'parent_department_id' => ['nullable','exists:departments,id'],
+            'department_type_id' => ['nullable', 'exists:department_types,id'],
+            'parent_department_id' => ['nullable', 'exists:departments,id'],
         ];
     }
 }

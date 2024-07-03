@@ -2,7 +2,6 @@
 
 namespace app\Http\Requests\RepairApplication;
 
-use App\Models\Building;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRepairtApplicationRequest extends FormRequest
@@ -23,7 +22,7 @@ class CreateRepairtApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipment_id' => ['nullable','exists:equipment,id'],
+            'equipment_id' => ['nullable', 'exists:equipment,id'],
         ];
     }
 }
