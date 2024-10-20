@@ -48,6 +48,17 @@ services:
       networks:
           - web
 
+  selenium:
+      image: selenium/standalone-chrome
+      extra_hosts:
+          - 'host.docker.internal:host-gateway'
+      ports:
+          - "4444:4444"
+          - "7900:7900"
+      networks:
+          - web
+
+
 networks:
   web:
     driver: bridge
