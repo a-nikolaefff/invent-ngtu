@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FileHelper;
 use App\Http\Requests\Building\IndexBuildingRequest;
 use App\Http\Requests\Building\ShowBuildingRequest;
 use App\Http\Requests\Building\StoreBuildingRequest;
@@ -14,6 +15,8 @@ use App\Models\RoomType;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class BuildingController extends Controller
 {
@@ -51,7 +54,12 @@ class BuildingController extends Controller
      */
     public function store(StoreBuildingRequest $request)
     {
-        $building = Building::create($request->validated());
+        $data = $request->validated();
+        if (isset($data['model'])) {
+            $data['model'] = $this->storeModel($data['model']);
+        }
+
+        $building = Building::create($data);
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'building-stored');
@@ -95,7 +103,19 @@ class BuildingController extends Controller
      */
     public function update(UpdateBuildingRequest $request, Building $building)
     {
-        $building->fill($request->validated())->save();
+        $data = $request->validated();
+
+        if (isset($data['delete_model']) && $data['delete_model'] === 'on') {
+            $this->deleteModel($building->model);
+            $data['model'] = null;
+        } else if (isset($data['model'])) {
+            if ($building->model) {
+                $this->deleteModel($building->model);
+            }
+            $data['model'] = $this->storeModel($data['model']);
+        }
+
+        $building->fill($data)->save();
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'building-updated');
@@ -106,6 +126,9 @@ class BuildingController extends Controller
      */
     public function destroy(Building $building)
     {
+        if ($building->model) {
+            $this->deleteModel($building->model);
+        }
         $building->delete();
 
         return redirect()->route('buildings.index')
@@ -151,5 +174,23 @@ class BuildingController extends Controller
 
         return redirect()->route('buildings.show', $building->id)
             ->with('status', 'image-deleted');
+    }
+
+    public function viewModel(Building $building)
+    {
+        return view('buildings.model', ['building' => $building]);
+    }
+
+    private function storeModel(UploadedFile $file): string
+    {
+        $fileName = FileHelper::generateUniqueFileName($file);
+        Storage::putFileAs('models/buildings/', $file, $fileName);
+
+        return $fileName;
+    }
+
+    private function deleteModel(string $fileName): void
+    {
+        Storage::delete('models/buildings/' . $fileName);
     }
 }

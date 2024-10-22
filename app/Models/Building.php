@@ -39,6 +39,8 @@ class Building extends Model implements HasMedia
             'address',
             'floor_amount',
             'building_type_id',
+            'model',
+            'model_scale',
         ];
 
     /**

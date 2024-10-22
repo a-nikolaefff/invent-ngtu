@@ -53,6 +53,8 @@ Route::middleware(['auth', 'verified', 'authorized'])->group(function () {
 
     Route::resource('departments', DepartmentController::class);
 
+    Route::get('buildings/{building}/model', [BuildingController::class, 'viewModel'])
+        ->name('buildings.view-model');
     Route::post('buildings/{building}/store-images', [BuildingController::class, 'storeImages'])
         ->name('buildings.store-images');
     Route::delete('buildings/{building}/destroy-image', [BuildingController::class, 'destroyImage'])

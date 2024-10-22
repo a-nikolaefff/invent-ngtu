@@ -7,6 +7,7 @@
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
+        "@types/three": "^0.169.0",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
         "axios": "^1.1.2",
@@ -20,9 +21,11 @@
         "@fontsource-variable/figtree": "^5.0.6",
         "@fontsource/figtree": "^5.0.5",
         "@tarekraafat/autocomplete.js": "^10.2.7",
+        "@vitejs/plugin-vue": "^4.3.3",
         "boxicons": "^2.1.4",
         "sass": "^1.63.6",
         "three": "^0.169.0",
-        "tw-elements": "^1.0.0-beta2"
+        "tw-elements": "^1.0.0-beta2",
+        "vue": "^3.5.12"
     }
 }

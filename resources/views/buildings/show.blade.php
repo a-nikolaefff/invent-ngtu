@@ -94,6 +94,25 @@
         </table>
     </div>
 
+        <div class="content-block">
+            <h2 class="h2">
+                3D модель
+            </h2>
+
+            <div class="pt-3">
+                @if($building->model)
+                    <a href="{{ route('buildings.view-model', $building->id) }}">
+                        <x-buttons.secondary>
+                            Просмотр 3D модели
+                        </x-buttons.secondary>
+                    </a>
+                @else
+                    3D модель отсутствует
+                @endif
+            </div>
+
+        </div>
+
     <div class="content-block">
         <h2 class="h2">
             Помещения

@@ -41,6 +41,9 @@ class UpdateBuildingRequest extends FormRequest
                 ),
             ],
             'building_type_id' => ['nullable', 'exists:building_types,id'],
+            'model' => ['nullable', 'file', 'extensions:obj,gltf,glb,fbx'],
+            'delete_model' => ['nullable'],
+            'model_scale' => ['nullable'],
         ];
     }
 }

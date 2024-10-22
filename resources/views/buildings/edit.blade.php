@@ -8,16 +8,16 @@
 
     <div class="content-block">
 
-        <h2 class="h2">
-            Основные данные
-        </h2>
+
 
             <form method="POST"
-                  action="{{ route('buildings.update', $building->id) }}">
+                  action="{{ route('buildings.update', $building->id) }}"
+                  enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
 
                 <div class="form-wrapper">
+                    <h2 class="h2">Основные данные</h2>
                     <div class="max-w-4xl">
                         <x-forms.input-label for="name" value="Наименование"/>
                         <x-forms.text-input id="name" name="name" type="text" :value="old('name', $building->name)"
@@ -57,9 +57,40 @@
                         <x-forms.input-error :messages="$errors->get('building_type_id')"/>
                     </div>
 
-                    <x-buttons.confirm>
-                        Подтвердить изменения
-                    </x-buttons.confirm>
+                    <h2 class="h2 pt-4">3D модель</h2>
+
+                    <div class="max-w-4xl">
+                        <x-forms.input-label for="model"
+                                             value="3D модель здания {{ $building->model ? '(обновить). Что бы сохранить прежнюю модель оставьте пустым' : '' }}"
+                        />
+                        <x-forms.file-input id="model" name="model" class="mt-1 block w-full"/>
+                        <x-forms.input-error :messages="$errors->get('model')"/>
+                    </div>
+
+                    <div class="max-w-xl">
+                        <x-forms.input-label for="model_scale" value="Коэффициент масштаба модели (приведение единицы модели к 1 метру"/>
+                        <x-forms.text-input id="model_scale" name="model_scale" type="number" step="0.00000001"
+                                            :value="old('model_scale', $building->model_scale)" autocomplete="off"/>
+                        <x-forms.input-error :messages="$errors->get('model_scale')"/>
+                    </div>
+
+                    @if($building->model)
+                        <div class="max-w-4xl mb-3">
+                            <x-forms.input-label for="delete_model"
+                                                 value="Удалить 3D модель здания"/>
+                            <x-forms.checkbox
+                                id="delete_model"
+                                name="delete_model"
+                                label="Удалить модель"
+                                :checked="false"
+                            />
+                            <x-forms.input-error :messages="$errors->get('not_in_operation')"/>
+                        </div>
+                    @endif
+
+                    <div class="pt-4">
+                        <x-buttons.confirm>Подтвердить изменения</x-buttons.confirm>
+                    </div>
                 </div>
             </form>
         </div>

@@ -3,6 +3,7 @@ import 'tw-elements/dist/js/tw-elements.umd.min';
 import Alpine from 'alpinejs';
 import {handleOptionSelector} from "./components/option-selector.js";
 import {handleDatePicker} from "./components/date-picker.js";
+import './vue_app.js';
 
 window.Alpine = Alpine;
 Alpine.start();
