@@ -1,8 +1,8 @@
 <template>
     <div>
         <Loader v-if="loading" text="Загрузка модели..."/>
-        <FullScreenButton @click="toggleFullscreen"/>
-        <div ref="container">
+        <FullScreenButton class="fullscreen-button" @click="toggleFullscreen"/>
+        <div ref="container" class="common-container">
             <div ref="modelContainer" class="model-container"></div>
             <div v-if="showModal" class="modal">
                 <div class="modal-content">
@@ -22,6 +22,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import FullScreenButton from "./buttons/FullScreenButton.vue";
 import Loader from "./Loader.vue";
+import {Vector2} from "three";
 
 const buildingMaterial = new THREE.MeshStandardMaterial({
     color: 0xe5e7eb,
@@ -32,6 +33,9 @@ const buildingMaterial = new THREE.MeshStandardMaterial({
     depthWrite: false,
 });
 
+const defaultRoomColor = 0x000000;
+const elementOpacity = 0.4;
+
 export default {
     name: 'ThreeDModel',
     components: {Loader, FullScreenButton },
@@ -41,9 +45,11 @@ export default {
             required: true,
         },
         modelScale: {
-
             required: true,
         },
+        rooms: {
+            type: Array
+        }
     },
     data() {
         return {
@@ -57,11 +63,13 @@ export default {
             moveBackward: false,
             moveLeft: false,
             moveRight: false,
-            velocity: new THREE.Vector3(), // Скорость перемещения камеры
+            velocity: new THREE.Vector3(),
+            mouse: new THREE.Vector2(),
+            roomObjects: [],
+            equipmentObjects: [],
         };
     },
     mounted() {
-        this.mouse = new THREE.Vector2();
         this.initScene();
         this.loadModel();
         window.addEventListener('resize', this.onWindowResize);
@@ -76,8 +84,11 @@ export default {
             this.scene = new THREE.Scene();
             this.scene.background = new THREE.Color(0xf3f4f6);
 
-            this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 5000);
             this.camera.position.set(0, 2, 10);
+
+            this.camera.layers.enable(1);  // Включаем слой 1 для здания
+            this.camera.layers.enable(2);
 
             this.renderer = new THREE.WebGLRenderer({ antialias: true });
             this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -105,10 +116,12 @@ export default {
                 model.scale.set(scale, scale, scale);
                 if (model.isMesh) {
                     model.material = buildingMaterial;
+                    model.layers.set(1);
                     this.buildingDetails.push(model);
                 } else {
                     const vue = this;
                     model.traverse(function (child) {
+                        child.layers.set(1);
                         if (child.isMesh) {
                             vue.buildingDetails.push(child);
                             child.material = buildingMaterial.clone();
@@ -124,6 +137,7 @@ export default {
                 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
                 cube.position.set(22.5, 95, -10); // Поднимаем его на 0.5 метра, чтобы основание было на уровне земли
                 this.scene.add(cube);
+                this.drawRooms()
 
                 this.renderer.render(this.scene, this.camera);
             });
@@ -145,27 +159,36 @@ export default {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         },
         onMouseClick(event) {
-            const rect = this.$refs.modelContainer.getBoundingClientRect();
-            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-            this.raycaster.setFromCamera(this.mouse, this.camera);
-            const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+            const rect = this.renderer.domElement.getBoundingClientRect();
+
+            const x = ((event.clientX - rect.left) / rect.width ) *  2 - 1;
+            const y = ((event.clientY - rect.top) / rect.height) * - 2 + 1;
+            const mouse = new Vector2(x, y)
+
+            this.raycaster.layers.set(2);
+            this.raycaster.setFromCamera(mouse, this.camera);
+
+            const intersects = this.raycaster.intersectObjects(this.roomObjects, false);
             if (intersects.length > 0) {
                 const intersectedObject = intersects[0].object;
                 if (intersectedObject.isMesh) {
-                    this.buildingDetails.forEach((d) => d.material.color.set('#e5e7eb'));
-                    intersectedObject.material.color.set('#ff7200');
-                    this.selectedObjectName = intersectedObject.name || 'Unnamed Object';
-                    //this.showModal = true;
-                    console.log('Clicked on:', intersectedObject);
-                    const boundingBox = new THREE.Box3().setFromObject(intersectedObject);
-
-                // Выводим в консоль размеры объекта
-                    const size = new THREE.Vector3();
-                    boundingBox.getSize(size);
-                    console.log(`Размеры объекта: x=${size.x}, y=${size.y}, z=${size.z}`);
+                    this.selectObject(intersectedObject)
                 }
+            } else {
+               this.deselectObjects()
             }
+        },
+        selectObject(obj) {
+            obj.material.opacity = 1
+            this.selectedObjectName = obj.userData.name || 'Unnamed Object';
+            this.showModal = true;
+        },
+        deselectObjects() {
+            this.showModal = false
+            const allObjects = this.roomObjects.concat(this.equipmentObjects);
+            allObjects.forEach((obj) => {
+                obj.material.opacity = elementOpacity
+            })
         },
         animate() {
             requestAnimationFrame(this.animate);
@@ -183,6 +206,66 @@ export default {
         closeModal() {
             this.showModal = false;
         },
+        drawRooms() {
+            const vue = this;
+            this.rooms.forEach((room) => {
+                const geometry = vue.normalizeGeometry(room.geometry)
+                const color = room?.type?.model_color
+                    ? vue.normalizeColor(room.type.model_color)
+                    : defaultRoomColor
+                const roomObject = vue.drawElement(geometry, color)
+                vue.roomObjects.push(roomObject)
+            })
+        },
+        normalizeGeometry(geometry) {
+            if (geometry.anchor_point) {
+                geometry.anchor_point.x /= 1000;
+                geometry.anchor_point.y /= 1000;
+                geometry.anchor_point.z /= 1000;
+            }
+            if (geometry.base_points && Array.isArray(geometry.base_points)) {
+                geometry.base_points = geometry.base_points.map(point => ({
+                    x: point.x / 1000,
+                    y: point.y / 1000
+                }));
+            }
+            if (geometry.height) {
+                geometry.height /= 1000;
+            }
+            return geometry;
+        },
+        normalizeColor(color) {
+            return parseInt(color.slice(1), 16);
+        },
+        drawElement(geometry, color) {
+            const shape = new THREE.Shape();
+            const initPoint = geometry.base_points[0]
+            shape.moveTo(initPoint.x, initPoint.y);
+            geometry.base_points.forEach((p, i) => {
+                if (i === 0) return
+                shape.lineTo(p.x, p.y);
+            })
+            shape.lineTo(initPoint.x, initPoint.y);
+
+            const material = new THREE.MeshBasicMaterial({
+                color: color,
+                transparent: true,
+                opacity: elementOpacity,
+                side: THREE.DoubleSide
+            });
+
+            const mesh = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, {
+                depth: geometry.height,
+                bevelEnabled: false
+            }), material);
+            mesh.userData = { name: 'Комната 1' };
+            mesh.position.set(geometry.anchor_point.x, geometry.anchor_point.y, geometry.anchor_point.z);
+
+            mesh.layers.set(2)
+            this.scene.add(mesh);
+
+            return mesh;
+        }
     },
 };
 </script>
@@ -192,14 +275,15 @@ export default {
     width: 100%;
     height: 100vh;
 }
-
+.common-container {
+    position: relative;
+}
 .modal {
     display: block;
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     right: 1%;
-    top: 10%;
-    transform: translate(-50%, -50%);
+    top: 8%;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -233,5 +317,8 @@ export default {
 
 .toggle-button:hover {
     background-color: #45a049;
+}
+.fullscreen-button {
+    user-select: none; /* Отключает возможность выделения текста */
 }
 </style>

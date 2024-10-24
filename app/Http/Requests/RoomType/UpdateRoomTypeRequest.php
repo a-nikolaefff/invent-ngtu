@@ -31,6 +31,7 @@ class UpdateRoomTypeRequest extends FormRequest
                     $this->room_type->id
                 ),
             ],
+            'model_color' => ['nullable', 'string', 'size:7'],
         ];
     }
 }

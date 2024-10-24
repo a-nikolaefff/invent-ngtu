@@ -319,8 +319,10 @@
 
     </div>
 
-    <div class="content-block">
+    <x-geometry-data :geometry="$room->geometry"/>
 
+
+    <div class="content-block">
         <h2 class="h2">
             Хронологические данные
         </h2>

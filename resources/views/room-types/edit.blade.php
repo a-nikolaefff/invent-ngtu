@@ -25,9 +25,16 @@
                         <x-forms.input-error :messages="$errors->get('name')"/>
                     </div>
 
-                    <x-buttons.confirm>
-                        Подтвердить изменения
-                    </x-buttons.confirm>
+                    <div class="max-w-30">
+                        <x-forms.input-label for="color-picker" value="Цвет помещений на 3D модели"/>
+                        <div>
+                            <input type="text" data-coloris id="color-picker" name="model_color" value="{{ $roomType->model_color }}">
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <x-buttons.confirm>добавить тип помещения</x-buttons.confirm>
+                    </div>
                 </div>
             </form>
         </div>

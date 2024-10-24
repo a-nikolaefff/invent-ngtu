@@ -31,6 +31,7 @@ class UpdateEquipmentTypeRequest extends FormRequest
                     $this->equipment_type->id
                 ),
             ],
+            'model_color' => ['nullable', 'string', 'size:7'],
         ];
     }
 }

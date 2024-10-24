@@ -58,5 +58,5 @@ const datePickersIds = ['datePicker1', 'datePicker2'];
 handleElementsById(datePickersIds, handleDatePicker);
 
 import ('./3d/model.js');
-
-
+import('./components/geometry.js')
+import('./components/color-picker.js')

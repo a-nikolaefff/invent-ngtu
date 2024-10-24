@@ -138,7 +138,7 @@ class BuildingController extends Controller
     /**
      * Returns the floor amount of the building in JSON format.
      *
-     * @param  Request  $request The request object.
+     * @param Request $request The request object.
      * @return JsonResponse The JSON response with customer data.
      */
     public function floorAmount(Request $request): JsonResponse
@@ -178,7 +178,13 @@ class BuildingController extends Controller
 
     public function viewModel(Building $building)
     {
-        return view('buildings.model', ['building' => $building]);
+        $a =  $building->load('roomsWithGeometry.type');
+
+        return view('buildings.model',
+            [
+                'building' => $building->load('roomsWithGeometry.type')
+            ]
+        );
     }
 
     private function storeModel(UploadedFile $file): string

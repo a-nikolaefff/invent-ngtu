@@ -51,6 +51,19 @@
                 <th scope="row" class="w-1/12">Наименование:</th>
                 <td> {{ $roomType->name }}</td>
             </tr>
+            <tr>
+                <th scope="row" class="w-1/12">Цвет помещений на 3D модели:</th>
+                <td>
+                    @if($roomType->model_color)
+                        <div class="flex">
+                            {{ $roomType->model_color }}
+                            <span class="ml-2 inline-block w-5 h-5" style="background-color: {{ $roomType->model_color }}"></span>
+                        </div>
+                    @else
+                        не задан
+                    @endif
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

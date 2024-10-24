@@ -13,6 +13,8 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\Room;
 use App\Models\RoomType;
+use App\Services\GeometryService;
+use App\Validator\GeometryValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,7 +25,9 @@ class RoomController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        private readonly GeometryService $geometryService
+    )
     {
         $this->authorizeResource(Room::class);
     }
@@ -79,11 +83,11 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
-        $validatedData = $request->validated();
-        $room = Room::create($validatedData);
+        $data = $request->validated();
+        $data['geometry'] = $this->geometryService->processGeometry($data['geometry']);
+        $room = Room::create($data);
 
-        return redirect()->route('rooms.show', $room->id)
-            ->with('status', 'room-stored');
+        return redirect()->route('rooms.show', $room->id)->with('status', 'room-stored');
     }
 
     /**
@@ -134,8 +138,9 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room)
     {
-        $validatedData = $request->validated();
-        $room->fill($validatedData)->save();
+        $data = $request->validated();
+        $data['geometry'] = $this->geometryService->processGeometry($data['geometry']);
+        $room->fill($data)->save();
 
         return redirect()->route('rooms.show', $room->id)
             ->with('status', 'room-updated');

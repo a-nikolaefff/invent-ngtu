@@ -51,6 +51,19 @@
                 <th scope="row" class="w-1/12 px-2 py-4 text-right">Наименование:</th>
                 <td class=" px-6 py-4"> {{ $equipmentType->name }}</td>
             </tr>
+            <tr>
+                <th scope="row" class="w-1/12">Цвет помещений на 3D модели:</th>
+                <td>
+                    @if($equipmentType->model_color)
+                        <div class="flex">
+                            {{ $equipmentType->model_color }}
+                            <span class="ml-2 inline-block w-5 h-5" style="background-color: {{ $equipmentType->model_color }}"></span>
+                        </div>
+                    @else
+                        не задан
+                    @endif
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

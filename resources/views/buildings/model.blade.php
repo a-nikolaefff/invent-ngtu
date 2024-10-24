@@ -8,6 +8,7 @@
             <model-components
                 model-path="{{ '/storage/models/buildings/' . $building->model }}"
                 model-scale="{{ $building->model_scale }}"
+                :rooms="{{ json_encode($building->roomsWithGeometry->all()) }}"
             >
             </model-components>
         </div>

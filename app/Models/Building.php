@@ -67,6 +67,15 @@ class Building extends Model implements HasMedia
     }
 
     /**
+     * Возвращает помещения здания с заданной геометрией
+     */
+    public function roomsWithGeometry(): HasMany
+    {
+        return $this->hasMany(Room::class, 'building_id')
+            ->where('geometry', '!=', null);
+    }
+
+    /**
      * Get building list by parameters
      *
      * @param  Builder  $query Database query builder

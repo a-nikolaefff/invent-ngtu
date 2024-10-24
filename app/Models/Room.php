@@ -9,6 +9,7 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\StoreMedia;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,7 +44,31 @@ class Room extends Model implements HasMedia
             'building_id',
             'floor',
             'department_id',
+            'geometry'
         ];
+
+    /**
+     * Get the user's first name.
+     */
+    protected function geometry(): Attribute
+    {
+        return Attribute::make(
+            get: function (?string $value) {
+                if ($value === null) {
+                    return null;
+                }
+                $geometry = json_decode($value, true);
+                return $geometry ?: null;
+            },
+            set: function (?array $value) {
+                if ($value === null) {
+                    return null;
+                }
+                $geometry = json_encode($value);
+                return $geometry ?: null;
+            },
+        );
+    }
 
     /**
      * Get the room type

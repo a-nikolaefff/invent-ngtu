@@ -26,6 +26,7 @@ export default {
     safelist: [
         'bg-pink-600',
         'hover:bg-gray-900',
-        'pl-2'
+        'pl-2',
+        'mt-4'
     ]
 };

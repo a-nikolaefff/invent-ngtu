@@ -23,6 +23,7 @@ class StoreEquipmentTypeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:equipment_types,name'],
+            'model_color' => ['nullable', 'string', 'size:7'],
         ];
     }
 }

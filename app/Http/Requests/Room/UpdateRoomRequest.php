@@ -4,8 +4,10 @@ namespace app\Http\Requests\Room;
 
 use App\Models\Building;
 use App\Models\Room;
+use App\Validator\GeometryValidator;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateRoomRequest extends FormRequest
 {
@@ -59,5 +61,11 @@ class UpdateRoomRequest extends FormRequest
             'room_type_id' => ['nullable', 'exists:room_types,id'],
             'department_id' => ['nullable', 'exists:departments,id'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $geometryValidator = app(GeometryValidator::class);
+        $geometryValidator->applyRules($validator, $this->input('geometry.anchor_point'));
     }
 }

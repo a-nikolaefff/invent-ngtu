@@ -20,7 +20,7 @@
                     <div class="max-w-4xl">
                         <x-forms.input-label for="number" value="Номер"/>
                         <x-forms.text-input id="number" name="number" type="text" :value="old('number')"
-                                            required autocomplete="off"/>
+                                             autocomplete="off"/>
                         <x-forms.input-error :messages="$errors->get('number')"/>
                     </div>
 
@@ -93,9 +93,11 @@
                         <x-forms.input-error :messages="$errors->get('department_id')"/>
                     </div>
 
-                    <x-buttons.confirm>
-                        Добавить помещение
-                    </x-buttons.confirm>
+                   <x-geometry-form-elements/>
+
+                    <div class="pt-8">
+                        <x-buttons.confirm>Добавить помещение</x-buttons.confirm>
+                    </div>
                 </div>
             </form>
         </div>

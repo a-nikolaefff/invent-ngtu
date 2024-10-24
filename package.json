@@ -20,6 +20,7 @@
     "dependencies": {
         "@fontsource-variable/figtree": "^5.0.6",
         "@fontsource/figtree": "^5.0.5",
+        "@melloware/coloris": "^0.24.0",
         "@tarekraafat/autocomplete.js": "^10.2.7",
         "@vitejs/plugin-vue": "^4.3.3",
         "boxicons": "^2.1.4",

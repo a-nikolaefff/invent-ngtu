@@ -2,7 +2,7 @@
 
     <div class="page-header">
         <h1 class="h1">
-            Редактирование помещения
+            Редактирование помещения {{ $room->name  }}
         </h1>
     </div>
 
@@ -100,9 +100,11 @@
                         <x-forms.input-error :messages="$errors->get('department_id')"/>
                     </div>
 
-                    <x-buttons.confirm>
-                        Подтвердить изменения
-                    </x-buttons.confirm>
+                    <x-geometry-form-elements :geometry="$room->geometry"/>
+
+                    <div class="pt-8">
+                        <x-buttons.confirm>Подтвердить изменения</x-buttons.confirm>
+                    </div>
                 </div>
             </form>
         </div>
